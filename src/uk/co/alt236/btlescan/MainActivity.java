@@ -1,5 +1,9 @@
 package uk.co.alt236.btlescan;
 
+import java.util.Collection;
+
+import uk.co.alt236.btlescan.containers.AdRecord;
+import uk.co.alt236.btlescan.containers.AdRecordUtils;
 import uk.co.alt236.btlescan.containers.BluetoothLeDevice;
 import uk.co.alt236.btlescan.util.BluetoothLeScanner;
 import uk.co.alt236.btlescan.util.BluetoothUtils;
@@ -45,7 +49,15 @@ public class MainActivity extends ListActivity {
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 	    @Override
 	    public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-	        Log.d("TAG", "~ New BT Device: " + new BluetoothLeDevice(device, rssi, scanRecord));
+	    	
+	    	final BluetoothLeDevice deviceLe = new BluetoothLeDevice(device, rssi, scanRecord);
+	        Log.d("TAG", "~ New BT Device: " + deviceLe);
+	        
+	        final Collection<AdRecord> adRecords = deviceLe.getAdRecordStore().getRecordsAsCollection();
+	        
+	        for(final AdRecord record : adRecords){
+	        	Log.d("TAG", "~ Has Record: " + record.getType() + ": '" + record.getHumanReadableType() +"', data: '"+ AdRecordUtils.getRecordDataAsString(record) + "'");
+	        }
 	        
 //	    	runOnUiThread(new Runnable() {
 //	           @Override

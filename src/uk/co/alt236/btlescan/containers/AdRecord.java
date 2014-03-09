@@ -6,7 +6,7 @@ import java.util.Arrays;
  * Double Encore, Inc.
  * AdRecord
  */
-public class AdRecord {
+public final class AdRecord {
 	/**
 	 * General FLAGS
 	 * 
@@ -32,7 +32,7 @@ public class AdRecord {
 
 	// Local name
 	public static final int TYPE_LOCAL_NAME_SHORT            = 0x08;
-	public static final int TYPE_LOCAL_NAME_COMPLETE                  = 0x09;
+	public static final int TYPE_LOCAL_NAME_COMPLETE         = 0x09;
 
 	// TX Power Level
 	public static final int TYPE_TX_POWER_LEVEL              = 0x0A;

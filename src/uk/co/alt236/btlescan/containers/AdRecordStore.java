@@ -1,5 +1,7 @@
 package uk.co.alt236.btlescan.containers;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 public class AdRecordStore {
@@ -49,5 +51,9 @@ public class AdRecordStore {
 	@Override
 	public String toString() {
 		return "AdRecordStore [mServiceDataUUId=" + mServiceDataUUId + ", mLocalNameComplete=" + mLocalNameComplete + ", mLocalNameShort=" + mLocalNameShort + "]";
+	}
+
+	public Collection<AdRecord> getRecordsAsCollection() {
+		return Collections.unmodifiableCollection(mAdRecords.values());
 	}
 }

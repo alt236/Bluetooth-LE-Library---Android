@@ -2,6 +2,7 @@ package uk.co.alt236.btlescan.containers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +62,7 @@ public class AdRecordUtils {
 			index += length;
 		}
 
-		return records;
+		return Collections.unmodifiableList(records);
 	}
 	
 	@SuppressLint("UseSparseArrays")
@@ -86,6 +87,6 @@ public class AdRecordUtils {
 			index += length;
 		}
 
-		return records;
+		return Collections.unmodifiableMap(records);
 	}
 }
