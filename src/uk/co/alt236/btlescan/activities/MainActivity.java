@@ -98,7 +98,6 @@ public class MainActivity extends ListActivity {
 	protected void onPause() {
 		super.onPause();
 		mScanner.scanLeDevice(-1, false);
-		mLeDeviceListAdapter.clear();
 	}
 
 	@Override
