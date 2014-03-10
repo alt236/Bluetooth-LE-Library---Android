@@ -32,7 +32,8 @@ public class BluetoothLeDevice implements Parcelable{
 	}
 
 	private BluetoothLeDevice(Parcel in) {
-		final Bundle b = in.readBundle();
+		final Bundle b = in.readBundle(getClass().getClassLoader());
+
 		mDevice = b.getParcelable("bluetooth_device");
 		mRecordStore = b.getParcelable("device_scanrecord_store");
 		mRssi = b.getInt("device_rssi");
@@ -111,7 +112,8 @@ public class BluetoothLeDevice implements Parcelable{
 
 	@Override
 	public void writeToParcel(Parcel parcel, int arg1) {
-		final Bundle b = new Bundle();
+		final Bundle b = new Bundle(getClass().getClassLoader());
+
 		b.putByteArray("device_scanrecord", mScanRecord);
 		b.putInt("device_rssi", mRssi);
 		b.putParcelable("bluetooth_device", mDevice);

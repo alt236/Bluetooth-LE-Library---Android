@@ -148,7 +148,7 @@ public final class AdRecord implements Parcelable{
 	}
 
 	public AdRecord(Parcel in) {
-		final Bundle b = in.readBundle();
+		final Bundle b = in.readBundle(getClass().getClassLoader());
 		mLength = b.getInt("record_length");
 		mType = b.getInt("record_type");
 		mData = b.getByteArray("record_data");
@@ -182,7 +182,7 @@ public final class AdRecord implements Parcelable{
 
 	@Override
 	public void writeToParcel(Parcel parcel, int arg1) {
-		final Bundle b = new Bundle();
+		final Bundle b = new Bundle(getClass().getClassLoader());
 
 		b.putInt("record_length", mLength);
 		b.putInt("record_type", mType);
