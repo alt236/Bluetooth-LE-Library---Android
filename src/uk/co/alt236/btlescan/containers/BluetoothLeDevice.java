@@ -4,20 +4,46 @@ import java.util.Arrays;
 
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class BluetoothLeDevice {
-	private final BluetoothDevice mDevice;
-	private transient final int mRssi;
-	private final byte[] mScanRecord;
+public class BluetoothLeDevice implements Parcelable{
 	private final AdRecordStore mRecordStore;
-	
+	private final BluetoothDevice mDevice;
+	private final byte[] mScanRecord;
+	private transient final int mRssi;
+
+	public static final Parcelable.Creator<BluetoothLeDevice> CREATOR = new Parcelable.Creator<BluetoothLeDevice>() {
+		public BluetoothLeDevice createFromParcel(Parcel in) {
+			return new BluetoothLeDevice(in);
+		}
+
+		public BluetoothLeDevice[] newArray(int size) {
+			return new BluetoothLeDevice[size];
+		}
+	};
+
 	public BluetoothLeDevice(BluetoothDevice device, int rssi, byte[] scanRecord){
 		mDevice = device;
 		mRssi = rssi;
 		mScanRecord = scanRecord;
-		mRecordStore = new AdRecordStore(AdRecordUtils.parseScanRecordAsMap(scanRecord));
+		mRecordStore = new AdRecordStore(AdRecordUtils.parseScanRecordAsSparseArray(scanRecord));
 	}
-	
+
+	private BluetoothLeDevice(Parcel in) {
+		final Bundle b = in.readBundle();
+		mDevice = b.getParcelable("bluetooth_device");
+		mRecordStore = b.getParcelable("device_scanrecord_store");
+		mRssi = b.getInt("device_rssi");
+		mScanRecord = b.getByteArray("device_scanrecord");
+    }
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -36,11 +62,11 @@ public class BluetoothLeDevice {
 			return false;
 		return true;
 	}
-	
+
 	public String getAddress(){
 		return mDevice.getAddress();
 	}
-	
+
 	public AdRecordStore getAdRecordStore(){
 		return mRecordStore;
 	}
@@ -52,15 +78,15 @@ public class BluetoothLeDevice {
 	public String getBluetoothDeviceClassName(){
 		return resolveBluetoothClass(mDevice.getBluetoothClass().getDeviceClass());
 	}
-	
+
 	public BluetoothDevice getDevice() {
 		return mDevice;
 	}
-	
+
 	public String getName(){
 		return mDevice.getName();
 	}
-	
+
 	public int getRssi() {
 		return mRssi;
 	}
@@ -77,19 +103,28 @@ public class BluetoothLeDevice {
 		result = prime * result + Arrays.hashCode(mScanRecord);
 		return result;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "BluetoothLeDevice [mDevice=" + mDevice + ", mRssi=" + mRssi + ", mScanRecord=" + AdRecordUtils.byteArrayToHexString(mScanRecord) + ", mRecordStore=" + mRecordStore + ", getBluetoothDeviceBondState()=" + getBluetoothDeviceBondState() + ", getBluetoothDeviceClassName()=" + getBluetoothDeviceClassName() + "]";
 	}
-	
-	
+
+	@Override
+	public void writeToParcel(Parcel parcel, int arg1) {
+		final Bundle b = new Bundle();
+		b.putByteArray("device_scanrecord", mScanRecord);
+		b.putInt("device_rssi", mRssi);
+		b.putParcelable("bluetooth_device", mDevice);
+		b.putParcelable("device_scanrecord_store", mRecordStore);
+
+		parcel.writeBundle(b);
+	}
 
 	private static String resolveBluetoothClass(int btClass){
 		switch (btClass){
 		case BluetoothClass.Device.AUDIO_VIDEO_CAMCORDER:
 			return "A/V, Camcorder";
-		case BluetoothClass.Device.AUDIO_VIDEO_CAR_AUDIO:	
+		case BluetoothClass.Device.AUDIO_VIDEO_CAR_AUDIO:
 			return "A/V, Car Audio";
 		case BluetoothClass.Device.AUDIO_VIDEO_HANDSFREE:
 			return "A/V, Handsfree";
@@ -111,7 +146,7 @@ public class BluetoothLeDevice {
 			return "A/V, VCR";
 		case BluetoothClass.Device.AUDIO_VIDEO_VIDEO_CAMERA:
 			return "A/V, Video Camera";
-		case BluetoothClass.Device.AUDIO_VIDEO_VIDEO_CONFERENCING:	
+		case BluetoothClass.Device.AUDIO_VIDEO_VIDEO_CONFERENCING:
 			return "A/V, Video Conferencing";
 		case BluetoothClass.Device.AUDIO_VIDEO_VIDEO_DISPLAY_AND_LOUDSPEAKER:
 			return "A/V, Video Display and Loudspeaker";
@@ -135,17 +170,17 @@ public class BluetoothLeDevice {
 			return "Computer, Uncategorized";
 		case BluetoothClass.Device.COMPUTER_WEARABLE:
 			return "Computer, Wearable";
-		case BluetoothClass.Device.HEALTH_BLOOD_PRESSURE:	
+		case BluetoothClass.Device.HEALTH_BLOOD_PRESSURE:
 			return "Health, Blood Pressure";
 		case BluetoothClass.Device.HEALTH_DATA_DISPLAY:
 			return "Health, Data Display";
 		case BluetoothClass.Device.HEALTH_GLUCOSE:
 			return "Health, Glucose";
-		case BluetoothClass.Device.HEALTH_PULSE_OXIMETER :	
+		case BluetoothClass.Device.HEALTH_PULSE_OXIMETER :
 			return "Health, Pulse Oximeter";
 		case BluetoothClass.Device.HEALTH_PULSE_RATE 	:
 			return "Health, Pulse Rate";
-		case BluetoothClass.Device.HEALTH_THERMOMETER :	
+		case BluetoothClass.Device.HEALTH_THERMOMETER :
 			return "Health, Thermometer";
 		case BluetoothClass.Device.HEALTH_UNCATEGORIZED :
 			return "Health, Uncategorized";
@@ -177,9 +212,9 @@ public class BluetoothLeDevice {
 			return "Toy, Vehicle";
 		case BluetoothClass.Device.WEARABLE_GLASSES:
 			return "Wearable, Glasses";
-		case BluetoothClass.Device.WEARABLE_HELMET:	
+		case BluetoothClass.Device.WEARABLE_HELMET:
 			return "Wearable, Helmet";
-		case BluetoothClass.Device.WEARABLE_JACKET:	
+		case BluetoothClass.Device.WEARABLE_JACKET:
 			return "Wearable, Jacket";
 		case BluetoothClass.Device.WEARABLE_PAGER:
 			return "Wearable, Pager";
@@ -191,7 +226,7 @@ public class BluetoothLeDevice {
 			return "Unknown, Unknown (class=" + btClass +")";
 		}
 	}
-	
+
 	private static String resolveBondingState(int bondState){
 		switch (bondState){
 		case BluetoothDevice.BOND_BONDED:

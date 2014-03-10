@@ -1,16 +1,21 @@
 package uk.co.alt236.btlescan.containers;
 import java.util.Arrays;
 
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Dave Smith
  * Double Encore, Inc.
- * AdRecord
+ *
+ * Expanded by Alexandros Schillings
  */
-public final class AdRecord {
-	
+public final class AdRecord implements Parcelable{
+
 	//	02 # Number of bytes that follow in first AD structure
 	//	01 # Flags AD type
-	//	1A # Flags value 0x1A = 000011010  
+	//	1A # Flags value 0x1A = 000011010
 	//	   bit 0 (OFF) LE Limited Discoverable Mode
 	//	   bit 1 (ON) LE General Discoverable Mode
 	//	   bit 2 (OFF) BR/EDR Not Supported
@@ -22,16 +27,16 @@ public final class AdRecord {
 	//	02 # Byte 0 of iBeacon advertisement indicator
 	//	15 # Byte 1 of iBeacon advertisement indicator
 	//	e2 c5 6d b5 df fb 48 d2 b0 60 d0 f5 a7 10 96 e0 # iBeacon proximity uuid
-	//	00 00 # major 
-	//	00 00 # minor 
+	//	00 00 # major
+	//	00 00 # minor
 	//	c5 # The 2's complement of the calibrated Tx Power
-	
-	
+
+
 	/**
 	 * General FLAGS
-	 * 
+	 *
 	 * Description: Flags
-	 * 
+	 *
 	 * Information:
 	 * Bit 0: LE Limited Discoverable Mode
 	 * Bit 1: LE General Discoverable Mode
@@ -67,9 +72,9 @@ public final class AdRecord {
 
 
 	/* SECURITY MANAGER OOB FLAGS
-	 * 
+	 *
 	 * Description: Flag (1 octet)
-	 * 
+	 *
 	 * Information:
 	 * Bit 0: OOB Flags Field: (0 = OOB data not present, 1 = OOB data present)
 	 * Bit 1: LE supported (Host) (i.e. bit 65 of LMP Extended Feature bits Page 1
@@ -81,10 +86,10 @@ public final class AdRecord {
 
 
 	/* SLAVE CONNECTION INTERVAL RANGE
-	 * 
+	 *
 	 * Description: Slave Connection Interval Range
-	 * 
-	 * Information: 
+	 *
+	 * Information:
 	 * The first 2 octets defines the minimum value for the connection interval in the following manner:
 	 *	connInterval min = Conn_Interval_Min * 1.25 ms
 	 *	Conn_Interval_Min range: 0x0006 to 0x0C80
@@ -106,7 +111,7 @@ public final class AdRecord {
 	public static final int TYPE_SERVICE_UUIDS_LIST_128BIT  = 0x15;
 
 	/* SERVICE DATA
-	 *  
+	 *
 	 * Description: Service Data (2 or more octets)
 	 * Information: The first 2 octets contain the 16 bit Service UUID followed by additional service data
 	 */
@@ -121,14 +126,37 @@ public final class AdRecord {
 	public static final int TYPE_MANUFACTURER_SPECIFIC_DATA = 0xFF;
 
 	/* Model Object Definition */
-	private final int mLength;    
+	private final int mLength;
 	private final int mType;
 	private final byte[] mData;
-	
+
+
+	public static final Parcelable.Creator<AdRecord> CREATOR = new Parcelable.Creator<AdRecord>() {
+		public AdRecord createFromParcel(Parcel in) {
+			return new AdRecord(in);
+		}
+
+		public AdRecord[] newArray(int size) {
+			return new AdRecord[size];
+		}
+	};
+
 	public AdRecord(int length, int type, byte[] data) {
 		mLength = length;
 		mType = type;
 		mData = data;
+	}
+
+	public AdRecord(Parcel in) {
+		final Bundle b = in.readBundle();
+		mLength = b.getInt("record_length");
+		mType = b.getInt("record_type");
+		mData = b.getByteArray("record_data");
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
 	}
 
 	public byte[] getData(){
@@ -142,14 +170,25 @@ public final class AdRecord {
 	public int getLength() {
 		return mLength;
 	}
-	
+
 	public int getType() {
 		return mType;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "AdRecord [mLength=" + mLength + ", mType=" + mType + ", mData=" + Arrays.toString(mData) + ", getHumanReadableType()=" + getHumanReadableType() + "]";
+	}
+
+	@Override
+	public void writeToParcel(Parcel parcel, int arg1) {
+		final Bundle b = new Bundle();
+
+		b.putInt("record_length", mLength);
+		b.putInt("record_type", mType);
+		b.putByteArray("record_data", mData);
+
+		parcel.writeBundle(b);
 	}
 
 	private static String getHumanReadableAdType(int type){

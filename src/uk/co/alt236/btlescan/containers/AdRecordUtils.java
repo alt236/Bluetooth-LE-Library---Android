@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.util.SparseArray;
 
 public class AdRecordUtils {
 	/* Helper functions to parse out common data payloads from an AD structure */
@@ -107,5 +108,30 @@ public class AdRecordUtils {
 		}
 
 		return Collections.unmodifiableMap(records);
+	}
+
+
+	public static SparseArray<AdRecord> parseScanRecordAsSparseArray(byte[] scanRecord) {
+		final SparseArray<AdRecord> records = new SparseArray<AdRecord>();
+
+		int index = 0;
+		while (index < scanRecord.length) {
+			final int length = scanRecord[index++];
+			//Done once we run out of records
+			if (length == 0) break;
+
+			int type = scanRecord[index];
+			//Done if our record isn't a valid type
+			if (type == 0) break;
+
+			final byte[] data = Arrays.copyOfRange(scanRecord, index+1, index+length);
+
+			records.put(type, new AdRecord(length, type, data));
+
+			//Advance
+			index += length;
+		}
+
+		return records;
 	}
 }
