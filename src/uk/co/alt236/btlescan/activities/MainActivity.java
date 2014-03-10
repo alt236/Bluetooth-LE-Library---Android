@@ -31,11 +31,6 @@ public class MainActivity extends ListActivity {
 		public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
 
 			final BluetoothLeDevice deviceLe = new BluetoothLeDevice(device, rssi, scanRecord);
-			//			Log.d("TAG", "~ New BT Device: " + deviceLe);
-			//			final Collection<AdRecord> adRecords = deviceLe.getAdRecordStore().getRecordsAsCollection();
-			//			for(final AdRecord record : adRecords){
-			//				Log.d("TAG", "~ Has Record: " + record.getType() + ": '" + record.getHumanReadableType() +"', data: '"+ AdRecordUtils.getRecordDataAsString(record) + "'");
-			//			}
 
 			runOnUiThread(new Runnable() {
 				@Override

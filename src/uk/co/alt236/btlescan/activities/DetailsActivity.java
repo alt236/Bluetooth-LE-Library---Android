@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.containers.AdRecord;
-import uk.co.alt236.btlescan.containers.AdRecordUtils;
 import uk.co.alt236.btlescan.containers.BluetoothLeDevice;
+import uk.co.alt236.btlescan.util.AdRecordUtils;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;

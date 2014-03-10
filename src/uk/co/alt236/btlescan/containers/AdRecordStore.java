@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import uk.co.alt236.btlescan.util.AdRecordUtils;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;

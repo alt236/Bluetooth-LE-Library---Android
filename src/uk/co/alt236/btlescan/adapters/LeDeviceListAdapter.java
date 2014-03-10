@@ -5,17 +5,19 @@ import java.util.List;
 
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.containers.BluetoothLeDevice;
+import uk.co.alt236.btlescan.util.ManufacturerDataParser;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
  // Adapter for holding devices found through scanning.
    public class LeDeviceListAdapter extends BaseAdapter {
         private final List<BluetoothLeDevice> mLeDevices;
         private final LayoutInflater mInflator;
-        
+
         public LeDeviceListAdapter(Activity activity) {
             super();
             mLeDevices = new ArrayList<BluetoothLeDevice>();
@@ -64,6 +66,7 @@ import android.widget.TextView;
                 viewHolder.deviceAddress = (TextView) view.findViewById(R.id.device_address);
                 viewHolder.deviceName = (TextView) view.findViewById(R.id.device_name);
                 viewHolder.deviceRssi = (TextView) view.findViewById(R.id.device_rssi);
+                viewHolder.deviceIcon = (ImageView) view.findViewById(R.id.device_icon);
                 view.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) view.getTag();
@@ -71,22 +74,31 @@ import android.widget.TextView;
 
             final BluetoothLeDevice device = mLeDevices.get(i);
             final String deviceName = device.getName();
-            
+
             if (deviceName != null && deviceName.length() > 0){
                 viewHolder.deviceName.setText(deviceName);
             } else{
                 viewHolder.deviceName.setText(R.string.unknown_device);
             }
-            
+
+            final boolean isIBeacon = ManufacturerDataParser.isThisAnIBeacon(device);
+
+            if (isIBeacon){
+            	viewHolder.deviceIcon.setImageResource(R.drawable.ic_bluetooth_ibeacon);
+            } else {
+            	viewHolder.deviceIcon.setImageResource(R.drawable.ic_bluetooth);
+            }
+
             viewHolder.deviceAddress.setText(device.getAddress());
             viewHolder.deviceRssi.setText(String.valueOf(device.getRssi()) + "db");
             return view;
         }
-        
+
         static class ViewHolder {
             TextView deviceName;
             TextView deviceAddress;
             TextView deviceRssi;
+            ImageView deviceIcon;
         }
-        
+
     }

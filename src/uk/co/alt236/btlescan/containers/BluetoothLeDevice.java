@@ -2,6 +2,7 @@ package uk.co.alt236.btlescan.containers;
 
 import java.util.Arrays;
 
+import uk.co.alt236.btlescan.util.AdRecordUtils;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;

@@ -32,6 +32,10 @@ public final class AdRecord implements Parcelable{
 	//	c5 # The 2's complement of the calibrated Tx Power
 
 
+	private static final String PARCEL_RECORD_DATA = "record_data";
+	private static final String PARCEL_RECORD_TYPE = "record_type";
+	private static final String PARCEL_RECORD_LENGTH = "record_length";
+
 	/**
 	 * General FLAGS
 	 *
@@ -149,9 +153,9 @@ public final class AdRecord implements Parcelable{
 
 	public AdRecord(Parcel in) {
 		final Bundle b = in.readBundle(getClass().getClassLoader());
-		mLength = b.getInt("record_length");
-		mType = b.getInt("record_type");
-		mData = b.getByteArray("record_data");
+		mLength = b.getInt(PARCEL_RECORD_LENGTH);
+		mType = b.getInt(PARCEL_RECORD_TYPE);
+		mData = b.getByteArray(PARCEL_RECORD_DATA);
 	}
 
 	@Override
@@ -184,9 +188,9 @@ public final class AdRecord implements Parcelable{
 	public void writeToParcel(Parcel parcel, int arg1) {
 		final Bundle b = new Bundle(getClass().getClassLoader());
 
-		b.putInt("record_length", mLength);
-		b.putInt("record_type", mType);
-		b.putByteArray("record_data", mData);
+		b.putInt(PARCEL_RECORD_LENGTH, mLength);
+		b.putInt(PARCEL_RECORD_TYPE, mType);
+		b.putByteArray(PARCEL_RECORD_DATA, mData);
 
 		parcel.writeBundle(b);
 	}

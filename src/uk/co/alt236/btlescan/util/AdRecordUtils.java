@@ -1,4 +1,4 @@
-package uk.co.alt236.btlescan.containers;
+package uk.co.alt236.btlescan.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import uk.co.alt236.btlescan.containers.AdRecord;
 import android.annotation.SuppressLint;
 import android.util.SparseArray;
 
