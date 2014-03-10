@@ -11,7 +11,6 @@ import android.annotation.SuppressLint;
 import android.util.SparseArray;
 
 public class AdRecordUtils {
-	/* Helper functions to parse out common data payloads from an AD structure */
 	static final String HEXES = "0123456789ABCDEF";
 
 	public static String byteArrayToHexString(final byte[] array){
@@ -32,12 +31,17 @@ public class AdRecordUtils {
 		return sb.toString();
 	}
 
-	public static String getRecordDataAsString(AdRecord nameRecord) {
+
+	public static int convertByteToInt(byte bite){
+		return Integer.valueOf(bite & 0xFF);
+	}
+
+	public static String getRecordDataAsString(final AdRecord nameRecord) {
 		if(nameRecord == null){return new String();}
 		return new String(nameRecord.getData());
 	}
 
-	public static byte[] getServiceData(AdRecord serviceData) {
+	public static byte[] getServiceData(final AdRecord serviceData) {
 		if (serviceData == null) {return null;}
 		if (serviceData.getType() != AdRecord.TYPE_SERVICE_DATA) return null;
 
@@ -46,7 +50,7 @@ public class AdRecordUtils {
 		return Arrays.copyOfRange(raw, 2, raw.length);
 	}
 
-	public static int getServiceDataUuid(AdRecord serviceData) {
+	public static int getServiceDataUuid(final AdRecord serviceData) {
 		if (serviceData == null) {return -1;}
 		if (serviceData.getType() != AdRecord.TYPE_SERVICE_DATA) return -1;
 
@@ -61,7 +65,7 @@ public class AdRecordUtils {
 	/*
 	 * Read out all the AD structures from the raw scan record
 	 */
-	public static List<AdRecord> parseScanRecordAsList(byte[] scanRecord) {
+	public static List<AdRecord> parseScanRecordAsList(final byte[] scanRecord) {
 		final List<AdRecord> records = new ArrayList<AdRecord>();
 
 		int index = 0;
@@ -70,7 +74,8 @@ public class AdRecordUtils {
 			//Done once we run out of records
 			if (length == 0) break;
 
-			int type = scanRecord[index];
+			final int type = convertByteToInt(scanRecord[index]);
+
 			//Done if our record isn't a valid type
 			if (type == 0) break;
 
@@ -86,7 +91,7 @@ public class AdRecordUtils {
 	}
 
 	@SuppressLint("UseSparseArrays")
-	public static Map<Integer, AdRecord> parseScanRecordAsMap(byte[] scanRecord) {
+	public static Map<Integer, AdRecord> parseScanRecordAsMap(final byte[] scanRecord) {
 		final Map<Integer, AdRecord> records = new HashMap<Integer, AdRecord>();
 
 		int index = 0;
@@ -95,7 +100,8 @@ public class AdRecordUtils {
 			//Done once we run out of records
 			if (length == 0) break;
 
-			int type = scanRecord[index];
+			final int type = convertByteToInt(scanRecord[index]);
+
 			//Done if our record isn't a valid type
 			if (type == 0) break;
 
@@ -110,7 +116,6 @@ public class AdRecordUtils {
 		return Collections.unmodifiableMap(records);
 	}
 
-
 	public static SparseArray<AdRecord> parseScanRecordAsSparseArray(byte[] scanRecord) {
 		final SparseArray<AdRecord> records = new SparseArray<AdRecord>();
 
@@ -120,7 +125,8 @@ public class AdRecordUtils {
 			//Done once we run out of records
 			if (length == 0) break;
 
-			int type = scanRecord[index];
+			final int type = convertByteToInt(scanRecord[index]);
+
 			//Done if our record isn't a valid type
 			if (type == 0) break;
 
