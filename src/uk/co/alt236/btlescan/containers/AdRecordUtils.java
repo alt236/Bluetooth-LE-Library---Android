@@ -11,6 +11,25 @@ import android.annotation.SuppressLint;
 
 public class AdRecordUtils {
 	/* Helper functions to parse out common data payloads from an AD structure */
+	static final String HEXES = "0123456789ABCDEF";
+
+	public static String byteArrayToHexString(final byte[] array){
+		final StringBuffer sb = new StringBuffer();
+		boolean firstEntry = true;
+		sb.append('[');
+
+		for ( final byte b : array ) {
+			if(!firstEntry){
+				sb.append(", ");
+			}
+			sb.append(HEXES.charAt((b & 0xF0) >> 4));
+			sb.append(HEXES.charAt((b & 0x0F)));
+			firstEntry = false;
+		}
+
+		sb.append(']');
+		return sb.toString();
+	}
 
 	public static String getRecordDataAsString(AdRecord nameRecord) {
 		if(nameRecord == null){return new String();}
@@ -64,7 +83,7 @@ public class AdRecordUtils {
 
 		return Collections.unmodifiableList(records);
 	}
-	
+
 	@SuppressLint("UseSparseArrays")
 	public static Map<Integer, AdRecord> parseScanRecordAsMap(byte[] scanRecord) {
 		final Map<Integer, AdRecord> records = new HashMap<Integer, AdRecord>();

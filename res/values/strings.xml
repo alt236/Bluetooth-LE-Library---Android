@@ -9,5 +9,12 @@
     <string name="not_supported">Not supported</string>
     <string name="supported">Supported</string>
     <string name="no_data">No data</string>
+    <string name="unknown_device">Unknown Device</string>
+
+    <!-- Menu items -->
+    <string name="menu_connect">Connect</string>
+    <string name="menu_disconnect">Disconnect</string>
+    <string name="menu_scan">Scan</string>
+    <string name="menu_stop">Stop</string>
 
 </resources>

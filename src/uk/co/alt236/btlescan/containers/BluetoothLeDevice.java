@@ -7,7 +7,7 @@ import android.bluetooth.BluetoothDevice;
 
 public class BluetoothLeDevice {
 	private final BluetoothDevice mDevice;
-	private final int mRssi;
+	private transient final int mRssi;
 	private final byte[] mScanRecord;
 	private final AdRecordStore mRecordStore;
 	
@@ -18,14 +18,37 @@ public class BluetoothLeDevice {
 		mRecordStore = new AdRecordStore(AdRecordUtils.parseScanRecordAsMap(scanRecord));
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BluetoothLeDevice other = (BluetoothLeDevice) obj;
+		if (mDevice == null) {
+			if (other.mDevice != null)
+				return false;
+		} else if (!mDevice.equals(other.mDevice))
+			return false;
+		if (!Arrays.equals(mScanRecord, other.mScanRecord))
+			return false;
+		return true;
+	}
+	
+	public String getAddress(){
+		return mDevice.getAddress();
+	}
+	
 	public AdRecordStore getAdRecordStore(){
 		return mRecordStore;
 	}
-	
+
 	public String getBluetoothDeviceBondState(){
 		return resolveBondingState(mDevice.getBondState());
 	}
-	
+
 	public String getBluetoothDeviceClassName(){
 		return resolveBluetoothClass(mDevice.getBluetoothClass().getDeviceClass());
 	}
@@ -33,7 +56,11 @@ public class BluetoothLeDevice {
 	public BluetoothDevice getDevice() {
 		return mDevice;
 	}
-
+	
+	public String getName(){
+		return mDevice.getName();
+	}
+	
 	public int getRssi() {
 		return mRssi;
 	}
@@ -41,11 +68,22 @@ public class BluetoothLeDevice {
 	public byte[] getScanRecord() {
 		return mScanRecord;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((mDevice == null) ? 0 : mDevice.hashCode());
+		result = prime * result + Arrays.hashCode(mScanRecord);
+		return result;
+	}
 	
 	@Override
 	public String toString() {
-		return "BluetoothLeDevice [mDevice=" + mDevice + ", mRssi=" + mRssi + ", mScanRecord=" + Arrays.toString(mScanRecord) + ", mRecordStore=" + mRecordStore + ", getBluetoothDeviceBondState()=" + getBluetoothDeviceBondState() + ", getBluetoothDeviceClassName()=" + getBluetoothDeviceClassName() + "]";
+		return "BluetoothLeDevice [mDevice=" + mDevice + ", mRssi=" + mRssi + ", mScanRecord=" + AdRecordUtils.byteArrayToHexString(mScanRecord) + ", mRecordStore=" + mRecordStore + ", getBluetoothDeviceBondState()=" + getBluetoothDeviceBondState() + ", getBluetoothDeviceClassName()=" + getBluetoothDeviceClassName() + "]";
 	}
+	
+	
 
 	private static String resolveBluetoothClass(int btClass){
 		switch (btClass){

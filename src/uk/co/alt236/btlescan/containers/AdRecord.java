@@ -7,6 +7,26 @@ import java.util.Arrays;
  * AdRecord
  */
 public final class AdRecord {
+	
+	//	02 # Number of bytes that follow in first AD structure
+	//	01 # Flags AD type
+	//	1A # Flags value 0x1A = 000011010  
+	//	   bit 0 (OFF) LE Limited Discoverable Mode
+	//	   bit 1 (ON) LE General Discoverable Mode
+	//	   bit 2 (OFF) BR/EDR Not Supported
+	//	   bit 3 (ON) Simultaneous LE and BR/EDR to Same Device Capable (controller)
+	//	   bit 4 (ON) Simultaneous LE and BR/EDR to Same Device Capable (Host)
+	//	1A # Number of bytes that follow in second (and last) AD structure
+	//	FF # Manufacturer specific data AD type
+	//	4C 00 # Company identifier code (0x004C == Apple)
+	//	02 # Byte 0 of iBeacon advertisement indicator
+	//	15 # Byte 1 of iBeacon advertisement indicator
+	//	e2 c5 6d b5 df fb 48 d2 b0 60 d0 f5 a7 10 96 e0 # iBeacon proximity uuid
+	//	00 00 # major 
+	//	00 00 # minor 
+	//	c5 # The 2's complement of the calibrated Tx Power
+	
+	
 	/**
 	 * General FLAGS
 	 * 
@@ -143,7 +163,7 @@ public final class AdRecord {
 		case TYPE_MANUFACTURER_SPECIFIC_DATA:
 			return "Manufacturer Specific Data";
 		case TYPE_LOCAL_NAME_COMPLETE:
-			return "Name";
+			return "Name (Complete)";
 		case TYPE_LOCAL_NAME_SHORT:
 			return "Name (Short)";
 		case TYPE_SECURITY_MANAGER_OOB_FLAGS:
