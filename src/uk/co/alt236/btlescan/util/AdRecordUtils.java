@@ -12,30 +12,6 @@ import android.annotation.SuppressLint;
 import android.util.SparseArray;
 
 public class AdRecordUtils {
-	static final String HEXES = "0123456789ABCDEF";
-
-	public static String byteArrayToHexString(final byte[] array){
-		final StringBuffer sb = new StringBuffer();
-		boolean firstEntry = true;
-		sb.append('[');
-
-		for ( final byte b : array ) {
-			if(!firstEntry){
-				sb.append(", ");
-			}
-			sb.append(HEXES.charAt((b & 0xF0) >> 4));
-			sb.append(HEXES.charAt((b & 0x0F)));
-			firstEntry = false;
-		}
-
-		sb.append(']');
-		return sb.toString();
-	}
-
-
-	public static int convertByteToInt(byte bite){
-		return Integer.valueOf(bite & 0xFF);
-	}
 
 	public static String getRecordDataAsString(final AdRecord nameRecord) {
 		if(nameRecord == null){return new String();}
@@ -75,7 +51,7 @@ public class AdRecordUtils {
 			//Done once we run out of records
 			if (length == 0) break;
 
-			final int type = convertByteToInt(scanRecord[index]);
+			final int type = ByteUtils.convertByteToInt(scanRecord[index]);
 
 			//Done if our record isn't a valid type
 			if (type == 0) break;
@@ -101,7 +77,7 @@ public class AdRecordUtils {
 			//Done once we run out of records
 			if (length == 0) break;
 
-			final int type = convertByteToInt(scanRecord[index]);
+			final int type = ByteUtils.convertByteToInt(scanRecord[index]);
 
 			//Done if our record isn't a valid type
 			if (type == 0) break;
@@ -126,7 +102,7 @@ public class AdRecordUtils {
 			//Done once we run out of records
 			if (length == 0) break;
 
-			final int type = convertByteToInt(scanRecord[index]);
+			final int type = ByteUtils.convertByteToInt(scanRecord[index]);
 
 			//Done if our record isn't a valid type
 			if (type == 0) break;

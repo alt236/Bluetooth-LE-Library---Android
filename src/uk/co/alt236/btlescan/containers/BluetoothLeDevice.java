@@ -3,6 +3,7 @@ package uk.co.alt236.btlescan.containers;
 import java.util.Arrays;
 
 import uk.co.alt236.btlescan.util.AdRecordUtils;
+import uk.co.alt236.btlescan.util.ByteUtils;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
@@ -108,7 +109,7 @@ public class BluetoothLeDevice implements Parcelable{
 
 	@Override
 	public String toString() {
-		return "BluetoothLeDevice [mDevice=" + mDevice + ", mRssi=" + mRssi + ", mScanRecord=" + AdRecordUtils.byteArrayToHexString(mScanRecord) + ", mRecordStore=" + mRecordStore + ", getBluetoothDeviceBondState()=" + getBluetoothDeviceBondState() + ", getBluetoothDeviceClassName()=" + getBluetoothDeviceClassName() + "]";
+		return "BluetoothLeDevice [mDevice=" + mDevice + ", mRssi=" + mRssi + ", mScanRecord=" + ByteUtils.byteArrayToHexString(mScanRecord) + ", mRecordStore=" + mRecordStore + ", getBluetoothDeviceBondState()=" + getBluetoothDeviceBondState() + ", getBluetoothDeviceClassName()=" + getBluetoothDeviceClassName() + "]";
 	}
 
 	@Override

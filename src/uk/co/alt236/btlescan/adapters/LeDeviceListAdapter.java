@@ -5,7 +5,7 @@ import java.util.List;
 
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.containers.BluetoothLeDevice;
-import uk.co.alt236.btlescan.util.ManufacturerDataParser;
+import uk.co.alt236.btlescan.util.IBeaconUtils;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,9 +81,7 @@ import android.widget.TextView;
                 viewHolder.deviceName.setText(R.string.unknown_device);
             }
 
-            final boolean isIBeacon = ManufacturerDataParser.isThisAnIBeacon(device);
-
-            if (isIBeacon){
+            if (IBeaconUtils.isThisAnIBeacon(device)){
             	viewHolder.deviceIcon.setImageResource(R.drawable.ic_bluetooth_ibeacon);
             } else {
             	viewHolder.deviceIcon.setImageResource(R.drawable.ic_bluetooth);

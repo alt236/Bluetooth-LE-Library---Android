@@ -6,6 +6,7 @@ import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.containers.AdRecord;
 import uk.co.alt236.btlescan.containers.BluetoothLeDevice;
 import uk.co.alt236.btlescan.util.AdRecordUtils;
+import uk.co.alt236.btlescan.util.ByteUtils;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ public class DetailsActivity extends Activity{
 	private BluetoothLeDevice mDevice;
 
 	private void append(StringBuilder sb, byte[] value){
-		append(sb, AdRecordUtils.byteArrayToHexString(value), null);
+		append(sb, ByteUtils.byteArrayToHexString(value), null);
 	}
 
 	private void append(StringBuilder sb, String label, String value){

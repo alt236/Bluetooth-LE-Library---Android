@@ -2,7 +2,7 @@ package uk.co.alt236.btlescan.util;
 
 import uk.co.alt236.btlescan.containers.BluetoothLeDevice;
 
-public class ManufacturerDataParser {
+public class IBeaconUtils {
 	private static final byte[] SCAN_RECORD_PREFIX_IBEACON_1 = new byte[]{0x02, 0x01, 0x1A, 0x1A, (byte) 0xFF, 0x4C, 0x00, 0x02, 0x15};
 	private static final byte[] SCAN_RECORD_PREFIX_IBEACON_2 = new byte[]{0x02, 0x01, 0x06, 0x1A, (byte) 0xFF, 0x4C, 0x00, 0x02, 0x15};
 
