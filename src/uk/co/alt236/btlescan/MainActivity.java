@@ -27,46 +27,6 @@ public class MainActivity extends ListActivity {
 	private BluetoothLeScanner mScanner;
 	private LeDeviceListAdapter mLeDeviceListAdapter;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		ButterKnife.inject(this);
-		mBluetoothUtils = new BluetoothUtils(this);
-		mScanner = new BluetoothLeScanner(mLeScanCallback, mBluetoothUtils);
-	}
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        if (!mScanner.isScanning()) {
-            menu.findItem(R.id.menu_stop).setVisible(false);
-            menu.findItem(R.id.menu_scan).setVisible(true);
-            menu.findItem(R.id.menu_refresh).setActionView(null);
-        } else {
-            menu.findItem(R.id.menu_stop).setVisible(true);
-            menu.findItem(R.id.menu_scan).setVisible(false);
-            menu.findItem(R.id.menu_refresh).setActionView(R.layout.actionbar_progress_indeterminate);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_scan:
-                mLeDeviceListAdapter.clear();
-                mScanner.scanLeDevice(-1, true);
-                invalidateOptionsMenu();
-                break;
-            case R.id.menu_stop:
-            	mScanner.scanLeDevice(-1, false);
-            	invalidateOptionsMenu();
-                break;
-        }
-        return true;
-    }
-    
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 		@Override
 		public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
@@ -92,13 +52,52 @@ public class MainActivity extends ListActivity {
 	};
 
     @Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		ButterKnife.inject(this);
+		mBluetoothUtils = new BluetoothUtils(this);
+		mScanner = new BluetoothLeScanner(mLeScanCallback, mBluetoothUtils);
+	}
+
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        if (!mScanner.isScanning()) {
+            menu.findItem(R.id.menu_stop).setVisible(false);
+            menu.findItem(R.id.menu_scan).setVisible(true);
+            menu.findItem(R.id.menu_refresh).setActionView(null);
+        } else {
+            menu.findItem(R.id.menu_stop).setVisible(true);
+            menu.findItem(R.id.menu_scan).setVisible(false);
+            menu.findItem(R.id.menu_refresh).setActionView(R.layout.actionbar_progress_indeterminate);
+        }
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_scan:
+            	startScan();
+                break;
+            case R.id.menu_stop:
+            	mScanner.scanLeDevice(-1, false);
+            	invalidateOptionsMenu();
+                break;
+        }
+        return true;
+    }
+    
+	@Override
     protected void onPause() {
         super.onPause();
         mScanner.scanLeDevice(-1, false);
         mLeDeviceListAdapter.clear();
     }
-    
-	@Override
+
+    @Override
 	public void onResume(){
 		super.onResume();
 		final boolean mIsBluetoothOn = mBluetoothUtils.isBluetoothOn();
@@ -115,7 +114,14 @@ public class MainActivity extends ListActivity {
 		} else {
 			mTvBluetoothLeStatus.setText(R.string.not_supported);
 		}
-
+		
+		invalidateOptionsMenu();
+	}
+    
+	private void startScan(){
+		final boolean mIsBluetoothOn = mBluetoothUtils.isBluetoothOn();
+		final boolean mIsBluetoothLePresent = mBluetoothUtils.isBluetoothLeSupported();
+		
 		mLeDeviceListAdapter = new LeDeviceListAdapter(this);
 		setListAdapter(mLeDeviceListAdapter);
 
@@ -123,7 +129,7 @@ public class MainActivity extends ListActivity {
 		if(mIsBluetoothOn && mIsBluetoothLePresent){
 			mScanner.scanLeDevice(-1, true);
 			invalidateOptionsMenu();
-		}
-	}
+		}	
+    }
 
 }
