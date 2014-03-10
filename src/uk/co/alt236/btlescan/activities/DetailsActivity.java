@@ -20,18 +20,6 @@ public class DetailsActivity extends Activity{
 
 	private BluetoothLeDevice mDevice;
 
-	private void append(StringBuilder sb, byte[] value){
-		append(sb, ByteUtils.byteArrayToHexString(value), null);
-	}
-
-	private void append(StringBuilder sb, String label, String value){
-		if(value != null){
-			sb.append("\u2022"  + label +":\t" + value + "\n");
-		} else {
-			sb.append(label + "\n");
-		}
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -76,5 +64,17 @@ public class DetailsActivity extends Activity{
 		}
 
 		mTvDetails.setText(sb.toString());
+	}
+
+	private static void append(StringBuilder sb, byte[] value){
+		append(sb, ByteUtils.byteArrayToHexString(value), null);
+	}
+
+	private static void append(StringBuilder sb, String label, String value){
+		if(value != null){
+			sb.append("\u2022"  + label +":\t" + value + "\n");
+		} else {
+			sb.append(label + "\n");
+		}
 	}
 }
