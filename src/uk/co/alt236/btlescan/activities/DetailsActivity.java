@@ -19,6 +19,18 @@ public class DetailsActivity extends Activity{
 
 	private BluetoothLeDevice mDevice;
 
+	private void append(StringBuilder sb, byte[] value){
+		append(sb, AdRecordUtils.byteArrayToHexString(value), null);
+	}
+
+	private void append(StringBuilder sb, String label, String value){
+		if(value != null){
+			sb.append("\u2022"  + label +":\t" + value + "\n");
+		} else {
+			sb.append(label + "\n");
+		}
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,35 +56,24 @@ public class DetailsActivity extends Activity{
 			append(sb, "Bonding State", device.getBluetoothDeviceBondState());
 
 			append(sb, "", null);
+			append(sb, "Scan Record", null);
+			append(sb, "-----------------", null);
+			append(sb, device.getScanRecord());
+
+			append(sb, "", null);
 			append(sb, "Ad Records", null);
 			append(sb, "-----------------", null);
 
 
 			final Collection<AdRecord> adRecords = device.getAdRecordStore().getRecordsAsCollection();
 
-			for(AdRecord record : adRecords){
-				append(sb,
-						"Record Id'" +record.getType()+ "' - " + record.getHumanReadableType(), AdRecordUtils.getRecordDataAsString(record));
+			for(final AdRecord record : adRecords){
+				append(sb, "#" +record.getType() + " " + record.getHumanReadableType(), null);
+				append(sb, AdRecordUtils.getRecordDataAsString(record), null);
+				append(sb, "", null);
 			}
 		}
 
 		mTvDetails.setText(sb.toString());
-	}
-
-
-	private void append(StringBuilder sb, String label, boolean value){
-		append(sb, label, String.valueOf(value));
-	}
-
-	private void append(StringBuilder sb, String label, long value){
-		append(sb, label, String.valueOf(value));
-	}
-
-	private void append(StringBuilder sb, String label, String value){
-		if(value != null){
-			sb.append("#"  + label +":\t" + value + "\n");
-		} else {
-			sb.append(label + "\n");
-		}
 	}
 }
