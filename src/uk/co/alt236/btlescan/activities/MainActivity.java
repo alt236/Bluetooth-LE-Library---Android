@@ -1,20 +1,19 @@
-package uk.co.alt236.btlescan;
+package uk.co.alt236.btlescan.activities;
 
-import java.util.Collection;
-
+import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.adapters.LeDeviceListAdapter;
-import uk.co.alt236.btlescan.containers.AdRecord;
-import uk.co.alt236.btlescan.containers.AdRecordUtils;
 import uk.co.alt236.btlescan.containers.BluetoothLeDevice;
 import uk.co.alt236.btlescan.util.BluetoothLeScanner;
 import uk.co.alt236.btlescan.util.BluetoothUtils;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -32,13 +31,11 @@ public class MainActivity extends ListActivity {
 		public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
 
 			final BluetoothLeDevice deviceLe = new BluetoothLeDevice(device, rssi, scanRecord);
-			Log.d("TAG", "~ New BT Device: " + deviceLe);
-
-			final Collection<AdRecord> adRecords = deviceLe.getAdRecordStore().getRecordsAsCollection();
-
-			for(final AdRecord record : adRecords){
-				Log.d("TAG", "~ Has Record: " + record.getType() + ": '" + record.getHumanReadableType() +"', data: '"+ AdRecordUtils.getRecordDataAsString(record) + "'");
-			}
+			//			Log.d("TAG", "~ New BT Device: " + deviceLe);
+			//			final Collection<AdRecord> adRecords = deviceLe.getAdRecordStore().getRecordsAsCollection();
+			//			for(final AdRecord record : adRecords){
+			//				Log.d("TAG", "~ Has Record: " + record.getType() + ": '" + record.getHumanReadableType() +"', data: '"+ AdRecordUtils.getRecordDataAsString(record) + "'");
+			//			}
 
 			runOnUiThread(new Runnable() {
 				@Override
@@ -51,7 +48,19 @@ public class MainActivity extends ListActivity {
 		}
 	};
 
-    @Override
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		final BluetoothLeDevice device = mLeDeviceListAdapter.getDevice(position);
+		if (device == null) return;
+
+
+		final Intent intent = new Intent(this, DetailsActivity.class);
+		intent.putExtra(DetailsActivity.EXTRA_DEVICE, device);
+
+		startActivity(intent);
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
@@ -60,44 +69,44 @@ public class MainActivity extends ListActivity {
 		mScanner = new BluetoothLeScanner(mLeScanCallback, mBluetoothUtils);
 	}
 
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        if (!mScanner.isScanning()) {
-            menu.findItem(R.id.menu_stop).setVisible(false);
-            menu.findItem(R.id.menu_scan).setVisible(true);
-            menu.findItem(R.id.menu_refresh).setActionView(null);
-        } else {
-            menu.findItem(R.id.menu_stop).setVisible(true);
-            menu.findItem(R.id.menu_scan).setVisible(false);
-            menu.findItem(R.id.menu_refresh).setActionView(R.layout.actionbar_progress_indeterminate);
-        }
-        return true;
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_scan:
-            	startScan();
-                break;
-            case R.id.menu_stop:
-            	mScanner.scanLeDevice(-1, false);
-            	invalidateOptionsMenu();
-                break;
-        }
-        return true;
-    }
-    
-	@Override
-    protected void onPause() {
-        super.onPause();
-        mScanner.scanLeDevice(-1, false);
-        mLeDeviceListAdapter.clear();
-    }
 
-    @Override
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		if (!mScanner.isScanning()) {
+			menu.findItem(R.id.menu_stop).setVisible(false);
+			menu.findItem(R.id.menu_scan).setVisible(true);
+			menu.findItem(R.id.menu_refresh).setActionView(null);
+		} else {
+			menu.findItem(R.id.menu_stop).setVisible(true);
+			menu.findItem(R.id.menu_scan).setVisible(false);
+			menu.findItem(R.id.menu_refresh).setActionView(R.layout.actionbar_progress_indeterminate);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_scan:
+			startScan();
+			break;
+		case R.id.menu_stop:
+			mScanner.scanLeDevice(-1, false);
+			invalidateOptionsMenu();
+			break;
+		}
+		return true;
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mScanner.scanLeDevice(-1, false);
+		mLeDeviceListAdapter.clear();
+	}
+
+	@Override
 	public void onResume(){
 		super.onResume();
 		final boolean mIsBluetoothOn = mBluetoothUtils.isBluetoothOn();
@@ -114,14 +123,14 @@ public class MainActivity extends ListActivity {
 		} else {
 			mTvBluetoothLeStatus.setText(R.string.not_supported);
 		}
-		
+
 		invalidateOptionsMenu();
 	}
-    
+
 	private void startScan(){
 		final boolean mIsBluetoothOn = mBluetoothUtils.isBluetoothOn();
 		final boolean mIsBluetoothLePresent = mBluetoothUtils.isBluetoothLeSupported();
-		
+
 		mLeDeviceListAdapter = new LeDeviceListAdapter(this);
 		setListAdapter(mLeDeviceListAdapter);
 
@@ -129,7 +138,7 @@ public class MainActivity extends ListActivity {
 		if(mIsBluetoothOn && mIsBluetoothLePresent){
 			mScanner.scanLeDevice(-1, true);
 			invalidateOptionsMenu();
-		}	
-    }
+		}
+	}
 
 }
