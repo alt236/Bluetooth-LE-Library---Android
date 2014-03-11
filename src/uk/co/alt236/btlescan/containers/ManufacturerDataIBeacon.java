@@ -1,36 +1,37 @@
 package uk.co.alt236.btlescan.containers;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 import uk.co.alt236.btlescan.util.ByteUtils;
 import android.util.Log;
 
 public final class ManufacturerDataIBeacon {
-// 0	4C # Byte 1 (LSB) of Company identifier code
-// 1	00 # Byte 0 (MSB) of Company identifier code (0x004C == Apple)
-// 2	02 # Byte 0 of iBeacon advertisement indicator
-// 3	15 # Byte 1 of iBeacon advertisement indicator
-// 4	e2 |\
-// 5	c5 |\\
-// 6	6d |#\\
-// 7	b5 |##\\
-// 8	df |###\\
-// 9	fb |####\\
-// 10	48 |#####\\
-// 11	d2 |#####|| iBeacon proximity UUID
-// 12	b0 |#####||
-// 13	60 |#####//
-// 14	d0 |####//
-// 15	f5 |###//
-// 16	a7 |##//
-// 17	10 |#//
-// 18	96 |//
-// 19	e0 |/
-// 20	00 # major
-// 21	00
-// 22	00# minor
-// 23	00
-// 24	c5 # The 2's complement of the calibrated Tx Power
+	// 0	4C # Byte 1 (LSB) of Company identifier code
+	// 1	00 # Byte 0 (MSB) of Company identifier code (0x004C == Apple)
+	// 2	02 # Byte 0 of iBeacon advertisement indicator
+	// 3	15 # Byte 1 of iBeacon advertisement indicator
+	// 4	e2 |\
+	// 5	c5 |\\
+	// 6	6d |#\\
+	// 7	b5 |##\\
+	// 8	df |###\\
+	// 9	fb |####\\
+	// 10	48 |#####\\
+	// 11	d2 |#####|| iBeacon proximity UUID
+	// 12	b0 |#####||
+	// 13	60 |#####//
+	// 14	d0 |####//
+	// 15	f5 |###//
+	// 16	a7 |##//
+	// 17	10 |#//
+	// 18	96 |//
+	// 19	e0 |/
+	// 20	00 # major
+	// 21	00
+	// 22	00 # minor
+	// 23	00
+	// 24	c5 # The 2's complement of the calibrated Tx Power
 
 	private final byte[] mData;
 	private final int mCalibratedTxPower;
@@ -38,7 +39,7 @@ public final class ManufacturerDataIBeacon {
 	private final int mIBeaconAdvertisment;
 	private final int mMajor;
 	private final int mMinor;
-	private final long mUUID;
+	private final UUID mUUID;
 
 	public ManufacturerDataIBeacon(BluetoothLeDevice device){
 		this(device.getAdRecordStore().getRecord(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getData());
@@ -48,9 +49,12 @@ public final class ManufacturerDataIBeacon {
 		mData = data;
 		Log.d("TAG", "~ Reading iBeacon Data: " + ByteUtils.byteArrayToHexString(data));
 
-		mCompanyIdentidier = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 0, 2));
+		mCompanyIdentidier = ByteUtils.getIntFrom2ByteArray(
+				ByteUtils.invertArray(
+						Arrays.copyOfRange(mData, 0, 2)));
+
 		mIBeaconAdvertisment = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 2, 4));
-		mUUID = ByteUtils.getLongFromByteArray(Arrays.copyOfRange(mData, 4, 19));
+		mUUID = UUID.nameUUIDFromBytes(Arrays.copyOfRange(mData, 4, 20));
 		mMajor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 20, 22));
 		mMinor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 22, 24));
 		mCalibratedTxPower = ByteUtils.getIntFromByte(data[24]);
@@ -76,7 +80,7 @@ public final class ManufacturerDataIBeacon {
 		return mMinor;
 	}
 
-	public long getUUID(){
+	public UUID getUUID(){
 		return mUUID;
 	}
 

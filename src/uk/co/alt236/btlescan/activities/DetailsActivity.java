@@ -52,7 +52,7 @@ public class DetailsActivity extends Activity{
 			append(sb, device.getScanRecord());
 
 			append(sb, "", null);
-			append(sb, "Ad Records", null);
+			append(sb, "Raw Ad Records As String", null);
 			append(sb, "-----------------", null);
 
 
@@ -71,12 +71,12 @@ public class DetailsActivity extends Activity{
 
 			if(isIBeacon){
 				final ManufacturerDataIBeacon iBeaconData = new ManufacturerDataIBeacon(device);
-				append(sb, "Company ID", iBeaconData.getCompanyIdentifier());
-				append(sb, "iBeacon Advertisment", iBeaconData.getIBeaconAdvertisement());
-				append(sb, "UUID", iBeaconData.getUUID());
-				append(sb, "Major", iBeaconData.getMajor());
-				append(sb, "Minor", iBeaconData.getMinor());
-				append(sb, "TX Power", iBeaconData.getCalibratedTxPower());
+				append(sb, "Company ID", iBeaconData.getCompanyIdentifier() + " (" + Integer.toHexString( iBeaconData.getCompanyIdentifier() ) + ")");
+				append(sb, "iBeacon Advertisment", iBeaconData.getIBeaconAdvertisement() + " (" + Integer.toHexString( iBeaconData.getIBeaconAdvertisement() ) + ")");
+				append(sb, "UUID", iBeaconData.getUUID().toString());
+				append(sb, "Major", iBeaconData.getMajor() + " (" + Integer.toHexString( iBeaconData.getMajor() ) + ")");
+				append(sb, "Minor", iBeaconData.getMinor() + " (" + Integer.toHexString( iBeaconData.getMinor() ) + ")");
+				append(sb, "TX Power", iBeaconData.getCalibratedTxPower() + " (" + Integer.toHexString( iBeaconData.getCalibratedTxPower() ) + ")");
 			}
 		}
 
