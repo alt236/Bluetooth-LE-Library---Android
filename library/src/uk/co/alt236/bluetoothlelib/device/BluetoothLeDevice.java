@@ -11,6 +11,13 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/*
+ * This is a wrapper around the default BluetoothDevice object
+ * As BluetoothDevice is final it cannot be extended, so to get it you
+ * need to call {@link #getDevice()} method.
+ *
+ * @author Alexandros Schillings
+ */
 public class BluetoothLeDevice implements Parcelable{
 	private static final String PARCEL_EXTRA_BLUETOOTH_DEVICE = "bluetooth_device";
 	private static final String PARCEL_EXTRA_DEVICE_RSSI = "device_rssi";
