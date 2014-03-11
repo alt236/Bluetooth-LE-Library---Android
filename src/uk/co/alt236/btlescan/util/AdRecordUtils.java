@@ -51,7 +51,7 @@ public class AdRecordUtils {
 			//Done once we run out of records
 			if (length == 0) break;
 
-			final int type = ByteUtils.convertByteToInt(scanRecord[index]);
+			final int type = ByteUtils.getIntFromByte(scanRecord[index]);
 
 			//Done if our record isn't a valid type
 			if (type == 0) break;
@@ -77,7 +77,7 @@ public class AdRecordUtils {
 			//Done once we run out of records
 			if (length == 0) break;
 
-			final int type = ByteUtils.convertByteToInt(scanRecord[index]);
+			final int type = ByteUtils.getIntFromByte(scanRecord[index]);
 
 			//Done if our record isn't a valid type
 			if (type == 0) break;
@@ -102,7 +102,7 @@ public class AdRecordUtils {
 			//Done once we run out of records
 			if (length == 0) break;
 
-			final int type = ByteUtils.convertByteToInt(scanRecord[index]);
+			final int type = ByteUtils.getIntFromByte(scanRecord[index]);
 
 			//Done if our record isn't a valid type
 			if (type == 0) break;

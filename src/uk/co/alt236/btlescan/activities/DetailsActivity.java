@@ -5,8 +5,10 @@ import java.util.Collection;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.containers.AdRecord;
 import uk.co.alt236.btlescan.containers.BluetoothLeDevice;
+import uk.co.alt236.btlescan.containers.ManufacturerDataIBeacon;
 import uk.co.alt236.btlescan.util.AdRecordUtils;
 import uk.co.alt236.btlescan.util.ByteUtils;
+import uk.co.alt236.btlescan.util.IBeaconUtils;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -61,9 +63,36 @@ public class DetailsActivity extends Activity{
 				append(sb, AdRecordUtils.getRecordDataAsString(record), null);
 				append(sb, "", null);
 			}
+
+			append(sb, "Additional", null);
+			append(sb, "-----------------", null);
+			 final boolean isIBeacon =  IBeaconUtils.isThisAnIBeacon(device);
+			append(sb, "Is iBeacon", isIBeacon);
+
+			if(isIBeacon){
+				final ManufacturerDataIBeacon iBeaconData = new ManufacturerDataIBeacon(device);
+				append(sb, "Company ID", iBeaconData.getCompanyIdentifier());
+				append(sb, "iBeacon Advertisment", iBeaconData.getIBeaconAdvertisement());
+				append(sb, "UUID", iBeaconData.getUUID());
+				append(sb, "Major", iBeaconData.getMajor());
+				append(sb, "Minor", iBeaconData.getMinor());
+				append(sb, "TX Power", iBeaconData.getCalibratedTxPower());
+			}
 		}
 
 		mTvDetails.setText(sb.toString());
+	}
+
+	private void append(StringBuilder sb, String label, boolean value) {
+		append(sb, label, String.valueOf(value));
+	}
+
+	private void append(StringBuilder sb, String label, int value) {
+		append(sb, label, String.valueOf(value));
+	}
+
+	private void append(StringBuilder sb, String label, long value) {
+		append(sb, label, String.valueOf(value));
 	}
 
 	private static void append(StringBuilder sb, byte[] value){

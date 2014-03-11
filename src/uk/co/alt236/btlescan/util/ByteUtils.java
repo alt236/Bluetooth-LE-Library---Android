@@ -1,8 +1,18 @@
 package uk.co.alt236.btlescan.util;
 
-public class ByteUtils {
-	static final String HEXES = "0123456789ABCDEF";
+import java.nio.ByteBuffer;
 
+public class ByteUtils {
+	private static final String HEXES = "0123456789ABCDEF";
+
+	/**
+	 * Gets a pretty representation of a Byte Array as a HEX String.
+	 *
+	 * Sample output: [01, 30, FF, AA]
+	 *
+	 * @param array the array
+	 * @return the string
+	 */
 	public static String byteArrayToHexString(final byte[] array){
 		final StringBuffer sb = new StringBuffer();
 		boolean firstEntry = true;
@@ -21,8 +31,35 @@ public class ByteUtils {
 		return sb.toString();
 	}
 
-
-	public static int convertByteToInt(byte bite){
+	/**
+	 * Converts a byte to an int, preserving the sign.
+	 *
+	 * For example, FF will be converted to 255 and not -1.
+	 *
+	 * @param bite the bite
+	 * @return the int from byte
+	 */
+	public static int getIntFromByte(final byte bite){
 		return Integer.valueOf(bite & 0xFF);
+	}
+
+	/**
+	 * Converts a byte array to an integer;
+	 *
+	 * @param bytes the bytes
+	 * @return the int from byte array
+	 */
+	public static int getIntFromByteArray(final byte[] bytes) {
+	     return ByteBuffer.wrap(bytes).getInt();
+	}
+
+	/**
+	 * Converts a byte array to a long;
+	 *
+	 * @param bytes the bytes
+	 * @return the long from byte array
+	 */
+	public static long getLongFromByteArray(final byte[] bytes) {
+	     return ByteBuffer.wrap(bytes).getLong();
 	}
 }

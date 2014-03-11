@@ -1,41 +1,88 @@
 package uk.co.alt236.btlescan.containers;
 
+import java.util.Arrays;
+
+import uk.co.alt236.btlescan.util.ByteUtils;
+
 public final class ManufacturerDataIBeacon {
-// 0	FF # Manufacturer specific data AD type
-// 1	4C # Byte 1 of Company identifier code
-// 2	00 # Byte 0 of Company identifier code (0x004C == Apple)
-// 3	02 # Byte 0 of iBeacon advertisement indicator
-// 4	15 # Byte 1 of iBeacon advertisement indicator
-// 5	e2 #
-// 6	c5 ##
-// 7	6d ###
-// 8	b5 ####
-// 9	df #####
-// 10	fb ######
-// 11	48 #######
-// 12	d2 ######## iBeacon proximity uuid
-// 13	b0 ########
-// 14	60 #######
-// 15	d0 ######
-// 16	f5 #####
-// 17	a7 ####
-// 18	10 ###
-// 19	96 ##
-// 20	e0 #
+// 0	4C # Byte 1 (LSB) of Company identifier code
+// 1	00 # Byte 0 (MSB) of Company identifier code (0x004C == Apple)
+// 2	02 # Byte 0 of iBeacon advertisement indicator
+// 3	15 # Byte 1 of iBeacon advertisement indicator
+// 4	e2 |\
+// 5	c5 |\\
+// 6	6d |#\\
+// 7	b5 |##\\
+// 8	df |###\\
+// 9	fb |####\\
+// 10	48 |#####\\
+// 11	d2 |#####|| iBeacon proximity UUID
+// 12	b0 |#####||
+// 13	60 |#####//
+// 14	d0 |####//
+// 15	f5 |###//
+// 16	a7 |##//
+// 17	10 |#//
+// 18	96 |//
+// 19	e0 |/
+// 20	00 # major
 // 21	00
-// 22	00 # major
+// 22	00# minor
 // 23	00
-// 24	00 # minor
-// 25	c5 # The 2's complement of the calibrated Tx Power
+// 24	c5 # The 2's complement of the calibrated Tx Power
 
 	private final byte[] mData;
-	private final int mTxPower;
+	private final int mCalibratedTxPower;
+	private final int mCompanyIdentidier;
+	private final int mIBeaconAdvertisment;
+	private final int mMajor;
+	private final int mMinor;
+	private final long mUUID;
+
+	public ManufacturerDataIBeacon(BluetoothLeDevice device){
+		this(device.getAdRecordStore().getRecord(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getData());
+	}
 
 	public ManufacturerDataIBeacon(byte[] data){
 		mData = data;
-		mTxPower = 0;
+		mCompanyIdentidier = convert2ByteArrayToInt(Arrays.copyOfRange(mData, 0, 2));
+		mIBeaconAdvertisment = convert2ByteArrayToInt(Arrays.copyOfRange(mData, 2, 2));
+		mUUID = ByteUtils.getLongFromByteArray(Arrays.copyOfRange(mData, 4, 16));
+		mMajor = convert2ByteArrayToInt(Arrays.copyOfRange(mData, 20, 2));
+		mMinor = convert2ByteArrayToInt(Arrays.copyOfRange(mData, 22, 2));
+		mCalibratedTxPower = ByteUtils.getIntFromByte(data[24]);
 	}
 
+	private static int convert2ByteArrayToInt(byte[] array){
+		final byte[] result = new byte[4];
+		result[2] = array[0];
+		result[3] = array[1];
+		return ByteUtils.getIntFromByteArray(result);
+	}
+
+	public int getCalibratedTxPower(){
+		return mCalibratedTxPower;
+	}
+
+	public int getCompanyIdentifier(){
+		return mCompanyIdentidier;
+	}
+
+	public int getIBeaconAdvertisement(){
+		return mIBeaconAdvertisment;
+	}
+
+	public int getMajor(){
+		return mMajor;
+	}
+
+	public int getMinor(){
+		return mMinor;
+	}
+
+	public long getUUID(){
+		return mUUID;
+	}
 
 	// Code taken from: http://stackoverflow.com/questions/20416218/understanding-ibeacon-distancing
 	protected static double calculateAccuracy(int txPower, double rssi) {
@@ -48,7 +95,7 @@ public final class ManufacturerDataIBeacon {
 			return Math.pow(ratio,10);
 		}
 		else {
-			double accuracy =  (0.89976)*Math.pow(ratio,7.7095) + 0.111;
+			final double accuracy =  (0.89976)*Math.pow(ratio,7.7095) + 0.111;
 			return accuracy;
 		}
 	}
