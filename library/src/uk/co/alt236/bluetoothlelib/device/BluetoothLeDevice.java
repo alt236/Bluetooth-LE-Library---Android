@@ -12,10 +12,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class BluetoothLeDevice implements Parcelable{
+	private static final String PARCEL_EXTRA_BLUETOOTH_DEVICE = "bluetooth_device";
+	private static final String PARCEL_EXTRA_DEVICE_RSSI = "device_rssi";
+	private static final String PARCEL_EXTRA_DEVICE_SCANRECORD = "device_scanrecord";
+	private static final String PARCEL_EXTRA_DEVICE_SCANRECORD_STORE = "device_scanrecord_store";
+	private static final String PARCEL_EXTRA_TIMESTAMP = "timestamp";
+
 	private final AdRecordStore mRecordStore;
 	private final BluetoothDevice mDevice;
 	private final byte[] mScanRecord;
 	private transient final int mRssi;
+	private transient final long mTimestamp;
 
 	public static final Parcelable.Creator<BluetoothLeDevice> CREATOR = new Parcelable.Creator<BluetoothLeDevice>() {
 		public BluetoothLeDevice createFromParcel(Parcel in) {
@@ -27,20 +34,26 @@ public class BluetoothLeDevice implements Parcelable{
 		}
 	};
 
-	public BluetoothLeDevice(BluetoothDevice device, int rssi, byte[] scanRecord){
+	public BluetoothLeDevice(BluetoothDevice device, int rssi, byte[] scanRecord, long timestamp){
 		mDevice = device;
 		mRssi = rssi;
 		mScanRecord = scanRecord;
 		mRecordStore = new AdRecordStore(AdRecordUtils.parseScanRecordAsSparseArray(scanRecord));
+		mTimestamp = timestamp;
+	}
+
+	public BluetoothLeDevice(BluetoothDevice device, int rssi, byte[] scanRecord){
+		this(device, rssi, scanRecord, 0);
 	}
 
 	private BluetoothLeDevice(Parcel in) {
 		final Bundle b = in.readBundle(getClass().getClassLoader());
 
-		mDevice = b.getParcelable("bluetooth_device");
-		mRecordStore = b.getParcelable("device_scanrecord_store");
-		mRssi = b.getInt("device_rssi");
-		mScanRecord = b.getByteArray("device_scanrecord");
+		mDevice = b.getParcelable(PARCEL_EXTRA_BLUETOOTH_DEVICE);
+		mRecordStore = b.getParcelable(PARCEL_EXTRA_DEVICE_SCANRECORD_STORE);
+		mRssi = b.getInt(PARCEL_EXTRA_DEVICE_RSSI, 0);
+		mScanRecord = b.getByteArray(PARCEL_EXTRA_DEVICE_SCANRECORD);
+		mTimestamp = b.getLong(PARCEL_EXTRA_TIMESTAMP, 0);
     }
 
 	@Override
@@ -117,10 +130,11 @@ public class BluetoothLeDevice implements Parcelable{
 	public void writeToParcel(Parcel parcel, int arg1) {
 		final Bundle b = new Bundle(getClass().getClassLoader());
 
-		b.putByteArray("device_scanrecord", mScanRecord);
-		b.putInt("device_rssi", mRssi);
-		b.putParcelable("bluetooth_device", mDevice);
-		b.putParcelable("device_scanrecord_store", mRecordStore);
+		b.putByteArray(PARCEL_EXTRA_DEVICE_SCANRECORD, mScanRecord);
+		b.putInt(PARCEL_EXTRA_DEVICE_RSSI, mRssi);
+		b.putLong(PARCEL_EXTRA_TIMESTAMP, mTimestamp);
+		b.putParcelable(PARCEL_EXTRA_BLUETOOTH_DEVICE, mDevice);
+		b.putParcelable(PARCEL_EXTRA_DEVICE_SCANRECORD_STORE, mRecordStore);
 
 		parcel.writeBundle(b);
 	}
