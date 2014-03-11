@@ -31,6 +31,17 @@ public class ByteUtils {
 		return sb.toString();
 	}
 
+	public static int getIntFrom2ByteArray(byte[] input){
+		final byte[] result = new byte[4];
+
+		result[0] = 0;
+		result[1] = 0;
+		result[2] = input[0];
+		result[3] = input[1];
+
+		return ByteUtils.getIntFromByteArray(result);
+	}
+
 	/**
 	 * Converts a byte to an int, preserving the sign.
 	 *
@@ -52,6 +63,7 @@ public class ByteUtils {
 	public static int getIntFromByteArray(final byte[] bytes) {
 	     return ByteBuffer.wrap(bytes).getInt();
 	}
+
 
 	/**
 	 * Converts a byte array to a long;

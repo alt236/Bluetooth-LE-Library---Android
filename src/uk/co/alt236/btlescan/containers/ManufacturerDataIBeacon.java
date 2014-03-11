@@ -3,6 +3,7 @@ package uk.co.alt236.btlescan.containers;
 import java.util.Arrays;
 
 import uk.co.alt236.btlescan.util.ByteUtils;
+import android.util.Log;
 
 public final class ManufacturerDataIBeacon {
 // 0	4C # Byte 1 (LSB) of Company identifier code
@@ -45,19 +46,14 @@ public final class ManufacturerDataIBeacon {
 
 	public ManufacturerDataIBeacon(byte[] data){
 		mData = data;
-		mCompanyIdentidier = convert2ByteArrayToInt(Arrays.copyOfRange(mData, 0, 2));
-		mIBeaconAdvertisment = convert2ByteArrayToInt(Arrays.copyOfRange(mData, 2, 2));
-		mUUID = ByteUtils.getLongFromByteArray(Arrays.copyOfRange(mData, 4, 16));
-		mMajor = convert2ByteArrayToInt(Arrays.copyOfRange(mData, 20, 2));
-		mMinor = convert2ByteArrayToInt(Arrays.copyOfRange(mData, 22, 2));
-		mCalibratedTxPower = ByteUtils.getIntFromByte(data[24]);
-	}
+		Log.d("TAG", "~ Reading iBeacon Data: " + ByteUtils.byteArrayToHexString(data));
 
-	private static int convert2ByteArrayToInt(byte[] array){
-		final byte[] result = new byte[4];
-		result[2] = array[0];
-		result[3] = array[1];
-		return ByteUtils.getIntFromByteArray(result);
+		mCompanyIdentidier = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 0, 2));
+		mIBeaconAdvertisment = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 2, 4));
+		mUUID = ByteUtils.getLongFromByteArray(Arrays.copyOfRange(mData, 4, 19));
+		mMajor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 20, 22));
+		mMinor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 22, 24));
+		mCalibratedTxPower = ByteUtils.getIntFromByte(data[24]);
 	}
 
 	public int getCalibratedTxPower(){
