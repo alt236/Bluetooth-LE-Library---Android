@@ -1,0 +1,6 @@
+/bin
+/gen
+local.properties
+.idea/
+lint.xml
+/.apt_generated
