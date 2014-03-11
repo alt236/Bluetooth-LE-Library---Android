@@ -21,8 +21,8 @@ public class BluetoothLeDevice implements Parcelable{
 	private final AdRecordStore mRecordStore;
 	private final BluetoothDevice mDevice;
 	private final byte[] mScanRecord;
-	private transient final int mRssi;
-	private transient final long mTimestamp;
+	private final int mRssi;
+	private final long mTimestamp;
 
 	public static final Parcelable.Creator<BluetoothLeDevice> CREATOR = new Parcelable.Creator<BluetoothLeDevice>() {
 		public BluetoothLeDevice createFromParcel(Parcel in) {
