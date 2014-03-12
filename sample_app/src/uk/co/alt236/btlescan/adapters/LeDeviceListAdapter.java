@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
+import uk.co.alt236.bluetoothlelib.device.mfdata.IBeaconManufacturerData;
 import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
 import uk.co.alt236.btlescan.R;
 import android.app.Activity;
@@ -67,6 +68,12 @@ import android.widget.TextView;
                 viewHolder.deviceName = (TextView) view.findViewById(R.id.device_name);
                 viewHolder.deviceRssi = (TextView) view.findViewById(R.id.device_rssi);
                 viewHolder.deviceIcon = (ImageView) view.findViewById(R.id.device_icon);
+                viewHolder.ibeaconMajor = (TextView) view.findViewById(R.id.ibeacon_major);
+                viewHolder.ibeaconMinor = (TextView) view.findViewById(R.id.ibeacon_minor);
+                viewHolder.ibeaconDistance = (TextView) view.findViewById(R.id.ibeacon_distance);
+                viewHolder.ibeaconUUID = (TextView) view.findViewById(R.id.ibeacon_uuid);
+                viewHolder.ibeaconTxPower = (TextView) view.findViewById(R.id.ibeacon_tx_power);
+                viewHolder.ibeaconSection = (View) view.findViewById(R.id.ibeacon_section);
                 view.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) view.getTag();
@@ -82,9 +89,16 @@ import android.widget.TextView;
             }
 
             if (IBeaconUtils.isThisAnIBeacon(device)){
+            	final IBeaconManufacturerData data = new IBeaconManufacturerData(device);
             	viewHolder.deviceIcon.setImageResource(R.drawable.ic_device_ibeacon);
+            	viewHolder.ibeaconSection.setVisibility(View.VISIBLE);
+            	viewHolder.ibeaconMajor.setText(String.valueOf(data.getMajor()));
+            	viewHolder.ibeaconMinor.setText(String.valueOf(data.getMinor()));
+            	viewHolder.ibeaconTxPower.setText(String.valueOf(data.getCalibratedTxPower()));
+            	viewHolder.ibeaconUUID.setText(data.getUUID().toString());
             } else {
             	viewHolder.deviceIcon.setImageResource(R.drawable.ic_bluetooth);
+            	viewHolder.ibeaconSection.setVisibility(View.GONE);
             }
 
             viewHolder.deviceAddress.setText(device.getAddress());
@@ -96,6 +110,12 @@ import android.widget.TextView;
             TextView deviceName;
             TextView deviceAddress;
             TextView deviceRssi;
+            TextView ibeaconUUID;
+            TextView ibeaconMajor;
+            TextView ibeaconMinor;
+            TextView ibeaconTxPower;
+            TextView ibeaconDistance;
+            View ibeaconSection;
             ImageView deviceIcon;
         }
 

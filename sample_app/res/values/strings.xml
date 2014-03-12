@@ -16,5 +16,12 @@
     <string name="menu_disconnect">Disconnect</string>
     <string name="menu_scan">Scan</string>
     <string name="menu_stop">Stop</string>
+    <string name="label_distance">Distance:</string>
+    <string name="label_tx_power">TX Power:</string>
+    <string name="label_minor">Minor:</string>
+    <string name="label_major">Major:</string>
+    <string name="label_uuid">UUID:</string>
+    <string name="label_rssi">RSSI:</string>
+    <string name="label_mac">MAC:</string>
 
 </resources>

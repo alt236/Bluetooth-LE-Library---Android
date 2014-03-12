@@ -38,16 +38,16 @@
             android:layout_height="wrap_content"
             android:textSize="24sp" />
 
-        <LinearLayout
+        <GridLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:columnCount="4" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="5dp"
-                android:text="MAC:"
+                android:text="@string/label_mac"
                 android:textSize="12sp" />
 
             <TextView
@@ -60,14 +60,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" - "
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:paddingRight="5dp"
-                android:text="RSSI:"
+                android:text="@string/label_rssi"
                 android:textSize="12sp" />
 
             <TextView
@@ -76,7 +70,85 @@
                 android:layout_height="wrap_content"
                 android:paddingRight="5dp"
                 android:textSize="12sp" />
-        </LinearLayout>
+        </GridLayout>
+
+        <GridLayout
+            android:id="@+id/ibeacon_section"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:text="@string/label_uuid"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/ibeacon_uuid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="3"
+                android:paddingRight="5dp"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:text="@string/label_major"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/ibeacon_major"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:text="@string/label_minor"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/ibeacon_minor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:text="@string/label_tx_power"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/ibeacon_tx_power"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:text="@string/label_distance"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/ibeacon_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:textSize="12sp" />
+        </GridLayout>
     </LinearLayout>
 
 </LinearLayout>
