@@ -82,7 +82,7 @@ import android.widget.TextView;
             }
 
             if (IBeaconUtils.isThisAnIBeacon(device)){
-            	viewHolder.deviceIcon.setImageResource(R.drawable.ic_bluetooth_ibeacon);
+            	viewHolder.deviceIcon.setImageResource(R.drawable.ic_device_ibeacon);
             } else {
             	viewHolder.deviceIcon.setImageResource(R.drawable.ic_bluetooth);
             }
