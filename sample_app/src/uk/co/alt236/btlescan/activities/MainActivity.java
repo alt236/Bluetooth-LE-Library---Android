@@ -30,7 +30,7 @@ public class MainActivity extends ListActivity {
 		@Override
 		public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
 
-			final BluetoothLeDevice deviceLe = new BluetoothLeDevice(device, rssi, scanRecord);
+			final BluetoothLeDevice deviceLe = new BluetoothLeDevice(device, rssi, scanRecord, System.currentTimeMillis());
 
 			runOnUiThread(new Runnable() {
 				@Override
