@@ -50,7 +50,7 @@ public final class IBeaconManufacturerData {
 	private final int mIBeaconAdvertisment;
 	private final int mMajor;
 	private final int mMinor;
-	private final UUID mUUID;
+	private final String mUUID;
 
 	public IBeaconManufacturerData(BluetoothLeDevice device){
 		this(device.getAdRecordStore().getRecord(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getData());
@@ -58,17 +58,35 @@ public final class IBeaconManufacturerData {
 
 	public IBeaconManufacturerData(byte[] data){
 		mData = data;
-		Log.d("TAG", "~ Reading iBeacon Data: " + ByteUtils.byteArrayToHexString(data));
+		//Log.d("TAG", "~ Reading iBeacon Data: " + ByteUtils.byteArrayToHexString(data));
 
 		mCompanyIdentidier = ByteUtils.getIntFrom2ByteArray(
 				ByteUtils.invertArray(
 						Arrays.copyOfRange(mData, 0, 2)));
 
 		mIBeaconAdvertisment = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 2, 4));
-		mUUID = UUID.nameUUIDFromBytes(Arrays.copyOfRange(mData, 4, 20));
+		mUUID =  calculateUUIDString(Arrays.copyOfRange(mData, 4, 20));
 		mMajor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 20, 22));
 		mMinor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 22, 24));
 		mCalibratedTxPower = ByteUtils.getIntFromByte(data[24]);
+	}
+
+
+	private String calculateUUIDString(final byte[] uuid){
+		final StringBuffer sb = new StringBuffer();
+
+		for(int i = 0 ; i< uuid.length; i++){
+			if(i == 4){sb.append('-');}
+			if(i == 6){sb.append('-');}
+			if(i == 8){sb.append('-');}
+			if(i == 10){sb.append('-');}
+
+			sb.append(
+					Integer.toHexString(ByteUtils.getIntFromByte(uuid[i])));
+		}
+
+
+		return sb.toString();
 	}
 
 	public int getCalibratedTxPower(){
@@ -91,7 +109,7 @@ public final class IBeaconManufacturerData {
 		return mMinor;
 	}
 
-	public UUID getUUID(){
+	public String getUUID(){
 		return mUUID;
 	}
 

@@ -95,7 +95,7 @@ import android.widget.TextView;
             	viewHolder.ibeaconMajor.setText(String.valueOf(data.getMajor()));
             	viewHolder.ibeaconMinor.setText(String.valueOf(data.getMinor()));
             	viewHolder.ibeaconTxPower.setText(String.valueOf(data.getCalibratedTxPower()));
-            	viewHolder.ibeaconUUID.setText(data.getUUID().toString());
+            	viewHolder.ibeaconUUID.setText(data.getUUID());
             } else {
             	viewHolder.deviceIcon.setImageResource(R.drawable.ic_bluetooth);
             	viewHolder.ibeaconSection.setVisibility(View.GONE);
