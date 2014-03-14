@@ -1,12 +1,10 @@
 package uk.co.alt236.bluetoothlelib.device.mfdata;
 
 import java.util.Arrays;
-import java.util.UUID;
 
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
-import android.util.Log;
 
 /**
  * Objectifies the Manufactured Data field of an iBeacon
@@ -87,6 +85,10 @@ public final class IBeaconManufacturerData {
 
 
 		return sb.toString();
+	}
+
+	public double getAccuracy(int rssi){
+		return calculateAccuracy(mCalibratedTxPower, rssi);
 	}
 
 	public int getCalibratedTxPower(){
