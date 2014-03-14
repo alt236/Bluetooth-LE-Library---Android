@@ -48,7 +48,8 @@
                 android:layout_height="wrap_content"
                 android:paddingRight="5dp"
                 android:text="@string/label_mac"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/device_address"
@@ -60,9 +61,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="@string/label_rssi"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/device_rssi"
@@ -83,7 +86,8 @@
                 android:layout_height="wrap_content"
                 android:paddingRight="5dp"
                 android:text="@string/label_uuid"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ibeacon_uuid"
@@ -98,7 +102,8 @@
                 android:layout_height="wrap_content"
                 android:paddingRight="5dp"
                 android:text="@string/label_major"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ibeacon_major"
@@ -110,9 +115,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="@string/label_minor"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ibeacon_minor"
@@ -126,7 +133,8 @@
                 android:layout_height="wrap_content"
                 android:paddingRight="5dp"
                 android:text="@string/label_tx_power"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ibeacon_tx_power"
@@ -138,9 +146,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="@string/label_distance"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ibeacon_distance"

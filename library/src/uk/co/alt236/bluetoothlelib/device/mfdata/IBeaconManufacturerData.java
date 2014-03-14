@@ -66,7 +66,7 @@ public final class IBeaconManufacturerData {
 		mUUID =  calculateUUIDString(Arrays.copyOfRange(mData, 4, 20));
 		mMajor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 20, 22));
 		mMinor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 22, 24));
-		mCalibratedTxPower = ByteUtils.getIntFromByte(data[24]);
+		mCalibratedTxPower = data[24];
 	}
 
 
@@ -87,7 +87,7 @@ public final class IBeaconManufacturerData {
 		return sb.toString();
 	}
 
-	public double getAccuracy(int rssi){
+	public double getAccuracy(double rssi){
 		return calculateAccuracy(mCalibratedTxPower, rssi);
 	}
 
@@ -97,6 +97,22 @@ public final class IBeaconManufacturerData {
 
 	public int getCompanyIdentifier(){
 		return mCompanyIdentidier;
+	}
+
+	public String getDistanceDescriptor(double accuracy){
+		if(accuracy < 0){
+			return "WTF";
+		}
+
+		if(accuracy < 0.5){
+			return "IMMEDIATE";
+		}
+
+		if(accuracy < 3.0){
+			return "NEAR";
+		}
+
+		return "FAR";
 	}
 
 	public int getIBeaconAdvertisement(){
@@ -116,7 +132,7 @@ public final class IBeaconManufacturerData {
 	}
 
 	// Code taken from: http://stackoverflow.com/questions/20416218/understanding-ibeacon-distancing
-	protected static double calculateAccuracy(int txPower, double rssi) {
+	private static double calculateAccuracy(int txPower, double rssi) {
 		if (rssi == 0) {
 			return -1.0; // if we cannot determine accuracy, return -1.
 		}
