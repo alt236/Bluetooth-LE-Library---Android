@@ -40,6 +40,10 @@ public class BluetoothLeDevice implements Parcelable{
 			return new BluetoothLeDevice[size];
 		}
 	};
+	
+	public BluetoothLeDevice(BluetoothDevice device, int rssi, byte[] scanRecord){
+		this(device, rssi, scanRecord, 0);
+	}
 
 	public BluetoothLeDevice(BluetoothDevice device, int rssi, byte[] scanRecord, long timestamp){
 		mDevice = device;
@@ -47,10 +51,6 @@ public class BluetoothLeDevice implements Parcelable{
 		mScanRecord = scanRecord;
 		mRecordStore = new AdRecordStore(AdRecordUtils.parseScanRecordAsSparseArray(scanRecord));
 		mTimestamp = timestamp;
-	}
-
-	public BluetoothLeDevice(BluetoothDevice device, int rssi, byte[] scanRecord){
-		this(device, rssi, scanRecord, 0);
 	}
 
 	private BluetoothLeDevice(Parcel in) {
@@ -117,6 +117,10 @@ public class BluetoothLeDevice implements Parcelable{
 
 	public byte[] getScanRecord() {
 		return mScanRecord;
+	}
+
+	public long getTimestamp(){
+		return mTimestamp;
 	}
 
 	@Override
