@@ -56,11 +56,9 @@ public final class IBeaconManufacturerData {
 
 	public IBeaconManufacturerData(byte[] data){
 		mData = data;
-		//Log.d("TAG", "~ Reading iBeacon Data: " + ByteUtils.byteArrayToHexString(data));
 
 		mCompanyIdentidier = ByteUtils.getIntFrom2ByteArray(
-				ByteUtils.invertArray(
-						Arrays.copyOfRange(mData, 0, 2)));
+				ByteUtils.invertArray(Arrays.copyOfRange(mData, 0, 2)));
 
 		mIBeaconAdvertisment = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 2, 4));
 		mUUID =  calculateUUIDString(Arrays.copyOfRange(mData, 4, 20));
@@ -69,50 +67,12 @@ public final class IBeaconManufacturerData {
 		mCalibratedTxPower = data[24];
 	}
 
-
-	private String calculateUUIDString(final byte[] uuid){
-		final StringBuffer sb = new StringBuffer();
-
-		for(int i = 0 ; i< uuid.length; i++){
-			if(i == 4){sb.append('-');}
-			if(i == 6){sb.append('-');}
-			if(i == 8){sb.append('-');}
-			if(i == 10){sb.append('-');}
-
-			sb.append(
-					Integer.toHexString(ByteUtils.getIntFromByte(uuid[i])));
-		}
-
-
-		return sb.toString();
-	}
-
-	public double getAccuracy(double rssi){
-		return calculateAccuracy(mCalibratedTxPower, rssi);
-	}
-
 	public int getCalibratedTxPower(){
 		return mCalibratedTxPower;
 	}
 
 	public int getCompanyIdentifier(){
 		return mCompanyIdentidier;
-	}
-
-	public String getDistanceDescriptor(double accuracy){
-		if(accuracy < 0){
-			return "WTF";
-		}
-
-		if(accuracy < 0.5){
-			return "IMMEDIATE";
-		}
-
-		if(accuracy < 3.0){
-			return "NEAR";
-		}
-
-		return "FAR";
 	}
 
 	public int getIBeaconAdvertisement(){
@@ -131,19 +91,20 @@ public final class IBeaconManufacturerData {
 		return mUUID;
 	}
 
-	// Code taken from: http://stackoverflow.com/questions/20416218/understanding-ibeacon-distancing
-	private static double calculateAccuracy(int txPower, double rssi) {
-		if (rssi == 0) {
-			return -1.0; // if we cannot determine accuracy, return -1.
+	private static String calculateUUIDString(final byte[] uuid){
+		final StringBuffer sb = new StringBuffer();
+
+		for(int i = 0 ; i< uuid.length; i++){
+			if(i == 4){sb.append('-');}
+			if(i == 6){sb.append('-');}
+			if(i == 8){sb.append('-');}
+			if(i == 10){sb.append('-');}
+
+			sb.append(
+					Integer.toHexString(ByteUtils.getIntFromByte(uuid[i])));
 		}
 
-		double ratio = rssi*1.0/txPower;
-		if (ratio < 1.0) {
-			return Math.pow(ratio,10);
-		}
-		else {
-			final double accuracy =  (0.89976)*Math.pow(ratio,7.7095) + 0.111;
-			return accuracy;
-		}
+
+		return sb.toString();
 	}
 }

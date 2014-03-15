@@ -53,7 +53,7 @@ public class BluetoothLeDevice implements Parcelable{
 		mTimestamp = timestamp;
 	}
 
-	private BluetoothLeDevice(Parcel in) {
+	protected BluetoothLeDevice(Parcel in) {
 		final Bundle b = in.readBundle(getClass().getClassLoader());
 
 		mDevice = b.getParcelable(PARCEL_EXTRA_BLUETOOTH_DEVICE);
