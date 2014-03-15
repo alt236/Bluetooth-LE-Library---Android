@@ -18,7 +18,8 @@ import android.widget.TextView;
 // Adapter for holding devices found through scanning.
 public class LeDeviceListAdapter extends BaseAdapter {
 	private static final DecimalFormat DOUBLE_TWO_DIGIT_ACCURACY = new DecimalFormat("#.##");
-
+	private static final String TIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
+	
 	private final List<BluetoothLeDevice> mLeDevices;
 	private final LayoutInflater mInflator;
 
@@ -71,12 +72,14 @@ public class LeDeviceListAdapter extends BaseAdapter {
 			viewHolder.deviceName = (TextView) view.findViewById(R.id.device_name);
 			viewHolder.deviceRssi = (TextView) view.findViewById(R.id.device_rssi);
 			viewHolder.deviceIcon = (ImageView) view.findViewById(R.id.device_icon);
+			viewHolder.deviceLastUpdated = (TextView) view.findViewById(R.id.device_last_update);
 			viewHolder.ibeaconMajor = (TextView) view.findViewById(R.id.ibeacon_major);
 			viewHolder.ibeaconMinor = (TextView) view.findViewById(R.id.ibeacon_minor);
 			viewHolder.ibeaconDistance = (TextView) view.findViewById(R.id.ibeacon_distance);
 			viewHolder.ibeaconUUID = (TextView) view.findViewById(R.id.ibeacon_uuid);
 			viewHolder.ibeaconTxPower = (TextView) view.findViewById(R.id.ibeacon_tx_power);
 			viewHolder.ibeaconSection = (View) view.findViewById(R.id.ibeacon_section);
+			viewHolder.ibeaconDistanceDescriptor = (TextView) view.findViewById(R.id.ibeacon_distance_descriptor);
 			view.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) view.getTag();
@@ -102,13 +105,15 @@ public class LeDeviceListAdapter extends BaseAdapter {
 			viewHolder.ibeaconMinor.setText(String.valueOf(data.getMinor()));
 			viewHolder.ibeaconTxPower.setText(String.valueOf(data.getCalibratedTxPower()));
 			viewHolder.ibeaconUUID.setText(data.getUUID());
-			viewHolder.ibeaconDistance.setText(
-					DOUBLE_TWO_DIGIT_ACCURACY.format(accuracy) + "m " + data.getDistanceDescriptor(accuracy));
+			viewHolder.ibeaconDistance.setText(DOUBLE_TWO_DIGIT_ACCURACY.format(accuracy) + "m");
+			viewHolder.ibeaconDistanceDescriptor.setText(data.getDistanceDescriptor(accuracy));
 		} else {
 			viewHolder.deviceIcon.setImageResource(R.drawable.ic_bluetooth);
 			viewHolder.ibeaconSection.setVisibility(View.GONE);
 		}
 
+		viewHolder.deviceLastUpdated.setText(
+				android.text.format.DateFormat.format(TIME_FORMAT, new java.util.Date(device.getTimestamp())));
 		viewHolder.deviceAddress.setText(device.getAddress());
 		viewHolder.deviceRssi.setText(String.valueOf(rssi) + "db");
 		return view;
@@ -123,6 +128,8 @@ public class LeDeviceListAdapter extends BaseAdapter {
 		TextView ibeaconMinor;
 		TextView ibeaconTxPower;
 		TextView ibeaconDistance;
+		TextView ibeaconDistanceDescriptor;
+		TextView deviceLastUpdated;
 		View ibeaconSection;
 		ImageView deviceIcon;
 	}

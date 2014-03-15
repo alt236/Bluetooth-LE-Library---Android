@@ -41,7 +41,7 @@
         <GridLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:columnCount="4" >
+            android:columnCount="2" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -57,6 +57,27 @@
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:typeface="monospace" />
+        </GridLayout>
+
+        <GridLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:text="Updated:"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/device_last_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -81,6 +102,8 @@
             android:layout_height="wrap_content"
             android:columnCount="4" >
 
+            <!-- ROW 1 -->
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -96,6 +119,8 @@
                 android:layout_columnSpan="3"
                 android:paddingRight="5dp"
                 android:textSize="12sp" />
+
+            <!-- ROW 2 -->
 
             <TextView
                 android:layout_width="wrap_content"
@@ -128,6 +153,8 @@
                 android:paddingRight="5dp"
                 android:textSize="12sp" />
 
+            <!-- ROW 3 -->
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -156,6 +183,24 @@
                 android:id="@+id/ibeacon_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:textSize="12sp" />
+
+            <!-- ROW 4 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:text="Descriptor:"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/ibeacon_distance_descriptor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="3"
                 android:paddingRight="5dp"
                 android:textSize="12sp" />
         </GridLayout>
