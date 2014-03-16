@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
-import uk.co.alt236.bluetoothlelib.device.mfdata.IBeaconManufacturerData;
+import uk.co.alt236.bluetoothlelib.device.IBeaconDevice;
 import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
 import uk.co.alt236.btlescan.R;
 import android.app.Activity;
@@ -96,17 +96,20 @@ public class LeDeviceListAdapter extends BaseAdapter {
 		}
 
 		if (IBeaconUtils.isThisAnIBeacon(device)){
-			final IBeaconManufacturerData data = new IBeaconManufacturerData(device);
-			final double accuracy = data.getAccuracy(rssi);
+			// Alternatively you can just call
+			// IBeaconManufacturerData data = new IBeaconManufacturerData(device);
+			
+			final IBeaconDevice iBeacon = new IBeaconDevice(device);
+			final double accuracy = iBeacon.getAccuracy();
 
 			viewHolder.deviceIcon.setImageResource(R.drawable.ic_device_ibeacon);
 			viewHolder.ibeaconSection.setVisibility(View.VISIBLE);
-			viewHolder.ibeaconMajor.setText(String.valueOf(data.getMajor()));
-			viewHolder.ibeaconMinor.setText(String.valueOf(data.getMinor()));
-			viewHolder.ibeaconTxPower.setText(String.valueOf(data.getCalibratedTxPower()));
-			viewHolder.ibeaconUUID.setText(data.getUUID());
+			viewHolder.ibeaconMajor.setText(String.valueOf(iBeacon.getMajor()));
+			viewHolder.ibeaconMinor.setText(String.valueOf(iBeacon.getMinor()));
+			viewHolder.ibeaconTxPower.setText(String.valueOf(iBeacon.getCalibratedTxPower()));
+			viewHolder.ibeaconUUID.setText(iBeacon.getUUID());
 			viewHolder.ibeaconDistance.setText(DOUBLE_TWO_DIGIT_ACCURACY.format(accuracy) + "m");
-			viewHolder.ibeaconDistanceDescriptor.setText(data.getDistanceDescriptor(accuracy));
+			viewHolder.ibeaconDistanceDescriptor.setText(iBeacon.getDistanceDescriptor().toString());
 		} else {
 			viewHolder.deviceIcon.setImageResource(R.drawable.ic_bluetooth);
 			viewHolder.ibeaconSection.setVisibility(View.GONE);
