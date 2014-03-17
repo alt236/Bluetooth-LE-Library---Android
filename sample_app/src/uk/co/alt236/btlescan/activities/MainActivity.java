@@ -1,5 +1,8 @@
 package uk.co.alt236.btlescan.activities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.adapters.LeDeviceListAdapter;
@@ -23,11 +26,15 @@ public class MainActivity extends ListActivity {
 	@InjectView(R.id.tvBluetoothLe) TextView mTvBluetoothLeStatus;
 	@InjectView(R.id.tvBluetoothStatus) TextView mTvBluetoothStatus;
 	@InjectView(R.id.radarView) RadarView mRadarView;
-	
+
 	private BluetoothUtils mBluetoothUtils;
 	private BluetoothLeScanner mScanner;
 	private LeDeviceListAdapter mLeDeviceListAdapter;
-	
+	private List<BluetoothLeDevice> mDeviceList;
+
+
+
+
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 		@Override
 		public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
@@ -62,6 +69,8 @@ public class MainActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		ButterKnife.inject(this);
+		mDeviceList = new ArrayList<BluetoothLeDevice>();
+
 		mBluetoothUtils = new BluetoothUtils(this);
 		mScanner = new BluetoothLeScanner(mLeScanCallback, mBluetoothUtils);
 	}
