@@ -1,11 +1,9 @@
 package uk.co.alt236.btlescan.activities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.adapters.LeDeviceListAdapter;
+import uk.co.alt236.btlescan.containers.BluetoothLeDeviceStore;
 import uk.co.alt236.btlescan.util.BluetoothLeScanner;
 import uk.co.alt236.btlescan.util.BluetoothUtils;
 import uk.co.alt236.btlescan.views.RadarView;
@@ -30,10 +28,7 @@ public class MainActivity extends ListActivity {
 	private BluetoothUtils mBluetoothUtils;
 	private BluetoothLeScanner mScanner;
 	private LeDeviceListAdapter mLeDeviceListAdapter;
-	private List<BluetoothLeDevice> mDeviceList;
-
-
-
+	private BluetoothLeDeviceStore mDeviceStore;
 
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 		@Override
@@ -44,17 +39,18 @@ public class MainActivity extends ListActivity {
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					mLeDeviceListAdapter.addDevice(deviceLe);
+					mDeviceStore.addDevice(deviceLe);
+					mLeDeviceListAdapter.clear();
+					mLeDeviceListAdapter.addAll(mDeviceStore.getDeviceList());
 					mLeDeviceListAdapter.notifyDataSetChanged();
 				}
 			});
-
 		}
 	};
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		final BluetoothLeDevice device = mLeDeviceListAdapter.getDevice(position);
+		final BluetoothLeDevice device = mLeDeviceListAdapter.getItem(position);
 		if (device == null) return;
 
 
@@ -69,8 +65,8 @@ public class MainActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		ButterKnife.inject(this);
-		mDeviceList = new ArrayList<BluetoothLeDevice>();
 
+		mDeviceStore = new BluetoothLeDeviceStore();
 		mBluetoothUtils = new BluetoothUtils(this);
 		mScanner = new BluetoothLeScanner(mLeScanCallback, mBluetoothUtils);
 	}
@@ -134,8 +130,9 @@ public class MainActivity extends ListActivity {
 	private void startScan(){
 		final boolean mIsBluetoothOn = mBluetoothUtils.isBluetoothOn();
 		final boolean mIsBluetoothLePresent = mBluetoothUtils.isBluetoothLeSupported();
+		mDeviceStore.clear();
 
-		mLeDeviceListAdapter = new LeDeviceListAdapter(this);
+		mLeDeviceListAdapter = new LeDeviceListAdapter(this, mDeviceStore.getDeviceList());
 		setListAdapter(mLeDeviceListAdapter);
 
 		mBluetoothUtils.askUserToEnableBluetoothIfNeeded();

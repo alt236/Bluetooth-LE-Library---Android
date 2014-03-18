@@ -11,11 +11,17 @@
     <string name="no_data">No data</string>
     <string name="unknown_device">Unknown Device</string>
 
+    <!-- Formatters -->
+    <string name="formatter_meters">%sm</string>
+    <string name="formatter_db">%sdb</string>
+
     <!-- Menu items -->
     <string name="menu_connect">Connect</string>
     <string name="menu_disconnect">Disconnect</string>
     <string name="menu_scan">Scan</string>
     <string name="menu_stop">Stop</string>
+
+    <!-- List Items -->
     <string name="label_distance">Distance:</string>
     <string name="label_tx_power">TX Power:</string>
     <string name="label_minor">Minor:</string>

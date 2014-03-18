@@ -17,11 +17,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
+    android:gravity="top"
     android:orientation="horizontal" >
 
     <ImageView
         android:id="@+id/device_icon"
+        android:paddingTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="5dp"
@@ -57,12 +58,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:typeface="monospace" />
-        </GridLayout>
-
-        <GridLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="4" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -82,7 +77,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="@string/label_rssi"
                 android:textSize="12sp"
@@ -100,6 +94,7 @@
             android:id="@+id/ibeacon_section"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:background="@color/light_gray"
             android:columnCount="4" >
 
             <!-- ROW 1 -->

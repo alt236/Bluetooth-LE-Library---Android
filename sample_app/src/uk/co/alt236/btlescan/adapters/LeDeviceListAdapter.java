@@ -1,60 +1,38 @@
 package uk.co.alt236.btlescan.adapters;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.IBeaconDevice;
 import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
 import uk.co.alt236.btlescan.R;
+import uk.co.alt236.btlescan.util.Constants;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 // Adapter for holding devices found through scanning.
-public class LeDeviceListAdapter extends BaseAdapter {
-	private static final DecimalFormat DOUBLE_TWO_DIGIT_ACCURACY = new DecimalFormat("#.##");
-	private static final String TIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
-	
-	private final List<BluetoothLeDevice> mLeDevices;
+public class LeDeviceListAdapter extends ArrayAdapter<BluetoothLeDevice> {
 	private final LayoutInflater mInflator;
+	private final Activity mActivity;
 
-	public LeDeviceListAdapter(Activity activity) {
-		super();
-		mLeDevices = new ArrayList<BluetoothLeDevice>();
+	public LeDeviceListAdapter(Activity activity, List<BluetoothLeDevice> list) {
+		super(activity, R.layout.list_item_device, list);
 		mInflator = activity.getLayoutInflater();
+		mActivity = activity;
 	}
 
-	public void addDevice(BluetoothLeDevice device) {
-		final int position = mLeDevices.indexOf(device);
-		if(position == -1){
-			mLeDevices.add(device);
-		} else {
-			mLeDevices.set(position, device);
-		}
-	}
-
-	public BluetoothLeDevice getDevice(int position) {
-		return mLeDevices.get(position);
-	}
-
-	public void clear() {
-		mLeDevices.clear();
-	}
-
-	@Override
-	public int getCount() {
-		return mLeDevices.size();
-	}
-
-	@Override
-	public Object getItem(int i) {
-		return mLeDevices.get(i);
-	}
+//	public void addDevice(BluetoothLeDevice device) {
+//		final int position = mLeDevices.indexOf(device);
+//		if(position == -1){
+//			mLeDevices.add(device);
+//		} else {
+//			mLeDevices.set(position, device);
+//		}
+//	}
 
 	@Override
 	public long getItemId(int i) {
@@ -85,7 +63,7 @@ public class LeDeviceListAdapter extends BaseAdapter {
 			viewHolder = (ViewHolder) view.getTag();
 		}
 
-		final BluetoothLeDevice device = mLeDevices.get(i);
+		final BluetoothLeDevice device = getItem(i);
 		final String deviceName = device.getName();
 		final double rssi = device.getRssi();
 
@@ -96,11 +74,8 @@ public class LeDeviceListAdapter extends BaseAdapter {
 		}
 
 		if (IBeaconUtils.isThisAnIBeacon(device)){
-			// Alternatively you can just call
-			// IBeaconManufacturerData data = new IBeaconManufacturerData(device);
-			
 			final IBeaconDevice iBeacon = new IBeaconDevice(device);
-			final double accuracy = iBeacon.getAccuracy();
+			final String accuracy = Constants.DOUBLE_TWO_DIGIT_ACCURACY.format(iBeacon.getAccuracy());
 
 			viewHolder.deviceIcon.setImageResource(R.drawable.ic_device_ibeacon);
 			viewHolder.ibeaconSection.setVisibility(View.VISIBLE);
@@ -108,17 +83,22 @@ public class LeDeviceListAdapter extends BaseAdapter {
 			viewHolder.ibeaconMinor.setText(String.valueOf(iBeacon.getMinor()));
 			viewHolder.ibeaconTxPower.setText(String.valueOf(iBeacon.getCalibratedTxPower()));
 			viewHolder.ibeaconUUID.setText(iBeacon.getUUID());
-			viewHolder.ibeaconDistance.setText(DOUBLE_TWO_DIGIT_ACCURACY.format(accuracy) + "m");
+			viewHolder.ibeaconDistance.setText(
+					mActivity.getString(R.string.formatter_meters, accuracy));
 			viewHolder.ibeaconDistanceDescriptor.setText(iBeacon.getDistanceDescriptor().toString());
 		} else {
 			viewHolder.deviceIcon.setImageResource(R.drawable.ic_bluetooth);
 			viewHolder.ibeaconSection.setVisibility(View.GONE);
 		}
 
+		final String rssiString = mActivity.getString(R.string.formatter_db, String.valueOf(rssi));
+		final String runningAverageRssiString = mActivity.getString(R.string.formatter_db, String.valueOf(device.getRunningAverageRssi()));
+
 		viewHolder.deviceLastUpdated.setText(
-				android.text.format.DateFormat.format(TIME_FORMAT, new java.util.Date(device.getTimestamp())));
+				android.text.format.DateFormat.format(
+						Constants.TIME_FORMAT, new java.util.Date(device.getTimestamp())));
 		viewHolder.deviceAddress.setText(device.getAddress());
-		viewHolder.deviceRssi.setText(String.valueOf(rssi) + "db");
+		viewHolder.deviceRssi.setText(rssiString + " / " + runningAverageRssiString);
 		return view;
 	}
 
