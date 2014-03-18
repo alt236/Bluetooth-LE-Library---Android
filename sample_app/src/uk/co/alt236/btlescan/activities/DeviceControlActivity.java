@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import uk.co.alt236.bluetoothlelib.resolvers.GattAttributeResolver;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.services.BluetoothLeService;
-import uk.co.alt236.btlescan.util.SampleGattAttributes;
 import android.app.Activity;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
@@ -262,7 +262,7 @@ public class DeviceControlActivity extends Activity {
             HashMap<String, String> currentServiceData = new HashMap<String, String>();
             uuid = gattService.getUuid().toString();
             currentServiceData.put(
-                    LIST_NAME, SampleGattAttributes.lookup(uuid, unknownServiceString));
+                    LIST_NAME, GattAttributeResolver.getAttributeName(uuid, unknownServiceString));
             currentServiceData.put(LIST_UUID, uuid);
             gattServiceData.add(currentServiceData);
 
@@ -279,7 +279,7 @@ public class DeviceControlActivity extends Activity {
                 HashMap<String, String> currentCharaData = new HashMap<String, String>();
                 uuid = gattCharacteristic.getUuid().toString();
                 currentCharaData.put(
-                        LIST_NAME, SampleGattAttributes.lookup(uuid, unknownCharaString));
+                        LIST_NAME, GattAttributeResolver.getAttributeName(uuid, unknownCharaString));
                 currentCharaData.put(LIST_UUID, uuid);
                 gattCharacteristicGroupData.add(currentCharaData);
             }
