@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Bluetooth LE Scanner</string>
     <string name="action_settings">Settings</string>
+    <string name="app_name">Bluetooth LE Scanner</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
     <string name="hello_world">Hello world!</string>
+    <string name="no_data">No data</string>
+    <string name="not_supported">Not supported</string>
     <string name="off">Off</string>
     <string name="on">On</string>
-    <string name="not_supported">Not supported</string>
     <string name="supported">Supported</string>
-    <string name="no_data">No data</string>
+    <string name="unknown_characteristic">Unknown characteristic</string>
     <string name="unknown_device">Unknown Device</string>
+    <string name="unknown_service">Unknown service</string>
 
     <!-- Formatters -->
     <string name="formatter_meters">%sm</string>
@@ -22,12 +26,15 @@
     <string name="menu_stop">Stop</string>
 
     <!-- List Items -->
+    <string name="label_data">Data:</string>
+    <string name="label_device_address">Device address:</string>
     <string name="label_distance">Distance:</string>
-    <string name="label_tx_power">TX Power:</string>
-    <string name="label_minor">Minor:</string>
-    <string name="label_major">Major:</string>
-    <string name="label_uuid">UUID:</string>
-    <string name="label_rssi">RSSI:</string>
     <string name="label_mac">MAC:</string>
+    <string name="label_major">Major:</string>
+    <string name="label_minor">Minor:</string>
+    <string name="label_rssi">RSSI:</string>
+    <string name="label_state">State:</string>
+    <string name="label_tx_power">TX Power:</string>
+    <string name="label_uuid">UUID:</string>
 
 </resources>

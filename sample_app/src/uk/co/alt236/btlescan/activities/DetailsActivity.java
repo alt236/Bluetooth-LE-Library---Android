@@ -11,7 +11,10 @@ import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.util.Constants;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -24,6 +27,19 @@ public class DetailsActivity extends Activity{
 
 	private BluetoothLeDevice mDevice;
 
+	private String formatRssi(double rssi){
+		return getString(R.string.formatter_db, String.valueOf(rssi));
+	}
+
+	private String formatRssi(int rssi){
+		return getString(R.string.formatter_db, String.valueOf(rssi));
+	}
+
+	private String formatTime(long time){
+		return android.text.format.DateFormat.format(
+				Constants.TIME_FORMAT, new java.util.Date(time)).toString();
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,17 +51,26 @@ public class DetailsActivity extends Activity{
 		pupulateDetails(mDevice);
 	}
 
-	private String formatTime(long time){
-		return android.text.format.DateFormat.format(
-				Constants.TIME_FORMAT, new java.util.Date(time)).toString();
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.details, menu);
+		return true;
 	}
 
-	private String formatRssi(int rssi){
-		return getString(R.string.formatter_db, String.valueOf(rssi));
-	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_connect:
 
-	private String formatRssi(double rssi){
-		return getString(R.string.formatter_db, String.valueOf(rssi));
+			 final Intent intent = new Intent(this, DeviceControlActivity.class);
+		        intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, mDevice.getName());
+		        intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, mDevice.getAddress());
+
+		        startActivity(intent);
+
+			break;
+		}
+		return true;
 	}
 
 	private void pupulateDetails(BluetoothLeDevice device) {
@@ -116,27 +141,15 @@ public class DetailsActivity extends Activity{
 		append(sb, label, String.valueOf(value));
 	}
 
-//	private static void append(StringBuilder sb, String label, double value) {
-//		append(sb, label, String.valueOf(value));
-//	}
-//
-//	private static void append(StringBuilder sb, String label, int value) {
-//		append(sb, label, String.valueOf(value));
-//	}
-//
-//	private static void append(StringBuilder sb, String label, long value) {
-//		append(sb, label, String.valueOf(value));
-//	}
-
-	public static String padRight(String s, int n) {
-	     return String.format("%1$-" + n + "s", s);
-	}
-
 	private static void append(StringBuilder sb, String label, String value){
 		if(value != null){
 			sb.append("\u2022"  + padRight(label, 10) +":\t" + value + "\n");
 		} else {
 			sb.append(label + "\n");
 		}
+	}
+
+	public static String padRight(String s, int n) {
+	     return String.format("%1$-" + n + "s", s);
 	}
 }

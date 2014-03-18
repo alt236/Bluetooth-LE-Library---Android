@@ -33,6 +33,11 @@
             android:name="uk.co.alt236.btlescan.activities.DetailsActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity android:name="uk.co.alt236.btlescan.activities.DeviceControlActivity" />
+
+        <service
+            android:name="uk.co.alt236.btlescan.services.BluetoothLeService"
+            android:enabled="true" />
     </application>
 
 </manifest>
