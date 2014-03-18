@@ -6,7 +6,6 @@ import uk.co.alt236.btlescan.adapters.LeDeviceListAdapter;
 import uk.co.alt236.btlescan.containers.BluetoothLeDeviceStore;
 import uk.co.alt236.btlescan.util.BluetoothLeScanner;
 import uk.co.alt236.btlescan.util.BluetoothUtils;
-import uk.co.alt236.btlescan.views.RadarView;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -23,7 +22,6 @@ import butterknife.InjectView;
 public class MainActivity extends ListActivity {
 	@InjectView(R.id.tvBluetoothLe) TextView mTvBluetoothLeStatus;
 	@InjectView(R.id.tvBluetoothStatus) TextView mTvBluetoothStatus;
-	@InjectView(R.id.radarView) RadarView mRadarView;
 
 	private BluetoothUtils mBluetoothUtils;
 	private BluetoothLeScanner mScanner;
@@ -40,9 +38,7 @@ public class MainActivity extends ListActivity {
 				@Override
 				public void run() {
 					mDeviceStore.addDevice(deviceLe);
-					mLeDeviceListAdapter.clear();
-					mLeDeviceListAdapter.addAll(mDeviceStore.getDeviceList());
-					mLeDeviceListAdapter.notifyDataSetChanged();
+					mLeDeviceListAdapter.replaceData(mDeviceStore.getDeviceList());
 				}
 			});
 		}

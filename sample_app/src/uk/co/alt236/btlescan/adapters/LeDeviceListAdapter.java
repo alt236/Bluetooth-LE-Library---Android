@@ -34,6 +34,11 @@ public class LeDeviceListAdapter extends ArrayAdapter<BluetoothLeDevice> {
 //		}
 //	}
 
+	public void replaceData(List<BluetoothLeDevice> list){
+		clear();
+		addAll(list);
+	}
+
 	@Override
 	public long getItemId(int i) {
 		return i;
