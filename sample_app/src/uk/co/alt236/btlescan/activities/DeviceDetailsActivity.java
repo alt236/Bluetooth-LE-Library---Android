@@ -19,7 +19,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class DetailsActivity extends Activity{
+public class DeviceDetailsActivity extends Activity{
 	private static final String SECTION_LINE = "------------------------------";
 	public static final String EXTRA_DEVICE = "extra_device";
 
@@ -79,6 +79,8 @@ public class DetailsActivity extends Activity{
 		if(device == null){
 			append(sb, "Invalid Device Data!", null);
 		} else {
+			append(sb, "Device Info", null);
+			append(sb, SECTION_LINE, null);
 			append(sb, "Device Name", device.getName());
 			append(sb, "Device Address", device.getAddress());
 
@@ -110,7 +112,8 @@ public class DetailsActivity extends Activity{
 
 			for(final AdRecord record : adRecords){
 				append(sb, "#" +record.getType() + " " + record.getHumanReadableType(), null);
-				append(sb, AdRecordUtils.getRecordDataAsString(record), null);
+				append(sb, "  As String: '" + AdRecordUtils.getRecordDataAsString(record) + "'", null);
+				append(sb, "  As Array : " + ByteUtils.byteArrayToHexString(record.getData()), null);
 				append(sb, "", null);
 			}
 

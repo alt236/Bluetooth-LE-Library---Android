@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="uk.co.alt236.btlescan.activities.DetailsActivity"
+            android:name="uk.co.alt236.btlescan.activities.DeviceDetailsActivity"
             android:label="@string/app_name" >
         </activity>
         <activity android:name="uk.co.alt236.btlescan.activities.DeviceControlActivity" />

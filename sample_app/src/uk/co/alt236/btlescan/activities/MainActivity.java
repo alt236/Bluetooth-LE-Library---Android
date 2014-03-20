@@ -50,8 +50,8 @@ public class MainActivity extends ListActivity {
 		if (device == null) return;
 
 
-		final Intent intent = new Intent(this, DetailsActivity.class);
-		intent.putExtra(DetailsActivity.EXTRA_DEVICE, device);
+		final Intent intent = new Intent(this, DeviceDetailsActivity.class);
+		intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE, device);
 
 		startActivity(intent);
 	}
