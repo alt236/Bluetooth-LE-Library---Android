@@ -7,10 +7,11 @@ import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
 
 /**
- * Objectifies the Manufactured Data field of an iBeacon
+ * Parses the Manufactured Data field of an iBeacon
  *
  * The parsing is based on the following schema:
  *
+ * <p>
  * 0	4C - Byte 1 (LSB) of Company identifier code
  * 1	00 - Byte 0 (MSB) of Company identifier code (0x004C == Apple)
  * 2	02 - Byte 0 of iBeacon advertisement indicator
@@ -37,6 +38,8 @@ import uk.co.alt236.bluetoothlelib.util.ByteUtils;
  * 23	00
  * 24	c5 - The 2's complement of the calibrated Tx Power
  *
+ * </p>
+ *
  * @author Alexandros Schillings
  *
  */
@@ -54,6 +57,12 @@ public final class IBeaconManufacturerData {
 		this(device.getAdRecordStore().getRecord(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getData());
 	}
 
+	/**
+	 * Instantiates a new iBeacon manufacturer data object.
+
+	 * @param data the {@link #uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA} data array
+	 * @throws IndexOutOfBoundsException if the data array is shorter than expected
+	 */
 	public IBeaconManufacturerData(byte[] data){
 		mData = data;
 
@@ -67,10 +76,20 @@ public final class IBeaconManufacturerData {
 		mCalibratedTxPower = data[24];
 	}
 
+	/**
+	 * Gets the calibrated TX power of the iBeacon device as reported.
+	 *
+	 * @return the calibrated TX power
+	 */
 	public int getCalibratedTxPower(){
 		return mCalibratedTxPower;
 	}
 
+	/**
+	 * Gets the iBeacon company identifier.
+	 *
+	 * @return the company identifier
+	 */
 	public int getCompanyIdentifier(){
 		return mCompanyIdentidier;
 	}
@@ -79,14 +98,29 @@ public final class IBeaconManufacturerData {
 		return mIBeaconAdvertisment;
 	}
 
+	/**
+	 * Gets the iBeacon Major value.
+	 *
+	 * @return the Major value
+	 */
 	public int getMajor(){
 		return mMajor;
 	}
 
+	/**
+	 * Gets the iBeacon Minor value.
+	 *
+	 * @return the Minor value
+	 */
 	public int getMinor(){
 		return mMinor;
 	}
 
+	/**
+	 * Gets the iBeacon UUID.
+	 *
+	 * @return the UUID
+	 */
 	public String getUUID(){
 		return mUUID;
 	}
