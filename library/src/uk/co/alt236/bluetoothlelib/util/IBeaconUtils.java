@@ -1,14 +1,14 @@
 package uk.co.alt236.bluetoothlelib.util;
 
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
+import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord;
 
 public class IBeaconUtils {
 	private static final double DISTANCE_THRESHOLD_WTF = 0.0;
 	private static final double DISTANCE_THRESHOLD_IMMEDIATE = 0.5;
 	private static final double DISTANCE_THRESHOLD_NEAR = 3.0;
 
-	private static final byte[] SCAN_RECORD_PREFIX_IBEACON_1 = new byte[]{0x02, 0x01, 0x1A, 0x1A, (byte) 0xFF, 0x4C, 0x00, 0x02, 0x15};
-	private static final byte[] SCAN_RECORD_PREFIX_IBEACON_2 = new byte[]{0x02, 0x01, 0x06, 0x1A, (byte) 0xFF, 0x4C, 0x00, 0x02, 0x15};
+	private static final byte[] MANUFACTURER_DATA_IBEACON_PREFIX = new byte[]{0x4C, 0x00, 0x02, 0x15};
 
 	public static IBeaconDistanceDescriptor getDistanceDescriptor(double accuracy){
 		if(accuracy < DISTANCE_THRESHOLD_WTF){
@@ -57,21 +57,23 @@ public class IBeaconUtils {
 	 * @return
 	 */
 	public static boolean isThisAnIBeacon(BluetoothLeDevice device){
-		return isThisAnIBeacon(device.getScanRecord());
+		return isThisAnIBeacon(
+				device.getAdRecordStore().getRecordDataAsString(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getBytes());
 	}
 
 	/**
-	 * Ascertains whether a scanRecord bytearray belongs to an iBeacon;
+	 * Ascertains whether a Manufacturer Data byte array belongs to an iBeacon;
 	 *
-	 * @param scanRecord a Bluetooth LE device's scanRecord.
+	 * @param scanRecord a Bluetooth LE device's manufacturerData.
 	 * @return
 	 */
-	public static boolean isThisAnIBeacon(byte[] scanRecord){
-		if(ByteUtils.doesArrayBeginWith(scanRecord, SCAN_RECORD_PREFIX_IBEACON_1)){
-			return true;
-		}
+	public static boolean isThisAnIBeacon(byte[] manufacturerData){
+		if(manufacturerData == null){return false;}
 
-		if(ByteUtils.doesArrayBeginWith(scanRecord, SCAN_RECORD_PREFIX_IBEACON_2)){
+		// An iBeacon record must be at least 25 chars long
+		if(!(manufacturerData.length >= 25)){return false;}
+
+		if(ByteUtils.doesArrayBeginWith(manufacturerData, MANUFACTURER_DATA_IBEACON_PREFIX)){
 			return true;
 		}
 
