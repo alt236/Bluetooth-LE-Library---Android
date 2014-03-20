@@ -29,6 +29,7 @@ Sample App Screenshots
 -----------
 ![screenshot1](https://github.com/alt236/Bluetooth-LE-Library---Android/raw/master/screenshots/screenshot_1.png)
 ![screenshot2](https://github.com/alt236/Bluetooth-LE-Library---Android/raw/master/screenshots/screenshot_2.png)
+![screenshot3](https://github.com/alt236/Bluetooth-LE-Library---Android/raw/master/screenshots/screenshot_3.png)
 
 Links
 -----------
