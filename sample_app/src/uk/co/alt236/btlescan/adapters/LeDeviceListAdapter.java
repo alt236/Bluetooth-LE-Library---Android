@@ -25,16 +25,8 @@ public class LeDeviceListAdapter extends ArrayAdapter<BluetoothLeDevice> {
 		mActivity = activity;
 	}
 
-//	public void addDevice(BluetoothLeDevice device) {
-//		final int position = mLeDevices.indexOf(device);
-//		if(position == -1){
-//			mLeDevices.add(device);
-//		} else {
-//			mLeDevices.set(position, device);
-//		}
-//	}
-
 	public void replaceData(List<BluetoothLeDevice> list){
+		// TODO: THIS IS REALLY HACKY AND BAD FOR PERFORMACE...
 		clear();
 		addAll(list);
 	}
@@ -96,8 +88,10 @@ public class LeDeviceListAdapter extends ArrayAdapter<BluetoothLeDevice> {
 			viewHolder.ibeaconSection.setVisibility(View.GONE);
 		}
 
-		final String rssiString = mActivity.getString(R.string.formatter_db, String.valueOf(rssi));
-		final String runningAverageRssiString = mActivity.getString(R.string.formatter_db, String.valueOf(device.getRunningAverageRssi()));
+		final String rssiString = 
+				mActivity.getString(R.string.formatter_db, String.valueOf(rssi));
+		final String runningAverageRssiString = 
+				mActivity.getString(R.string.formatter_db, String.valueOf(device.getRunningAverageRssi()));
 
 		viewHolder.deviceLastUpdated.setText(
 				android.text.format.DateFormat.format(
