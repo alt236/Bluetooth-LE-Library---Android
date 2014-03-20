@@ -1,6 +1,7 @@
 Bluetooth LE Library for Android
 -----------
 This library allows for easy access to a Bluetooth LE device's AdRecord.
+It can also parse iBeacon Manufacturer data, and can provide Distance indicators (Near, Far, Immediate) and inaccurate (due to realworld issues) distance approximation.
 
 Sample app available on the [Play Store](https://play.google.com/store/apps/details?id=uk.co.alt236.btlescan) 
 
@@ -26,8 +27,8 @@ Permission Explanation
 	
 Sample App Screenshots
 -----------
-![screenshot1](https://github.com/alt236/Reflective-Drawable-Loader---Android/raw/master/screenshots/screenshot_1.png)
-![screenshot2](https://github.com/alt236/Reflective-Drawable-Loader---Android/raw/master/screenshots/screenshot_2.png)
+![screenshot1](https://github.com/alt236/Bluetooth-LE-Library---Android/raw/master/screenshots/screenshot_1.png)
+![screenshot2](https://github.com/alt236/Bluetooth-LE-Library---Android/raw/master/screenshots/screenshot_2.png)
 
 Links
 -----------
