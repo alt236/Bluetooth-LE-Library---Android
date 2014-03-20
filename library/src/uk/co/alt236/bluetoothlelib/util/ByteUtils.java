@@ -3,6 +3,8 @@ package uk.co.alt236.bluetoothlelib.util;
 import java.nio.ByteBuffer;
 
 public class ByteUtils {
+
+	/** The Constant HEXES. */
 	private static final String HEXES = "0123456789ABCDEF";
 
 	/**
@@ -31,20 +33,31 @@ public class ByteUtils {
 		return sb.toString();
 	}
 
-	public static byte[] invertArray(byte[] array){
-		final int size = array.length;
-		byte temp;
+	/**
+	 * Checks to see if a byte arry starts with another byte array.
+	 *
+	 * @param array the array
+	 * @param prefix the prefix
+	 * @return true, if successful
+	 */
+	public static boolean doesArrayBeginWith(byte[] array, byte[] prefix){
+		if(array.length < prefix.length){return false;}
 
-		for (int i = 0; i < size/2; i++)
-		  {
-		     temp = array[i];
-		     array[i] = array[size-1 - i];
-		     array[size-1 - i] = temp;
-		  }
+		for(int i = 0; i < prefix.length; i++){
+			if(array[i] != prefix[i]){
+				return false;
+			}
+		}
 
-		return array;
+		return true;
 	}
 
+	/**
+	 * Converts a byte array with a length of 2 into an int
+	 *
+	 * @param input the input
+	 * @return the int from the array
+	 */
 	public static int getIntFrom2ByteArray(byte[] input){
 		final byte[] result = new byte[4];
 
@@ -69,7 +82,7 @@ public class ByteUtils {
 	}
 
 	/**
-	 * Converts a byte array to an integer;
+	 * Converts a byte array to an int.
 	 *
 	 * @param bytes the bytes
 	 * @return the int from byte array
@@ -78,14 +91,34 @@ public class ByteUtils {
 	     return ByteBuffer.wrap(bytes).getInt();
 	}
 
-
 	/**
-	 * Converts a byte array to a long;
+	 * Converts a byte array to a long.
 	 *
 	 * @param bytes the bytes
 	 * @return the long from byte array
 	 */
 	public static long getLongFromByteArray(final byte[] bytes) {
 	     return ByteBuffer.wrap(bytes).getLong();
+	}
+
+
+	/**
+	 * Inverts an array
+	 *
+	 * @param array the array
+	 * @return the byte[]
+	 */
+	public static byte[] invertArray(byte[] array){
+		final int size = array.length;
+		byte temp;
+
+		for (int i = 0; i < size/2; i++)
+		  {
+		     temp = array[i];
+		     array[i] = array[size-1 - i];
+		     array[size-1 - i] = temp;
+		  }
+
+		return array;
 	}
 }

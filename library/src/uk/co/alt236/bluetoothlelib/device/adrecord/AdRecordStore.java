@@ -10,8 +10,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.SparseArray;
 
+/**
+ * The Class AdRecordStore.
+ */
 public class AdRecordStore implements Parcelable{
-
 	private final SparseArray<AdRecord> mAdRecords;
 	private final String mLocalNameComplete;
 	private final String mLocalNameShort;
@@ -33,6 +35,11 @@ public class AdRecordStore implements Parcelable{
 		mLocalNameShort = b.getString("local_name_short");
 	}
 
+	/**
+	 * Instantiates a new Bluetooth LE device Ad Record Store.
+	 *
+	 * @param adRecords the ad records
+	 */
 	public AdRecordStore(final SparseArray<AdRecord> adRecords){
 		mAdRecords = adRecords;
 
@@ -44,41 +51,83 @@ public class AdRecordStore implements Parcelable{
 
 	}
 
+	/* (non-Javadoc)
+	 * @see android.os.Parcelable#describeContents()
+	 */
 	@Override
 	public int describeContents() {
 		return 0;
 	}
 
+	/**
+	 * Gets the short local device name.
+	 *
+	 * @return the local name complete
+	 */
 	public String getLocalNameComplete() {
 		return mLocalNameComplete;
 	}
 
+	/**
+	 * Gets the complete local device name.
+	 *
+	 * @return the local name short
+	 */
 	public String getLocalNameShort() {
 		return mLocalNameShort;
 	}
 
+	/**
+	 * retrieves an individual record.
+	 *
+	 * @param record the record
+	 * @return the record
+	 */
 	public AdRecord getRecord(int record){
 		return mAdRecords.get(record);
 	}
 
+	/**
+	 * Gets the record data as string.
+	 *
+	 * @param record the record
+	 * @return the record data as string
+	 */
 	public String getRecordDataAsString(int record){
 		return AdRecordUtils.getRecordDataAsString(
 				mAdRecords.get(record));
 	}
 
+	/**
+	 * Gets the record as collection.
+	 *
+	 * @return the records as collection
+	 */
 	public Collection<AdRecord> getRecordsAsCollection() {
 		return Collections.unmodifiableCollection(asList(mAdRecords));
 	}
 
+	/**
+	 * Checks if is record present.
+	 *
+	 * @param record the record
+	 * @return true, if is record present
+	 */
 	public boolean isRecordPresent(int record){
 		return mAdRecords.indexOfKey(record) >= 0;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "AdRecordStore [mLocalNameComplete=" + mLocalNameComplete + ", mLocalNameShort=" + mLocalNameShort + "]";
 	}
 
+	/* (non-Javadoc)
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
 	@Override
 	public void writeToParcel(Parcel parcel, int arg1) {
 		final Bundle b = new Bundle();
@@ -89,6 +138,13 @@ public class AdRecordStore implements Parcelable{
 		parcel.writeBundle(b);
 	}
 
+	/**
+	 * As list.
+	 *
+	 * @param <C> the generic type
+	 * @param sparseArray the sparse array
+	 * @return the collection
+	 */
 	public static <C> Collection<C> asList(SparseArray<C> sparseArray) {
 	    if (sparseArray == null) return null;
 
