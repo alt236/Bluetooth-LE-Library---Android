@@ -6,11 +6,16 @@ import uk.co.alt236.btlescan.adapters.LeDeviceListAdapter;
 import uk.co.alt236.btlescan.containers.BluetoothLeDeviceStore;
 import uk.co.alt236.btlescan.util.BluetoothLeScanner;
 import uk.co.alt236.btlescan.util.BluetoothUtils;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,16 +49,29 @@ public class MainActivity extends ListActivity {
 		}
 	};
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		final BluetoothLeDevice device = mLeDeviceListAdapter.getItem(position);
-		if (device == null) return;
+	private void displayAboutDialog(){
+		// REALLY REALLY LAZY LIKIFIED DIALOG
+		final int paddingSizeDp = 5;
+		final float scale = getResources().getDisplayMetrics().density;
+		final int dpAsPixels = (int) (paddingSizeDp * scale + 0.5f);
 
+		final TextView textView=new TextView(this);
+		final SpannableString text = new SpannableString(getString(R.string.about_dialog_text));
 
-		final Intent intent = new Intent(this, DeviceDetailsActivity.class);
-		intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE, device);
+		textView.setText(text);
+		textView.setAutoLinkMask(RESULT_OK);
+		textView.setMovementMethod(LinkMovementMethod.getInstance());
+		textView.setPadding(dpAsPixels, dpAsPixels, dpAsPixels, dpAsPixels);
 
-		startActivity(intent);
+		Linkify.addLinks(text, Linkify.ALL);
+		new AlertDialog.Builder(this)
+		.setTitle(R.string.menu_about)
+		.setCancelable(false)
+		.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {}
+		})
+		.setView(textView)
+		.show();
 	}
 
 	@Override
@@ -83,6 +101,18 @@ public class MainActivity extends ListActivity {
 	}
 
 	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		final BluetoothLeDevice device = mLeDeviceListAdapter.getItem(position);
+		if (device == null) return;
+
+
+		final Intent intent = new Intent(this, DeviceDetailsActivity.class);
+		intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE, device);
+
+		startActivity(intent);
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_scan:
@@ -91,6 +121,9 @@ public class MainActivity extends ListActivity {
 		case R.id.menu_stop:
 			mScanner.scanLeDevice(-1, false);
 			invalidateOptionsMenu();
+			break;
+		case R.id.menu_about:
+			displayAboutDialog();
 			break;
 		}
 		return true;

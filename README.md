@@ -97,7 +97,7 @@ An IBeaconDevice extends BluetoothLeDevice, so you still have access to the same
 You can also lookup values and convert them to human friendly strings:
 * `BluetoothClassResolver.resolveDeviceClass(int btClass)`: Will try to resolve a Blueotooth Device class
 * `CompanyIdentifierResolver.getCompanyName(int companyId, String fallback)`: Will try to resolve a Company identifier to the company name
-* GattAttributeResolver.getAttributeName(String uuid, String fallback): Will try to convert a UUID to its name.
+* `GattAttributeResolver.getAttributeName(String uuid, String fallback)`: Will try to convert a UUID to its name.
 
 **Note:** The data can be found as ODS (Open Office Spreadsheets) in the documents folder. 
 
@@ -129,11 +129,9 @@ Author: [Alexandros Schillings](https://github.com/alt236).
 
 * The Accuracy calculation algorithm was taken from: http://stackoverflow.com/questions/20416218/understanding-ibeacon-distancing
 * The AdRecord parser was taken from: https://github.com/devunwired/accessory-samples
-* The sample application has been adapted from 
+* The sample application has been adapted from Android's Bluetooth LE example
 
 All logos are the property of their respective owners.
-
-The icons used for the example app were downloaded from here: [Android Design](http://developer.android.com/design/downloads/index.htm)
 
 The code in this project is licensed under the Apache Software License 2.0.
 
