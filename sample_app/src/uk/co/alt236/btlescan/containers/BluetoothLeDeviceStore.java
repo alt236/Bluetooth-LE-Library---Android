@@ -8,10 +8,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
+import uk.co.alt236.bluetoothlelib.device.IBeaconDevice;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
+import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
 import uk.co.alt236.btlescan.util.CsvWriterHelper;
 import android.content.Context;
 import android.content.Intent;
@@ -82,6 +85,14 @@ public class BluetoothLeDeviceStore {
 		sb.append(CsvWriterHelper.addStuff("currentTimestamp"));
 		sb.append(CsvWriterHelper.addStuff("currentRssi"));
 		sb.append(CsvWriterHelper.addStuff("adRecord"));
+		sb.append(CsvWriterHelper.addStuff("iBeacon"));
+		sb.append(CsvWriterHelper.addStuff("uuid"));
+		sb.append(CsvWriterHelper.addStuff("major"));
+		sb.append(CsvWriterHelper.addStuff("minor"));
+		sb.append(CsvWriterHelper.addStuff("txPower"));
+		sb.append(CsvWriterHelper.addStuff("distance"));
+		sb.append(CsvWriterHelper.addStuff("distance"));
+		sb.append(CsvWriterHelper.addStuff("accuracy"));
 		sb.append('\n');
 
 		for(BluetoothLeDevice device : list){
@@ -92,6 +103,39 @@ public class BluetoothLeDeviceStore {
 			sb.append(CsvWriterHelper.addStuff(device.getTimestamp()));
 			sb.append(CsvWriterHelper.addStuff(device.getRssi()));
 			sb.append(CsvWriterHelper.addStuff(ByteUtils.byteArrayToHexString(device.getScanRecord())));
+			final boolean isIBeacon = IBeaconUtils.isThisAnIBeacon(device);
+			final String uuid;
+			final String minor;
+			final String major;
+			final String txPower;
+			final String distance;
+			final String accuracy;
+
+			if(isIBeacon){
+				final IBeaconDevice beacon = new IBeaconDevice(device);
+				uuid = String.valueOf(beacon.getUUID());
+				minor = String.valueOf(beacon.getMinor());
+				major = String.valueOf(beacon.getMajor());
+				txPower = String.valueOf(beacon.getCalibratedTxPower());
+				distance = beacon.getDistanceDescriptor().toString().toLowerCase(Locale.US);
+				accuracy = String.valueOf(beacon.getAccuracy());
+			} else {
+				uuid = "";
+				minor = "";
+				major = "";
+				txPower = "";
+				distance = "";
+				accuracy = "";
+			}
+
+			sb.append(CsvWriterHelper.addStuff(isIBeacon));
+			sb.append(CsvWriterHelper.addStuff(uuid));
+			sb.append(CsvWriterHelper.addStuff(minor));
+			sb.append(CsvWriterHelper.addStuff(major));
+			sb.append(CsvWriterHelper.addStuff(txPower));
+			sb.append(CsvWriterHelper.addStuff(distance));
+			sb.append(CsvWriterHelper.addStuff(accuracy));
+
 			sb.append('\n');
 		}
 
