@@ -1,34 +1,38 @@
 package uk.co.alt236.btlescan.adapters;
 
-import java.util.List;
-
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.IBeaconDevice;
 import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.util.Constants;
+import uk.co.alt236.easycursor.objectcursor.EasyObjectCursor;
 import android.app.Activity;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 // Adapter for holding devices found through scanning.
-public class LeDeviceListAdapter extends ArrayAdapter<BluetoothLeDevice> {
+public class LeDeviceListAdapter extends SimpleCursorAdapter {
 	private final LayoutInflater mInflator;
 	private final Activity mActivity;
 
-	public LeDeviceListAdapter(Activity activity, List<BluetoothLeDevice> list) {
-		super(activity, R.layout.list_item_device, list);
+	public LeDeviceListAdapter(Activity activity, EasyObjectCursor<BluetoothLeDevice> cursor) {
+		super(activity, R.layout.list_item_device, cursor, new String[0], new int[0], 0);
 		mInflator = activity.getLayoutInflater();
 		mActivity = activity;
 	}
 
-	public void replaceData(List<BluetoothLeDevice> list){
-		// TODO: THIS IS REALLY HACKY AND BAD FOR PERFORMACE...
-		clear();
-		addAll(list);
+	@SuppressWarnings("unchecked")
+	@Override
+	public EasyObjectCursor<BluetoothLeDevice> getCursor(){
+		return ((EasyObjectCursor<BluetoothLeDevice>) super.getCursor());
+	}
+
+	@Override
+	public BluetoothLeDevice getItem(int i){
+		return getCursor().getItem(i);
 	}
 
 	@Override
@@ -60,7 +64,7 @@ public class LeDeviceListAdapter extends ArrayAdapter<BluetoothLeDevice> {
 			viewHolder = (ViewHolder) view.getTag();
 		}
 
-		final BluetoothLeDevice device = getItem(i);
+		final BluetoothLeDevice device = getCursor().getItem(i);
 		final String deviceName = device.getName();
 		final double rssi = device.getRssi();
 
@@ -88,9 +92,9 @@ public class LeDeviceListAdapter extends ArrayAdapter<BluetoothLeDevice> {
 			viewHolder.ibeaconSection.setVisibility(View.GONE);
 		}
 
-		final String rssiString = 
+		final String rssiString =
 				mActivity.getString(R.string.formatter_db, String.valueOf(rssi));
-		final String runningAverageRssiString = 
+		final String runningAverageRssiString =
 				mActivity.getString(R.string.formatter_db, String.valueOf(device.getRunningAverageRssi()));
 
 		viewHolder.deviceLastUpdated.setText(

@@ -6,6 +6,7 @@ import uk.co.alt236.btlescan.adapters.LeDeviceListAdapter;
 import uk.co.alt236.btlescan.containers.BluetoothLeDeviceStore;
 import uk.co.alt236.btlescan.util.BluetoothLeScanner;
 import uk.co.alt236.btlescan.util.BluetoothUtils;
+import uk.co.alt236.easycursor.objectcursor.EasyObjectCursor;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
@@ -39,12 +40,13 @@ public class MainActivity extends ListActivity {
 		public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
 
 			final BluetoothLeDevice deviceLe = new BluetoothLeDevice(device, rssi, scanRecord, System.currentTimeMillis());
+			mDeviceStore.addDevice(deviceLe);
+			final EasyObjectCursor<BluetoothLeDevice> c = mDeviceStore.getDeviceCursor();
 
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					mDeviceStore.addDevice(deviceLe);
-					mLeDeviceListAdapter.replaceData(mDeviceStore.getDeviceList());
+					mLeDeviceListAdapter.swapCursor(c);
 					updateItemCount(mLeDeviceListAdapter.getCount());
 				}
 			});
@@ -119,7 +121,7 @@ public class MainActivity extends ListActivity {
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		final BluetoothLeDevice device = mLeDeviceListAdapter.getItem(position);
+		final BluetoothLeDevice device = (BluetoothLeDevice) mLeDeviceListAdapter.getItem(position);
 		if (device == null) return;
 
 
@@ -181,7 +183,7 @@ public class MainActivity extends ListActivity {
 		mDeviceStore.clear();
 		updateItemCount(0);
 
-		mLeDeviceListAdapter = new LeDeviceListAdapter(this, mDeviceStore.getDeviceList());
+		mLeDeviceListAdapter = new LeDeviceListAdapter(this, mDeviceStore.getDeviceCursor());
 		setListAdapter(mLeDeviceListAdapter);
 
 		mBluetoothUtils.askUserToEnableBluetoothIfNeeded();

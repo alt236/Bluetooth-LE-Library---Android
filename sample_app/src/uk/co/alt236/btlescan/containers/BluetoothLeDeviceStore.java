@@ -16,6 +16,7 @@ import uk.co.alt236.bluetoothlelib.device.IBeaconDevice;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
 import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
 import uk.co.alt236.btlescan.util.CsvWriterHelper;
+import uk.co.alt236.easycursor.objectcursor.EasyObjectCursor;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -58,6 +59,13 @@ public class BluetoothLeDeviceStore {
 			}
 		}
 		return writer;
+	}
+
+	public EasyObjectCursor<BluetoothLeDevice> getDeviceCursor(){
+		return new EasyObjectCursor<BluetoothLeDevice>(
+				BluetoothLeDevice.class,
+				getDeviceList(),
+				"address");
 	}
 
 	public List<BluetoothLeDevice> getDeviceList(){
