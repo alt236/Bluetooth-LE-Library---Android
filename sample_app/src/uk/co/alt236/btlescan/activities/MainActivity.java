@@ -27,6 +27,7 @@ import butterknife.InjectView;
 public class MainActivity extends ListActivity {
 	@InjectView(R.id.tvBluetoothLe) TextView mTvBluetoothLeStatus;
 	@InjectView(R.id.tvBluetoothStatus) TextView mTvBluetoothStatus;
+	@InjectView(R.id.tvItemCount) TextView mTvItemCount;
 
 	private BluetoothUtils mBluetoothUtils;
 	private BluetoothLeScanner mScanner;
@@ -44,13 +45,21 @@ public class MainActivity extends ListActivity {
 				public void run() {
 					mDeviceStore.addDevice(deviceLe);
 					mLeDeviceListAdapter.replaceData(mDeviceStore.getDeviceList());
+					updateItemCount(mLeDeviceListAdapter.getCount());
 				}
 			});
 		}
 	};
 
+	private void updateItemCount(int count){
+		mTvItemCount.setText(
+				getString(
+						R.string.formatter_item_count,
+						String.valueOf(count)));
+	}
+
 	private void displayAboutDialog(){
-		// REALLY REALLY LAZY LIKIFIED DIALOG
+		// REALLY REALLY LAZY LINKIFIED DIALOG
 		final int paddingSizeDp = 5;
 		final float scale = getResources().getDisplayMetrics().density;
 		final int dpAsPixels = (int) (paddingSizeDp * scale + 0.5f);
@@ -83,6 +92,7 @@ public class MainActivity extends ListActivity {
 		mDeviceStore = new BluetoothLeDeviceStore();
 		mBluetoothUtils = new BluetoothUtils(this);
 		mScanner = new BluetoothLeScanner(mLeScanCallback, mBluetoothUtils);
+		updateItemCount(0);
 	}
 
 	@Override
@@ -97,6 +107,13 @@ public class MainActivity extends ListActivity {
 			menu.findItem(R.id.menu_scan).setVisible(false);
 			menu.findItem(R.id.menu_refresh).setActionView(R.layout.actionbar_progress_indeterminate);
 		}
+
+		if(getListView().getCount() > 0){
+			menu.findItem(R.id.menu_share).setVisible(true);
+		} else {
+			menu.findItem(R.id.menu_share).setVisible(false);
+		}
+
 		return true;
 	}
 
@@ -125,6 +142,8 @@ public class MainActivity extends ListActivity {
 		case R.id.menu_about:
 			displayAboutDialog();
 			break;
+		case R.id.menu_share:
+			mDeviceStore.shareDataAsEmail(this);
 		}
 		return true;
 	}
@@ -160,6 +179,7 @@ public class MainActivity extends ListActivity {
 		final boolean mIsBluetoothOn = mBluetoothUtils.isBluetoothOn();
 		final boolean mIsBluetoothLePresent = mBluetoothUtils.isBluetoothLeSupported();
 		mDeviceStore.clear();
+		updateItemCount(0);
 
 		mLeDeviceListAdapter = new LeDeviceListAdapter(this, mDeviceStore.getDeviceList());
 		setListAdapter(mLeDeviceListAdapter);

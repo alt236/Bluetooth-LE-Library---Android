@@ -17,13 +17,17 @@
     <!-- Formatters -->
     <string name="formatter_meters">%sm</string>
     <string name="formatter_db">%sdb</string>
+    <string name="formatter_item_count">Items: %s</string>
 
     <!-- Menu items -->
- 	<string name="menu_about">About</string>
+    <string name="menu_about">About</string>
     <string name="menu_connect">Connect</string>
     <string name="menu_disconnect">Disconnect</string>
     <string name="menu_scan">Scan</string>
     <string name="menu_stop">Stop</string>
+    <string name="menu_share">Share</string>
+
+
 
     <!-- List Items -->
     <string name="label_data">Data:</string>
@@ -36,8 +40,6 @@
     <string name="label_state">State:</string>
     <string name="label_tx_power">TX Power:</string>
     <string name="label_uuid">UUID:</string>
-
-
-     <string name="about_dialog_text">This is a sample application using the Bluetooth LE Library.\n\nGithub: https://github.com/alt236/Bluetooth-LE-Library---Android\n\nCopyright: Alexandros Schillings</string>
+    <string name="about_dialog_text">This is a sample application using the Bluetooth LE Library.\n\nGithub: https://github.com/alt236/Bluetooth-LE-Library---Android\n\nCopyright: Alexandros Schillings</string>
 
 </resources>

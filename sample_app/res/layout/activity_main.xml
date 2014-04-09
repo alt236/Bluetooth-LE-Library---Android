@@ -63,15 +63,37 @@
         android:layout_height="1dp"
         android:background="@android:color/holo_blue_dark" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
         <LinearLayout
+            android:id="@+id/infoContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
+
+            <View
+                android:id="@+id/lowerSepparator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/holo_blue_dark" />
+
+            <TextView
+                android:id="@+id/tvItemCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/formatter_item_count" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/listContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/infoContainer"
             android:orientation="vertical" >
 
             <ListView
@@ -86,12 +108,6 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:text="@string/no_data" />
         </LinearLayout>
-
-        <View
-            android:id="@+id/lowerSepparator"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/holo_blue_dark" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
