@@ -24,6 +24,10 @@ b. Create a Jar file (see Jarification below) and add it into your project.
 
 Type `ant jar` at the root of the Library Project to produce a Jar file.
 
+The library jar along with it's javadoc jar will be found in the `dist` directory inside the library project.
+
+You will need to provide your own `local.properties` inside the library project.
+
 ## Using the Library
 In the `onLeScan()` method of your `BluetoothAdapter.LeScanCallback()` create a new BluetoothLeDevice with the given information.
 
@@ -90,7 +94,7 @@ An IBeaconDevice extends BluetoothLeDevice, so you still have access to the same
 * `getIBeaconData()`: Gets the raw IBeaconManufacturerData object.
 * `getUUID()`: Gets the device's UUID
 * `getMajor()`: Gets the device's Major value
-* `getMinor()`: Gets the device's Major value
+* `getMinor()`: Gets the device's Minor value
 
 
 ### Lookup Functions
