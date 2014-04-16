@@ -15,7 +15,9 @@ import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.IBeaconDevice;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
 import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
+import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.util.CsvWriterHelper;
+import uk.co.alt236.btlescan.util.TimeFormatter;
 import uk.co.alt236.easycursor.objectcursor.EasyObjectCursor;
 import android.content.Context;
 import android.content.Intent;
@@ -99,16 +101,15 @@ public class BluetoothLeDeviceStore {
 		sb.append(CsvWriterHelper.addStuff("minor"));
 		sb.append(CsvWriterHelper.addStuff("txPower"));
 		sb.append(CsvWriterHelper.addStuff("distance"));
-		sb.append(CsvWriterHelper.addStuff("distance"));
 		sb.append(CsvWriterHelper.addStuff("accuracy"));
 		sb.append('\n');
 
 		for(BluetoothLeDevice device : list){
 			sb.append(CsvWriterHelper.addStuff(device.getAddress()));
 			sb.append(CsvWriterHelper.addStuff(device.getName()));
-			sb.append(CsvWriterHelper.addStuff(device.getFirstTimestamp()));
+			sb.append(CsvWriterHelper.addStuff(TimeFormatter.getIsoDateTime(device.getFirstTimestamp())));
 			sb.append(CsvWriterHelper.addStuff(device.getFirstRssi()));
-			sb.append(CsvWriterHelper.addStuff(device.getTimestamp()));
+			sb.append(CsvWriterHelper.addStuff(TimeFormatter.getIsoDateTime(device.getTimestamp())));
 			sb.append(CsvWriterHelper.addStuff(device.getRssi()));
 			sb.append(CsvWriterHelper.addStuff(ByteUtils.byteArrayToHexString(device.getScanRecord())));
 			final boolean isIBeacon = IBeaconUtils.isThisAnIBeacon(device);
@@ -152,22 +153,27 @@ public class BluetoothLeDeviceStore {
 
 
 	public void shareDataAsEmail(Context context){
-		String to = null;
-        String subject = "Bluetooth LE Scan Results";
-        String message = "Please find attached the scan results.";
+		final long timeInMillis = System.currentTimeMillis();
+
+		final String to = null;
+        final String subject = context.getString(
+        		R.string.exporter_email_subject,
+        		TimeFormatter.getIsoDateTime(timeInMillis));
+
+        final String message = context.getString(R.string.exporter_email_body);
 
         final Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("plain/text");
         try {
         	final File outputDir = context.getCacheDir();
-        	final File outputFile = File.createTempFile("export_tmp", ".csv", outputDir);
+        	final File outputFile = File.createTempFile("bluetooth_le_" + timeInMillis, ".csv", outputDir);
         	outputFile.setReadable(true, false);
             generateFile(outputFile, getListAsCsv());
             i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(outputFile));
             i.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
             i.putExtra(Intent.EXTRA_SUBJECT, subject);
             i.putExtra(Intent.EXTRA_TEXT, message);
-            context.startActivity(Intent.createChooser(i, "Please select your email client:"));
+            context.startActivity(Intent.createChooser(i, context.getString(R.string.exporter_email_picker_text)));
 
         } catch (IOException e) {
             e.printStackTrace();

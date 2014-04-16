@@ -41,5 +41,8 @@
     <string name="label_tx_power">TX Power:</string>
     <string name="label_uuid">UUID:</string>
     <string name="about_dialog_text">This is a sample application using the Bluetooth LE Library.\n\nGithub: https://github.com/alt236/Bluetooth-LE-Library---Android\n\nCopyright: Alexandros Schillings</string>
+    <string name="exporter_email_subject">Bluetooth LE Scan Results (%s)</string>
+    <string name="exporter_email_body">Please find attached the scan results.</string>
+    <string name="exporter_email_picker_text">Please select your email client:</string>
 
 </resources>
