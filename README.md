@@ -16,8 +16,8 @@ Sample app available on the [Play Store](https://play.google.com/store/apps/deta
 ## Including the Library in Your Project
 There are two ways to use this library:
 
-a. Download a copy of the ReflectiveDrawableLoader library and reference it in your project.
-b. Create a Jar file (see Jarification below) and add it into your project.
+* Download a copy of the Bluetooth LE Library project and reference it in your project.
+* Create a Jar file (see Jarification below) and add it into your project.
 
 
 ### Jarification
