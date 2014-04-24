@@ -71,8 +71,7 @@ public class BluetoothLeDevice implements Parcelable{
 		mFirstTimestamp = timestamp;
 		mRecordStore = new AdRecordStore(AdRecordUtils.parseScanRecordAsSparseArray(scanRecord));
 		mScanRecord = scanRecord;
-		mRssiLog = Collections.synchronizedMap(
-				new LimitedLinkHashMap<Long, Integer>(MAX_RSSI_LOG_SIZE));
+		mRssiLog = new LimitedLinkHashMap<Long, Integer>(MAX_RSSI_LOG_SIZE);
 		updateRssiReading(timestamp, rssi);
 	}
 
@@ -108,8 +107,7 @@ public class BluetoothLeDevice implements Parcelable{
 		mFirstRssi = b.getInt(PARCEL_EXTRA_FIRST_RSSI, 0);
 		mFirstTimestamp = b.getLong(PARCEL_EXTRA_FIRST_TIMESTAMP, 0);
 		mRecordStore = b.getParcelable(PARCEL_EXTRA_DEVICE_SCANRECORD_STORE);
-		mRssiLog = Collections.synchronizedMap(
-				(Map<Long, Integer>) b.getSerializable(PARCEL_EXTRA_DEVICE_RSSI_LOG));
+		mRssiLog = (Map<Long, Integer>) b.getSerializable(PARCEL_EXTRA_DEVICE_RSSI_LOG);
 		mScanRecord = b.getByteArray(PARCEL_EXTRA_DEVICE_SCANRECORD);
 	}
 
@@ -120,13 +118,15 @@ public class BluetoothLeDevice implements Parcelable{
 	 * @param rssiReading the rssi reading
 	 */
 	private void addToRssiLog(long timestamp, int rssiReading){
-		if(timestamp - mCurrentTimestamp > LOG_INVALIDATION_THRESHOLD){
-			mRssiLog.clear();
-		}
+		synchronized (mRssiLog) {
+			if(timestamp - mCurrentTimestamp > LOG_INVALIDATION_THRESHOLD){
+				mRssiLog.clear();
+			}
 
-		mCurrentRssi = rssiReading;
-		mCurrentTimestamp = timestamp;
-		mRssiLog.put(timestamp, rssiReading);
+			mCurrentRssi = rssiReading;
+			mCurrentTimestamp = timestamp;
+			mRssiLog.put(timestamp, rssiReading);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -264,7 +264,9 @@ public class BluetoothLeDevice implements Parcelable{
 	 * @return the rssi log
 	 */
 	protected Map<Long, Integer> getRssiLog() {
-		return mRssiLog;
+		synchronized (mRssiLog) {
+			return mRssiLog;
+		}
 	}
 
 	/**
@@ -275,18 +277,26 @@ public class BluetoothLeDevice implements Parcelable{
 	public double getRunningAverageRssi(){
 		int sum = 0;
 		int count = 0;
-		final Iterator<Long> it1 = mRssiLog.keySet().iterator();
 
-        while(it1.hasNext()){
-        	count ++;
-        	sum += mRssiLog.get(it1.next());
-        }
+		synchronized (mRssiLog) {
+			final Iterator<Long> it1 = mRssiLog.keySet().iterator();
 
-        if(count > 0){
-		  return sum/count;
-        } else {
-        	return 0;
-        }
+			while(it1.hasNext()){
+				count ++;
+				sum += mRssiLog.get(it1.next());
+			}
+		}
+		//		for(final Map.Entry<Long,Integer> e : mRssiLog.entrySet()){
+		//        	count ++;
+		//        	sum += e.getValue();
+		//	    }
+
+		if(count > 0){
+			return sum/count;
+		} else {
+			return 0;
+		}
+
 	}
 
 	/**
@@ -339,7 +349,7 @@ public class BluetoothLeDevice implements Parcelable{
 	 * @param timestamp the timestamp
 	 * @param rssiReading the rssi reading
 	 */
-	public synchronized void updateRssiReading(long timestamp, int rssiReading){
+	public void updateRssiReading(long timestamp, int rssiReading){
 		addToRssiLog(timestamp, rssiReading);
 	}
 
