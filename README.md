@@ -105,8 +105,19 @@ You can also lookup values and convert them to human friendly strings:
 
 **Note:** The data can be found as ODS (Open Office Spreadsheets) in the documents folder. 
 
-## Changelog
-* v0.0.1 First public release
+## Library Changelog
+* v0.0.1 
+    * First public release
+* v0.0.2: 
+    * Attempting to create an iBeaconDevice from a device which is not an iBeacon will now throw an IllegalArgumentException exception.
+    * Fixed a ConcurrentModificationException on getRunningAverageRssi()
+    * Added some Estimote UUIDs
+
+## Sample Application Changelog
+* v0.0.1 
+    * First public release
+* v0.0.2: 
+    * Can now export scanned devices as a CSV file. 
 
 ## Permission Explanation
 You will need the following permissions to access the Bluetooth Hardware

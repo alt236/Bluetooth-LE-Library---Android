@@ -2,7 +2,6 @@ package uk.co.alt236.bluetoothlelib.device;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
