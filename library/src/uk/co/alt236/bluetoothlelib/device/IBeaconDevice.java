@@ -1,7 +1,5 @@
 package uk.co.alt236.bluetoothlelib.device;
 
-import java.security.InvalidParameterException;
-
 import uk.co.alt236.bluetoothlelib.device.mfdata.IBeaconManufacturerData;
 import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
 import uk.co.alt236.bluetoothlelib.util.IBeaconUtils.IBeaconDistanceDescriptor;
