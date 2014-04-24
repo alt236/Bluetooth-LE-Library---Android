@@ -2,8 +2,8 @@ package uk.co.alt236.bluetoothlelib.device;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Map;
 
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecordStore;
@@ -273,14 +273,20 @@ public class BluetoothLeDevice implements Parcelable{
 	 * @return the running average rssi
 	 */
 	public double getRunningAverageRssi(){
-		final Collection<Integer> values = mRssiLog.values();
 		int sum = 0;
+		int count = 0;
+		final Iterator<Long> it1 = mRssiLog.keySet().iterator();
 
-		for(Integer value: values){
-			sum += value.intValue();
-		}
+        while(it1.hasNext()){
+        	count ++;
+        	sum += mRssiLog.get(it1.next());
+        }
 
-		return sum/values.size();
+        if(count > 0){
+		  return sum/count;
+        } else {
+        	return 0;
+        }
 	}
 
 	/**
