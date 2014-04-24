@@ -176,6 +176,20 @@ public class GattAttributeResolver {
 	public static final String CSC_FEATURE = "00002a5d-0000-1000-8000-00805f9b34fb";
 	public static final String SENSOR_LOCATION = "831c4071-7bc8-4a9c-a01c-15df25a4adbc";
 	public static final String ACTIVESYNC = "831c4071-7bc8-4a9c-a01c-15df25a4adbc";
+	public static final String ESTIMOTE_SERVICE = "b9403000-f5f8-466e-aff9-25556b57fe6d";
+	public static final String ESTIMOTE_UUID = "b9403003-f5f8-466e-aff9-25556b57fe6d";
+	public static final String ESTIMOTE_MAJOR = "b9403001-f5f8-466e-aff9-25556b57fe6d";
+	public static final String ESTIMOTE_MINOR = "b9403002-f5f8-466e-aff9-25556b57fe6d";
+	public static final String ESTIMOTE_BATTERY = "b9403041-f5f8-466e-aff9-25556b57fe6d";
+	public static final String ESTIMOTE_TEMPERATURE = "b9403021-f5f8-466e-aff9-25556b57fe6d";
+	public static final String ESTIMOTE_POWER = "b9403011-f5f8-466e-aff9-25556b57fe6d";
+	public static final String ESTIMOTE_ADVERTISING_INTERVAL = "b9403012-f5f8-466e-aff9-25556b57fe6d";
+	public static final String ESTIMOTE_VERSION_SERVICE = "b9404000-f5f8-466e-aff9-25556b57fe6d";
+	public static final String ESTIMOTE_SOFTWARE_VERSION = "b9404001-f5f8-466e-aff9-25556b57fe6d";
+	public static final String ESTIMOTE_HARDWARE_VERSION = "b9404002-f5f8-466e-aff9-25556b57fe6d";
+	public static final String ESTIMOTE_AUTHENTICATION_SERVICE = "b9402000-f5f8-466e-aff9-25556b57fe6d";
+	public static final String ESTIMOTE_ADVERTISING_SEED = "b9402001-f5f8-466e-aff9-25556b57fe6d";
+	public static final String ESTIMOTE_ADVERTISING_VECTOR = "b9402002-f5f8-466e-aff9-25556b57fe6d";
 
 
 
@@ -350,6 +364,20 @@ public class GattAttributeResolver {
 		map.put(CSC_FEATURE , "SENSOR_LOCATION");
 		map.put(SENSOR_LOCATION , "ActiveSync");
 		map.put(ACTIVESYNC , "ActiveSync");
+		map.put(ESTIMOTE_SERVICE , "Estimote Service");
+		map.put(ESTIMOTE_UUID , "Estimote UUID");
+		map.put(ESTIMOTE_MAJOR , "Estimote Major");
+		map.put(ESTIMOTE_MINOR , "Estimote Minor");
+		map.put(ESTIMOTE_BATTERY , "Estimote Battery");
+		map.put(ESTIMOTE_TEMPERATURE , "Estimote Temperature");
+		map.put(ESTIMOTE_POWER , "Estimote Power");
+		map.put(ESTIMOTE_ADVERTISING_INTERVAL , "Estimote Advertising Interval");
+		map.put(ESTIMOTE_VERSION_SERVICE , "Estimote Version Service");
+		map.put(ESTIMOTE_SOFTWARE_VERSION , "Estimote Software Version");
+		map.put(ESTIMOTE_HARDWARE_VERSION , "Estimote Hardware Version");
+		map.put(ESTIMOTE_AUTHENTICATION_SERVICE , "Estimote Authentication Service");
+		map.put(ESTIMOTE_ADVERTISING_SEED , "Estimote Advertising Seed");
+		map.put(ESTIMOTE_ADVERTISING_VECTOR , "Estimote Advertising Vector");
 
 
 
