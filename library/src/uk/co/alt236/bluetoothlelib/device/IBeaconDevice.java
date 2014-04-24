@@ -1,5 +1,7 @@
 package uk.co.alt236.bluetoothlelib.device;
 
+import java.security.InvalidParameterException;
+
 import uk.co.alt236.bluetoothlelib.device.mfdata.IBeaconManufacturerData;
 import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
 import uk.co.alt236.bluetoothlelib.util.IBeaconUtils.IBeaconDistanceDescriptor;
@@ -17,9 +19,11 @@ public class IBeaconDevice extends BluetoothLeDevice{
 	 * @param device the device
 	 * @param rssi the RSSI value
 	 * @param scanRecord the scanRecord
+	 * @throws IllegalArguementException if the passed device is not an iBecon
 	 */
 	public IBeaconDevice(BluetoothDevice device, int rssi, byte[] scanRecord) {
 		super(device, rssi, scanRecord, 0);
+		validate();
 		mIBeaconData = new IBeaconManufacturerData(this);
 	}
 
@@ -30,26 +34,30 @@ public class IBeaconDevice extends BluetoothLeDevice{
 	 * @param rssi the RSSI value of the RSSI measurement
 	 * @param scanRecord the scan record
 	 * @param timestamp the timestamp of the RSSI measurement
+	 * @throws IllegalArguementException if the passed device is not an iBecon
 	 */
 	public IBeaconDevice(BluetoothDevice device, int rssi, byte[] scanRecord, long timestamp){
 		super(device, rssi, scanRecord, timestamp);
+		validate();
 		mIBeaconData = new IBeaconManufacturerData(this);
 	}
-
 
 	/**
 	 * Will try to convert a {@link BluetoothLeDevice} into an
 	 * iBeacon Device.
 	 *
 	 * @param device the device
+	 * @throws IllegalArguementException if the passed device is not an iBecon
 	 */
 	public IBeaconDevice(BluetoothLeDevice device){
 		super(device);
+		validate();
 		mIBeaconData = new IBeaconManufacturerData(this);
 	}
 
 	private IBeaconDevice(Parcel in) {
 		super(in);
+		validate();
 		mIBeaconData = new IBeaconManufacturerData(this);
 	}
 
@@ -127,5 +135,11 @@ public class IBeaconDevice extends BluetoothLeDevice{
 	 */
 	public String getUUID(){
 		return getIBeaconData().getUUID();
+	}
+
+	private void validate(){
+		if(!IBeaconUtils.isThisAnIBeacon(this)){
+			throw new IllegalArgumentException("Device " + getDevice() + " is not an iBeacon.");
+		}
 	}
 }
