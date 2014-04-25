@@ -44,5 +44,12 @@
     <string name="exporter_email_subject">Bluetooth LE Scan Results (%s)</string>
     <string name="exporter_email_body">Please find attached the scan results.</string>
     <string name="exporter_email_picker_text">Please select your email client:</string>
+    <string name="header_ibeacon_data">iBeacon Data</string>
+    <string name="header_raw_ad_records">Raw Ad Records</string>
+    <string name="header_scan_record">Scan Record</string>
+    <string name="header_rssi_info">RSSI Info</string>
+    <string name="header_device_info">Device Info</string>
+    <string name="invalid_device_data">Invalid Device Data!</string>
+    <string name="unknown">unknown</string>
 
 </resources>
