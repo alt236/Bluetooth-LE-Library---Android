@@ -16,7 +16,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Device Name:" />
+            android:text="@string/label_device_name" />
 
         <TextView
             android:id="@+id/deviceName"
@@ -26,7 +26,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Device Address" />
+            android:text="@string/label_device_address" />
 
         <TextView
             android:id="@+id/deviceAddress"
@@ -36,7 +36,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Device Class:" />
+            android:text="@string/label_device_class" />
 
         <TextView
             android:id="@+id/deviceClass"
@@ -46,7 +46,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bonding State" />
+            android:text="@string/label_bonding_state" />
 
         <TextView
             android:id="@+id/deviceBondingState"

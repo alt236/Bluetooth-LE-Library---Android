@@ -16,7 +16,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="First Timestamp:" />
+            android:text="@string/label_first_timestamp" />
 
         <TextView
             android:id="@+id/firstTimestamp"
@@ -26,7 +26,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="First RSSI:" />
+            android:text="@string/label_first_rssi" />
 
         <TextView
             android:id="@+id/firstRssi"
@@ -36,7 +36,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Last Timestamp:" />
+            android:text="@string/label_last_timestamp" />
 
         <TextView
             android:id="@+id/lastTimestamp"
@@ -46,7 +46,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Last RSSI:" />
+            android:text="@string/label_last_rssi" />
 
         <TextView
             android:id="@+id/lastRssi"
@@ -56,7 +56,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Running Average RSSI:" />
+            android:text="@string/label_running_average_rssi" />
 
         <TextView
             android:id="@+id/runningAverageRssi"

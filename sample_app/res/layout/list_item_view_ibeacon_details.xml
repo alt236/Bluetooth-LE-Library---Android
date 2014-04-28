@@ -16,7 +16,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Company ID:" />
+            android:text="@string/label_company_id" />
 
         <TextView
             android:id="@+id/companyId"
@@ -26,7 +26,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Advertisement:" />
+            android:text="@string/label_advertisement" />
 
         <TextView
             android:id="@+id/advertisement"
@@ -36,7 +36,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="UUID:" />
+            android:text="@string/label_uuid" />
 
         <TextView
             android:id="@+id/uuid"
@@ -46,7 +46,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Major:" />
+            android:text="@string/label_major" />
 
         <TextView
             android:id="@+id/major"
@@ -56,7 +56,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Minor:" />
+            android:text="@string/label_minor" />
 
         <TextView
             android:id="@+id/minor"
@@ -66,7 +66,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TX Power:" />
+            android:text="@string/label_tx_power" />
 
         <TextView
             android:id="@+id/txpower"
