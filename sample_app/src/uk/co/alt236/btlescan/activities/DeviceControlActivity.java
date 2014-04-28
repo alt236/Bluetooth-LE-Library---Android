@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.resolvers.GattAttributeResolver;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
 import uk.co.alt236.btlescan.R;
@@ -54,9 +55,7 @@ import butterknife.InjectView;
  */
 public class DeviceControlActivity extends Activity {
 	private final static String TAG = DeviceControlActivity.class.getSimpleName();
-
-	public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
-	public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+	public static final String EXTRA_DEVICE = "extra_device";
 
 	private static final String LIST_NAME = "NAME";
 	private static final String LIST_UUID = "UUID";
@@ -76,6 +75,8 @@ public class DeviceControlActivity extends Activity {
 	@InjectView(R.id.data_as_array) TextView mDataAsArray;
 
 	private boolean mConnected = false;
+	private String mExportString;
+	private BluetoothLeDevice mDevice;
 
 	// Code to manage Service lifecycle.
 	private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -160,14 +161,61 @@ public class DeviceControlActivity extends Activity {
 		}
 	};
 
-
 	private void clearUI() {
 		mGattServicesList.setAdapter((SimpleExpandableListAdapter) null);
 		mGattUUID.setText(R.string.no_data);
 		mGattUUIDDesc.setText(R.string.no_data);
 		mDataAsArray.setText(R.string.no_data);
 		mDataAsString.setText(R.string.no_data);
+	}
 
+	private void generateExportString(List<BluetoothGattService> gattServices){
+		final String unknownServiceString = getResources().getString(R.string.unknown_service);
+		final String unknownCharaString = getResources().getString(R.string.unknown_characteristic);
+		final StringBuilder exportBuilder = new StringBuilder();
+
+		exportBuilder.append("Device Name: ");
+		exportBuilder.append(mDeviceName);
+		exportBuilder.append('\n');
+		exportBuilder.append("Device Address: ");
+		exportBuilder.append(mDeviceAddress);
+		exportBuilder.append('\n');
+		exportBuilder.append('\n');
+
+		exportBuilder.append("Services:");
+		exportBuilder.append("--------------------------");
+		exportBuilder.append('\n');
+
+		String uuid = null;
+		for (BluetoothGattService gattService : gattServices) {
+			uuid = gattService.getUuid().toString();
+
+			exportBuilder.append(GattAttributeResolver.getAttributeName(uuid, unknownServiceString));
+			exportBuilder.append(" (");
+			exportBuilder.append(uuid);
+			exportBuilder.append(')');
+			exportBuilder.append('\n');
+
+			final List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
+			for (final BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
+				uuid = gattCharacteristic.getUuid().toString();
+
+				exportBuilder.append('\t');
+				exportBuilder.append(GattAttributeResolver.getAttributeName(uuid, unknownCharaString));
+				exportBuilder.append(" (");
+				exportBuilder.append(uuid);
+				exportBuilder.append(')');
+				exportBuilder.append('\n');
+			}
+
+			exportBuilder.append('\n');
+			exportBuilder.append('\n');
+		}
+
+		exportBuilder.append("--------------------------");
+		exportBuilder.append('\n');
+
+		mExportString = exportBuilder.toString();
 	}
 
 	// Demonstrates how to iterate through the supported GATT Services/Characteristics.
@@ -175,6 +223,8 @@ public class DeviceControlActivity extends Activity {
 	// on the UI.
 	private void displayGattServices(List<BluetoothGattService> gattServices) {
 		if (gattServices == null) return;
+		generateExportString(gattServices);
+
 		String uuid = null;
 		final String unknownServiceString = getResources().getString(R.string.unknown_service);
 		final String unknownCharaString = getResources().getString(R.string.unknown_characteristic);
@@ -203,6 +253,7 @@ public class DeviceControlActivity extends Activity {
 				currentCharaData.put(LIST_UUID, uuid);
 				gattCharacteristicGroupData.add(currentCharaData);
 			}
+
 			mGattCharacteristics.add(charas);
 			gattCharacteristicData.add(gattCharacteristicGroupData);
 		}
@@ -218,7 +269,9 @@ public class DeviceControlActivity extends Activity {
 				new String[] {LIST_NAME, LIST_UUID},
 				new int[] { android.R.id.text1, android.R.id.text2 }
 				);
+
 		mGattServicesList.setAdapter(gattServiceAdapter);
+		invalidateOptionsMenu();
 	}
 
 	@Override
@@ -227,8 +280,9 @@ public class DeviceControlActivity extends Activity {
 		setContentView(R.layout.activity_gatt_services);
 
 		final Intent intent = getIntent();
-		mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-		mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+		mDevice = intent.getParcelableExtra(EXTRA_DEVICE);
+		mDeviceName = mDevice.getName();
+		mDeviceAddress =  mDevice.getAddress();
 
 		ButterKnife.inject(this);
 
@@ -253,6 +307,13 @@ public class DeviceControlActivity extends Activity {
 			menu.findItem(R.id.menu_connect).setVisible(true);
 			menu.findItem(R.id.menu_disconnect).setVisible(false);
 		}
+
+		if(mExportString == null){
+			menu.findItem(R.id.menu_share).setVisible(false);
+		} else {
+			menu.findItem(R.id.menu_share).setVisible(true);
+		}
+
 		return true;
 	}
 
@@ -274,6 +335,19 @@ public class DeviceControlActivity extends Activity {
 			return true;
 		case android.R.id.home:
 			onBackPressed();
+			return true;
+		case R.id.menu_share:
+			final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+			final String subject = getString(R.string.exporter_email_device_services_subject, mDeviceName, mDeviceAddress);
+
+			intent.setType("text/plain");
+	        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+	        intent.putExtra(android.content.Intent.EXTRA_TEXT, mExportString);
+
+	        startActivity(Intent.createChooser(
+	        		intent,
+	        		getString(R.string.exporter_email_device_list_picker_text)));
+
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

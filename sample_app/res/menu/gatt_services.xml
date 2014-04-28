@@ -22,13 +22,19 @@
         android:orderInCategory="1"
         android:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/menu_connect"
+        android:id="@+id/menu_share"
+        android:icon="@drawable/ic_action_share"
         android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_share"/>
+    <item
+        android:id="@+id/menu_connect"
+        android:orderInCategory="102"
         android:showAsAction="ifRoom|withText"
         android:title="@string/menu_connect"/>
     <item
         android:id="@+id/menu_disconnect"
-        android:orderInCategory="101"
+        android:orderInCategory="103"
         android:showAsAction="ifRoom|withText"
         android:title="@string/menu_disconnect"/>
 

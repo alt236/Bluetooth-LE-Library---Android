@@ -147,8 +147,7 @@ public class DeviceDetailsActivity extends ListActivity{
 		case R.id.menu_connect:
 
 			final Intent intent = new Intent(this, DeviceControlActivity.class);
-			intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, mDevice.getName());
-			intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, mDevice.getAddress());
+			intent.putExtra(DeviceControlActivity.EXTRA_DEVICE, mDevice);
 
 			startActivity(intent);
 

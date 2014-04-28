@@ -157,10 +157,10 @@ public class BluetoothLeDeviceStore {
 
 		final String to = null;
         final String subject = context.getString(
-        		R.string.exporter_email_subject,
+        		R.string.exporter_email_device_list_subject,
         		TimeFormatter.getIsoDateTime(timeInMillis));
 
-        final String message = context.getString(R.string.exporter_email_body);
+        final String message = context.getString(R.string.exporter_email_device_list_body);
 
         final Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("plain/text");
@@ -173,7 +173,7 @@ public class BluetoothLeDeviceStore {
             i.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
             i.putExtra(Intent.EXTRA_SUBJECT, subject);
             i.putExtra(Intent.EXTRA_TEXT, message);
-            context.startActivity(Intent.createChooser(i, context.getString(R.string.exporter_email_picker_text)));
+            context.startActivity(Intent.createChooser(i, context.getString(R.string.exporter_email_device_list_picker_text)));
 
         } catch (IOException e) {
             e.printStackTrace();
