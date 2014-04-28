@@ -51,5 +51,8 @@
     <string name="header_device_info">Device Info</string>
     <string name="invalid_device_data">Invalid Device Data!</string>
     <string name="unknown">unknown</string>
+    <string name="label_as_string">As String:</string>
+    <string name="label_as_array">As Array:</string>
+    <string name="label_desc">Desc:</string>
 
 </resources>

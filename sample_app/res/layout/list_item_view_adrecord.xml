@@ -23,7 +23,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="As String:" />
+            android:text="@string/label_as_string" />
 
         <TextView
             android:id="@+id/data_as_string"
@@ -33,7 +33,7 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="As Array:" />
+            android:text="@string/label_as_array" />
 
         <TextView
             android:id="@+id/data_as_array"
