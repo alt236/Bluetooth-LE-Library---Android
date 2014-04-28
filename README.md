@@ -118,7 +118,9 @@ You can also lookup values and convert them to human friendly strings:
     * First public release
 * v0.0.2: 
     * Can now export scanned devices as a CSV file. 
-
+* v0.0.3: 
+    * UI Refresh.
+    
 ## Permission Explanation
 You will need the following permissions to access the Bluetooth Hardware
 
@@ -135,6 +137,7 @@ You will need the following permissions to access the Bluetooth Hardware
 ![screenshot1](https://github.com/alt236/Bluetooth-LE-Library---Android/raw/master/screenshots/screenshot_1.png)
 ![screenshot2](https://github.com/alt236/Bluetooth-LE-Library---Android/raw/master/screenshots/screenshot_2.png)
 ![screenshot3](https://github.com/alt236/Bluetooth-LE-Library---Android/raw/master/screenshots/screenshot_3.png)
+![screenshot4](https://github.com/alt236/Bluetooth-LE-Library---Android/raw/master/screenshots/screenshot_4.png)
 
 ## Links
 * Github: [https://github.com/alt236/Bluetooth-LE-Library---Android]()
