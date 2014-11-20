@@ -135,7 +135,7 @@ public final class IBeaconManufacturerData {
 			if(i == 10){sb.append('-');}
 
 			sb.append(
-					Integer.toHexString(ByteUtils.getIntFromByte(uuid[i])));
+					String.format("%02x", ByteUtils.getIntFromByte(uuid[i])));
 		}
 
 
