@@ -50,6 +50,9 @@ public class IBeaconUtils {
             }
 
             final int intFromByte = ByteUtils.getIntFromByte(uuid[i]);
+            if(intFromByte <= 0xF){
+                sb.append('0');
+            }
             sb.append(Integer.toHexString(intFromByte));
         }
 
