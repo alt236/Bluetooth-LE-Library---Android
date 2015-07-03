@@ -13,7 +13,7 @@ public class IBeaconUtils {
     /**
      * Calculates the accuracy of an RSSI reading.
      * <p/>
-     * The code was taken from {@linktourl http://stackoverflow.com/questions/20416218/understanding-ibeacon-distancing}
+     * The code was taken from <a href="http://stackoverflow.com/questions/20416218/understanding-ibeacon-distancing" /a>
      *
      * @param txPower the calibrated TX power of an iBeacon
      * @param rssi    the RSSI value of the iBeacon
@@ -28,9 +28,33 @@ public class IBeaconUtils {
         if (ratio < 1.0) {
             return Math.pow(ratio, 10);
         } else {
-            final double accuracy = (0.89976) * Math.pow(ratio, 7.7095) + 0.111;
-            return accuracy;
+            return (0.89976) * Math.pow(ratio, 7.7095) + 0.111;
         }
+    }
+
+    public static String calculateUuidString(final byte[] uuid) {
+        final StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < uuid.length; i++) {
+            if (i == 4) {
+                sb.append('-');
+            }
+            if (i == 6) {
+                sb.append('-');
+            }
+            if (i == 8) {
+                sb.append('-');
+            }
+            if (i == 10) {
+                sb.append('-');
+            }
+
+            final int intFromByte = ByteUtils.getIntFromByte(uuid[i]);
+            sb.append(Integer.toHexString(intFromByte));
+        }
+
+
+        return sb.toString();
     }
 
     public static IBeaconDistanceDescriptor getDistanceDescriptor(final double accuracy) {
@@ -47,17 +71,6 @@ public class IBeaconUtils {
         }
 
         return IBeaconDistanceDescriptor.FAR;
-    }
-
-    /**
-     * Ascertains whether a {@link uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice} is an iBeacon;
-     *
-     * @param device a {@link uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice} device.
-     * @return true if the device is an iBeacon, false otherwise
-     */
-    public static boolean isThisAnIBeacon(final BluetoothLeDevice device) {
-        return isThisAnIBeacon(
-                device.getAdRecordStore().getRecordDataAsString(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getBytes());
     }
 
     /**
@@ -83,4 +96,14 @@ public class IBeaconUtils {
         return false;
     }
 
+    /**
+     * Ascertains whether a {@link uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice} is an iBeacon;
+     *
+     * @param device a {@link uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice} device.
+     * @return true if the device is an iBeacon, false otherwise
+     */
+    public static boolean isThisAnIBeacon(final BluetoothLeDevice device) {
+        return isThisAnIBeacon(
+                device.getAdRecordStore().getRecordDataAsString(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getBytes());
+    }
 }

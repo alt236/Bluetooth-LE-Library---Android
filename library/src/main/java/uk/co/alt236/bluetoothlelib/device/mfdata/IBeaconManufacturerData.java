@@ -5,6 +5,7 @@ import java.util.Arrays;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
+import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
 
 /**
  * Parses the Manufactured Data field of an iBeacon
@@ -52,6 +53,12 @@ public final class IBeaconManufacturerData {
     private final int mMinor;
     private final String mUUID;
 
+    /**
+     * Instantiates a new iBeacon manufacturer data object.
+     *
+     * @param device a {@link BluetoothLeDevice}
+     * @throws IllegalArgumentException if the data is not from an iBeacon.
+     */
     public IBeaconManufacturerData(final BluetoothLeDevice device) {
         this(device.getAdRecordStore().getRecord(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getData());
     }
@@ -59,22 +66,28 @@ public final class IBeaconManufacturerData {
     /**
      * Instantiates a new iBeacon manufacturer data object.
      *
-     * @param data the {@link uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord#TYPE_MANUFACTURER_SPECIFIC_DATA} data array
-     * @throws IndexOutOfBoundsException if the data array is shorter than expected
+     * @param manufacturerData the {@link AdRecord#TYPE_MANUFACTURER_SPECIFIC_DATA} data array
+     * @throws IllegalArgumentException if the data is not from an iBeacon.
      */
-    public IBeaconManufacturerData(final byte[] data) {
-        mData = data;
+    public IBeaconManufacturerData(final byte[] manufacturerData) {
+        mData = manufacturerData;
+
+        if (!IBeaconUtils.isThisAnIBeacon(manufacturerData)) {
+            throw new IllegalArgumentException(
+                    "Manufacturer record '"
+                    + Arrays.toString(manufacturerData)
+                    + "' is not from an iBeacon.");
+        }
 
         final byte[] intArray = Arrays.copyOfRange(mData, 0, 2);
         ByteUtils.invertArray(intArray);
 
         mCompanyIdentidier = ByteUtils.getIntFrom2ByteArray(intArray);
-
         mIBeaconAdvertisment = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 2, 4));
-        mUUID = calculateUUIDString(Arrays.copyOfRange(mData, 4, 20));
+        mUUID = IBeaconUtils.calculateUuidString(Arrays.copyOfRange(mData, 4, 20));
         mMajor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 20, 22));
         mMinor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 22, 24));
-        mCalibratedTxPower = data[24];
+        mCalibratedTxPower = mData[24];
     }
 
     /**
@@ -124,30 +137,5 @@ public final class IBeaconManufacturerData {
      */
     public String getUUID() {
         return mUUID;
-    }
-
-    private static String calculateUUIDString(final byte[] uuid) {
-        final StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < uuid.length; i++) {
-            if (i == 4) {
-                sb.append('-');
-            }
-            if (i == 6) {
-                sb.append('-');
-            }
-            if (i == 8) {
-                sb.append('-');
-            }
-            if (i == 10) {
-                sb.append('-');
-            }
-
-            sb.append(
-                    Integer.toHexString(ByteUtils.getIntFromByte(uuid[i])));
-        }
-
-
-        return sb.toString();
     }
 }

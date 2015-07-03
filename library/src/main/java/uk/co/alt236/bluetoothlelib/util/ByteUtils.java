@@ -9,6 +9,10 @@ public class ByteUtils {
      */
     private static final String HEXES = "0123456789ABCDEF";
 
+    private ByteUtils(){
+        // TO AVOID INSTANTIATION
+    }
+
     /**
      * Gets a pretty representation of a Byte Array as a HEX String.
      * <p/>

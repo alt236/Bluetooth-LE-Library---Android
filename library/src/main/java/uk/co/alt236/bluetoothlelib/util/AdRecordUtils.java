@@ -12,7 +12,11 @@ import java.util.Map;
 
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord;
 
-public class AdRecordUtils {
+public final class AdRecordUtils {
+
+    private AdRecordUtils(){
+        // TO AVOID INSTANTIATION
+    }
 
     public static String getRecordDataAsString(final AdRecord nameRecord) {
         if (nameRecord == null) {
