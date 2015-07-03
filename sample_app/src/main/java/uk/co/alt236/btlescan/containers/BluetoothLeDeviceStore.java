@@ -44,7 +44,7 @@ public class BluetoothLeDeviceStore {
 	}
 
 
-	private FileWriter generateFile(final File file, final String contents){
+	private static FileWriter generateFile(final File file, final String contents){
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter(file);

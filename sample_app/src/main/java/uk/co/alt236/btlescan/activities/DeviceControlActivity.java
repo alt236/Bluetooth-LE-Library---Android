@@ -76,7 +76,6 @@ public class DeviceControlActivity extends Activity {
 
 	private boolean mConnected = false;
 	private String mExportString;
-	private BluetoothLeDevice mDevice;
 
 	// Code to manage Service lifecycle.
 	private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -280,9 +279,9 @@ public class DeviceControlActivity extends Activity {
 		setContentView(R.layout.activity_gatt_services);
 
 		final Intent intent = getIntent();
-		mDevice = intent.getParcelableExtra(EXTRA_DEVICE);
-		mDeviceName = mDevice.getName();
-		mDeviceAddress =  mDevice.getAddress();
+		final BluetoothLeDevice device = intent.getParcelableExtra(EXTRA_DEVICE);
+		mDeviceName = device.getName();
+		mDeviceAddress =  device.getAddress();
 
 		ButterKnife.inject(this);
 

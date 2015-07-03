@@ -126,7 +126,7 @@ public final class IBeaconManufacturerData {
 	}
 
 	private static String calculateUUIDString(final byte[] uuid){
-		final StringBuffer sb = new StringBuffer();
+		final StringBuilder sb = new StringBuilder();
 
 		for(int i = 0 ; i< uuid.length; i++){
 			if(i == 4){sb.append('-');}

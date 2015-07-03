@@ -16,7 +16,7 @@ public class ByteUtils {
 	 * @return the string
 	 */
 	public static String byteArrayToHexString(final byte[] array){
-		final StringBuffer sb = new StringBuffer();
+		final StringBuilder sb = new StringBuilder();
 		boolean firstEntry = true;
 		sb.append('[');
 

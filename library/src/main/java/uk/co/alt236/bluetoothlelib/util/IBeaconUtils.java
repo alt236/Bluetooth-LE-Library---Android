@@ -65,7 +65,7 @@ public class IBeaconUtils {
 	 * Ascertains whether a Manufacturer Data byte array belongs to an iBeacon;
 	 *
 	 * @param manufacturerData a Bluetooth LE device's raw manufacturerData.
-	 * @return
+	 * @return true if the manufacturer data belong to an iBeacon
 	 */
 	public static boolean isThisAnIBeacon(final byte[] manufacturerData){
 		if(manufacturerData == null){return false;}

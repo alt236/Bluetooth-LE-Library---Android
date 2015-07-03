@@ -35,7 +35,7 @@ public class MainActivity extends ListActivity {
 	private LeDeviceListAdapter mLeDeviceListAdapter;
 	private BluetoothLeDeviceStore mDeviceStore;
 
-	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+	private final BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 		@Override
 		public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
 
@@ -121,9 +121,8 @@ public class MainActivity extends ListActivity {
 
 	@Override
 	protected void onListItemClick(final ListView l, final View v, final int position, final long id) {
-		final BluetoothLeDevice device = (BluetoothLeDevice) mLeDeviceListAdapter.getItem(position);
+		final BluetoothLeDevice device = mLeDeviceListAdapter.getItem(position);
 		if (device == null) return;
-
 
 		final Intent intent = new Intent(this, DeviceDetailsActivity.class);
 		intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE, device);

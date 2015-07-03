@@ -57,7 +57,7 @@ public class LeDeviceListAdapter extends SimpleCursorAdapter {
 			viewHolder.ibeaconDistance = (TextView) view.findViewById(R.id.ibeacon_distance);
 			viewHolder.ibeaconUUID = (TextView) view.findViewById(R.id.ibeacon_uuid);
 			viewHolder.ibeaconTxPower = (TextView) view.findViewById(R.id.ibeacon_tx_power);
-			viewHolder.ibeaconSection = (View) view.findViewById(R.id.ibeacon_section);
+			viewHolder.ibeaconSection = view.findViewById(R.id.ibeacon_section);
 			viewHolder.ibeaconDistanceDescriptor = (TextView) view.findViewById(R.id.ibeacon_distance_descriptor);
 			view.setTag(viewHolder);
 		} else {

@@ -77,7 +77,7 @@ public class DeviceDetailsActivity extends ListActivity{
 				CompanyIdentifierResolver.getCompanyName(iBeaconData.getCompanyIdentifier(), getString(R.string.unknown))
 				+ " (" + hexEncode(iBeaconData.getCompanyIdentifier()) + ")");
 		tvAdvert.setText(iBeaconData.getIBeaconAdvertisement() + " (" + hexEncode( iBeaconData.getIBeaconAdvertisement() ) + ")");
-		tvUUID.setText(iBeaconData.getUUID().toString());
+		tvUUID.setText(iBeaconData.getUUID());
 		tvMajor.setText(iBeaconData.getMajor() + " (" + hexEncode( iBeaconData.getMajor() ) + ")");
 		tvMinor.setText(iBeaconData.getMinor() + " (" + hexEncode( iBeaconData.getMinor() ) + ")");
 		tvTxPower.setText(iBeaconData.getCalibratedTxPower() + " (" + hexEncode( iBeaconData.getCalibratedTxPower() ) + ")");

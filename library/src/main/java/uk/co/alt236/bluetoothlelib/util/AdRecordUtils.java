@@ -14,7 +14,7 @@ import android.util.SparseArray;
 public class AdRecordUtils {
 
 	public static String getRecordDataAsString(final AdRecord nameRecord) {
-		if(nameRecord == null){return new String();}
+		if(nameRecord == null){return "";}
 		return new String(nameRecord.getData());
 	}
 

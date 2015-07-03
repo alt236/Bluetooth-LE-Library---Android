@@ -12,7 +12,6 @@ import android.os.Parcelable;
  * Expanded by Alexandros Schillings
  */
 public final class AdRecord implements Parcelable{
-
 	//	02 # Number of bytes that follow in first AD structure
 	//	01 # Flags AD type
 	//	1A # Flags value 0x1A = 000011010

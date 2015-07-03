@@ -10,14 +10,13 @@ import android.content.pm.PackageManager;
 public final class BluetoothUtils {
 	private final Activity mActivity;
 	private final BluetoothAdapter mBluetoothAdapter;
-	private final BluetoothManager mBluetoothManager;
-	
+
 	public final static int REQUEST_ENABLE_BT = 2001;
 	
 	public BluetoothUtils(final Activity activity){
 		mActivity = activity;
-		mBluetoothManager = (BluetoothManager) mActivity.getSystemService(Context.BLUETOOTH_SERVICE);
-		mBluetoothAdapter = mBluetoothManager.getAdapter();
+		final BluetoothManager btManager = (BluetoothManager) mActivity.getSystemService(Context.BLUETOOTH_SERVICE);
+		mBluetoothAdapter = btManager.getAdapter();
 	}
 	
 	public void askUserToEnableBluetoothIfNeeded(){
