@@ -47,11 +47,11 @@ public class BluetoothLeDevice implements Parcelable{
 
 	/** The Constant CREATOR. */
 	public static final Parcelable.Creator<BluetoothLeDevice> CREATOR = new Parcelable.Creator<BluetoothLeDevice>() {
-		public BluetoothLeDevice createFromParcel(Parcel in) {
+		public BluetoothLeDevice createFromParcel(final Parcel in) {
 			return new BluetoothLeDevice(in);
 		}
 
-		public BluetoothLeDevice[] newArray(int size) {
+		public BluetoothLeDevice[] newArray(final int size) {
 			return new BluetoothLeDevice[size];
 		}
 	};
@@ -64,7 +64,7 @@ public class BluetoothLeDevice implements Parcelable{
 	 * @param scanRecord the scan record of the device
 	 * @param timestamp the timestamp of the RSSI reading
 	 */
-	public BluetoothLeDevice(BluetoothDevice device, int rssi, byte[] scanRecord, long timestamp){
+	public BluetoothLeDevice(final BluetoothDevice device, final int rssi, final byte[] scanRecord, final long timestamp){
 		mDevice = device;
 		mFirstRssi = rssi;
 		mFirstTimestamp = timestamp;
@@ -79,7 +79,7 @@ public class BluetoothLeDevice implements Parcelable{
 	 *
 	 * @param device the device
 	 */
-	public BluetoothLeDevice(BluetoothLeDevice device) {
+	public BluetoothLeDevice(final BluetoothLeDevice device) {
 		mCurrentRssi = device.getRssi();
 		mCurrentTimestamp = device.getTimestamp();
 		mDevice = device.getDevice();
@@ -97,7 +97,7 @@ public class BluetoothLeDevice implements Parcelable{
 	 * @param in the in
 	 */
 	@SuppressWarnings("unchecked")
-	protected BluetoothLeDevice(Parcel in) {
+	protected BluetoothLeDevice(final Parcel in) {
 		final Bundle b = in.readBundle(getClass().getClassLoader());
 
 		mCurrentRssi = b.getInt(PARCEL_EXTRA_CURRENT_RSSI, 0);
@@ -116,7 +116,7 @@ public class BluetoothLeDevice implements Parcelable{
 	 * @param timestamp the timestamp
 	 * @param rssiReading the rssi reading
 	 */
-	private void addToRssiLog(long timestamp, int rssiReading){
+	private void addToRssiLog(final long timestamp, final int rssiReading){
 		synchronized (mRssiLog) {
 			if(timestamp - mCurrentTimestamp > LOG_INVALIDATION_THRESHOLD){
 				mRssiLog.clear();
@@ -140,14 +140,14 @@ public class BluetoothLeDevice implements Parcelable{
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BluetoothLeDevice other = (BluetoothLeDevice) obj;
+		final BluetoothLeDevice other = (BluetoothLeDevice) obj;
 		if (mCurrentRssi != other.mCurrentRssi)
 			return false;
 		if (mCurrentTimestamp != other.mCurrentTimestamp)
@@ -348,7 +348,7 @@ public class BluetoothLeDevice implements Parcelable{
 	 * @param timestamp the timestamp
 	 * @param rssiReading the rssi reading
 	 */
-	public void updateRssiReading(long timestamp, int rssiReading){
+	public void updateRssiReading(final long timestamp, final int rssiReading){
 		addToRssiLog(timestamp, rssiReading);
 	}
 
@@ -356,7 +356,7 @@ public class BluetoothLeDevice implements Parcelable{
 	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
 	 */
 	@Override
-	public void writeToParcel(Parcel parcel, int arg1) {
+	public void writeToParcel(final Parcel parcel, final int arg1) {
 		final Bundle b = new Bundle(getClass().getClassLoader());
 
 		b.putByteArray(PARCEL_EXTRA_DEVICE_SCANRECORD, mScanRecord);
@@ -380,7 +380,7 @@ public class BluetoothLeDevice implements Parcelable{
 	 * @param bondState the bond state
 	 * @return the string
 	 */
-	private static String resolveBondingState(int bondState){
+	private static String resolveBondingState(final int bondState){
 		switch (bondState){
 		case BluetoothDevice.BOND_BONDED:
 			return "Paired";

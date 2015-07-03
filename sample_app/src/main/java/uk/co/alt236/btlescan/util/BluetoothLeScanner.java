@@ -10,7 +10,7 @@ public class BluetoothLeScanner {
 	private final BluetoothUtils mBluetoothUtils;
 	private boolean mScanning;
 	
-	public BluetoothLeScanner(BluetoothAdapter.LeScanCallback leScanCallback, BluetoothUtils bluetoothUtils){
+	public BluetoothLeScanner(final BluetoothAdapter.LeScanCallback leScanCallback, final BluetoothUtils bluetoothUtils){
 		mHandler = new Handler();
 		mLeScanCallback = leScanCallback;
 		mBluetoothUtils = bluetoothUtils;

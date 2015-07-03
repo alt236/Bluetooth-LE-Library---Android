@@ -318,7 +318,7 @@ public class CompanyIdentifierResolver {
 
 	private static final SparseArray<String> COMPANY_NAME_MAP = populateCompanyNameMap();
 
-	public static String getCompanyName(int companyId, String fallback){
+	public static String getCompanyName(final int companyId, final String fallback){
 		final String name = COMPANY_NAME_MAP.get(companyId);
 		return name == null ? fallback : name;
 	}

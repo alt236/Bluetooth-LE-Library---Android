@@ -19,7 +19,7 @@ public class IBeaconDevice extends BluetoothLeDevice{
 	 * @param scanRecord the scanRecord
 	 * @throws IllegalArgumentException if the passed device is not an iBeacon
 	 */
-	public IBeaconDevice(BluetoothDevice device, int rssi, byte[] scanRecord) {
+	public IBeaconDevice(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
 		super(device, rssi, scanRecord, 0);
 		validate();
 		mIBeaconData = new IBeaconManufacturerData(this);
@@ -34,7 +34,7 @@ public class IBeaconDevice extends BluetoothLeDevice{
 	 * @param timestamp the timestamp of the RSSI measurement
 	 * @throws IllegalArgumentException if the passed device is not an iBeacon
 	 */
-	public IBeaconDevice(BluetoothDevice device, int rssi, byte[] scanRecord, long timestamp){
+	public IBeaconDevice(final BluetoothDevice device, final int rssi, final byte[] scanRecord, final long timestamp){
 		super(device, rssi, scanRecord, timestamp);
 		validate();
 		mIBeaconData = new IBeaconManufacturerData(this);
@@ -47,13 +47,13 @@ public class IBeaconDevice extends BluetoothLeDevice{
 	 * @param device the device
 	 * @throws IllegalArgumentException if the passed device is not an iBeacon
 	 */
-	public IBeaconDevice(BluetoothLeDevice device){
+	public IBeaconDevice(final BluetoothLeDevice device){
 		super(device);
 		validate();
 		mIBeaconData = new IBeaconManufacturerData(this);
 	}
 
-	private IBeaconDevice(Parcel in) {
+	private IBeaconDevice(final Parcel in) {
 		super(in);
 		validate();
 		mIBeaconData = new IBeaconManufacturerData(this);

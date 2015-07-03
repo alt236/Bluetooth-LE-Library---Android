@@ -61,8 +61,8 @@ public class BluetoothLeService extends Service {
 	// connection change and services discovered.
 	private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
 		@Override
-		public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-			String intentAction;
+		public void onConnectionStateChange(final BluetoothGatt gatt, final int status, final int newState) {
+			final String intentAction;
 			if (newState == BluetoothProfile.STATE_CONNECTED) {
 				intentAction = ACTION_GATT_CONNECTED;
 				mConnectionState = STATE_CONNECTED;
@@ -80,7 +80,7 @@ public class BluetoothLeService extends Service {
 		}
 
 		@Override
-		public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+		public void onServicesDiscovered(final BluetoothGatt gatt, final int status) {
 			if (status == BluetoothGatt.GATT_SUCCESS) {
 				broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
 			} else {
@@ -89,14 +89,14 @@ public class BluetoothLeService extends Service {
 		}
 
 		@Override
-		public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+		public void onCharacteristicRead(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic, final int status) {
 			if (status == BluetoothGatt.GATT_SUCCESS) {
 				broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
 			}
 		}
 
 		@Override
-		public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+		public void onCharacteristicChanged(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
 			broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
 		}
 	};
@@ -126,12 +126,12 @@ public class BluetoothLeService extends Service {
 	}
 
 	@Override
-	public IBinder onBind(Intent intent) {
+	public IBinder onBind(final Intent intent) {
 		return mBinder;
 	}
 
 	@Override
-	public boolean onUnbind(Intent intent) {
+	public boolean onUnbind(final Intent intent) {
 		// After using a given device, you should make sure that BluetoothGatt.close() is called
 		// such that resources are cleaned up properly.  In this particular example, close() is
 		// invoked when the UI is disconnected from the Service.
@@ -243,7 +243,7 @@ public class BluetoothLeService extends Service {
 	 *
 	 * @param characteristic The characteristic to read from.
 	 */
-	public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
+	public void readCharacteristic(final BluetoothGattCharacteristic characteristic) {
 		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
 			Log.w(TAG, "BluetoothAdapter not initialized");
 			return;
@@ -257,7 +257,7 @@ public class BluetoothLeService extends Service {
 	 * @param characteristic Characteristic to act on.
 	 * @param enabled If true, enable notification.  False otherwise.
 	 */
-	public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic, boolean enabled) {
+	public void setCharacteristicNotification(final BluetoothGattCharacteristic characteristic, final boolean enabled) {
 		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
 			Log.w(TAG, "BluetoothAdapter not initialized");
 			return;

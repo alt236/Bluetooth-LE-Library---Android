@@ -31,7 +31,7 @@ public class BluetoothLeDeviceStore {
 		mDeviceMap = new HashMap<String, BluetoothLeDevice>();
 	}
 
-	public void addDevice(BluetoothLeDevice device){
+	public void addDevice(final BluetoothLeDevice device){
 		if(mDeviceMap.containsKey(device.getAddress())){
 			mDeviceMap.get(device.getAddress()).updateRssiReading(device.getTimestamp(), device.getRssi());
 		} else {
@@ -44,19 +44,19 @@ public class BluetoothLeDeviceStore {
 	}
 
 
-	private FileWriter generateFile(File file, String contents){
+	private FileWriter generateFile(final File file, final String contents){
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter(file);
 			writer.append(contents);
 			writer.flush();
 
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}finally{
 			try {
 				writer.close();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				e.printStackTrace();
 			}
 		}
@@ -76,7 +76,7 @@ public class BluetoothLeDeviceStore {
 		Collections.sort(methodResult, new Comparator<BluetoothLeDevice>() {
 
 			@Override
-			public int compare(BluetoothLeDevice arg0, BluetoothLeDevice arg1) {
+			public int compare(final BluetoothLeDevice arg0, final BluetoothLeDevice arg1) {
 				return arg0.getAddress().compareToIgnoreCase(arg1.getAddress());
 			}
 		});
@@ -104,7 +104,7 @@ public class BluetoothLeDeviceStore {
 		sb.append(CsvWriterHelper.addStuff("accuracy"));
 		sb.append('\n');
 
-		for(BluetoothLeDevice device : list){
+		for(final BluetoothLeDevice device : list){
 			sb.append(CsvWriterHelper.addStuff(device.getAddress()));
 			sb.append(CsvWriterHelper.addStuff(device.getName()));
 			sb.append(CsvWriterHelper.addStuff(TimeFormatter.getIsoDateTime(device.getFirstTimestamp())));
@@ -152,7 +152,7 @@ public class BluetoothLeDeviceStore {
 	}
 
 
-	public void shareDataAsEmail(Context context){
+	public void shareDataAsEmail(final Context context){
 		final long timeInMillis = System.currentTimeMillis();
 
 		final String to = null;
@@ -175,7 +175,7 @@ public class BluetoothLeDeviceStore {
             i.putExtra(Intent.EXTRA_TEXT, message);
             context.startActivity(Intent.createChooser(i, context.getString(R.string.exporter_email_device_list_picker_text)));
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
 	}

@@ -42,18 +42,18 @@ public class UtcDateFormatter extends java.text.SimpleDateFormat{
 	private static final TimeZone TIME_ZONE_UTC = TimeZone.getTimeZone(TIME_ZONE_STRING);
 	
 	@SuppressLint("SimpleDateFormat")
-	public UtcDateFormatter(String template){
+	public UtcDateFormatter(final String template){
 		super(template);
 		super.setTimeZone(TIME_ZONE_UTC);
 	}
 	
 	@SuppressLint("SimpleDateFormat")
-	public UtcDateFormatter(String template, DateFormatSymbols symbols){
+	public UtcDateFormatter(final String template, final DateFormatSymbols symbols){
 		super(template, symbols);
 		super.setTimeZone(TIME_ZONE_UTC);
 	}
 	
-	public UtcDateFormatter(String template, Locale locale){
+	public UtcDateFormatter(final String template, final Locale locale){
 		super(template, locale);
 		super.setTimeZone(TIME_ZONE_UTC);
 	}
@@ -66,7 +66,7 @@ public class UtcDateFormatter extends java.text.SimpleDateFormat{
 	 * @see java.text.DateFormat#setTimeZone(java.util.TimeZone)
 	 */
 	@Override
-	public void setTimeZone(TimeZone timezone){
+	public void setTimeZone(final TimeZone timezone){
 		throw new UnsupportedOperationException("This SimpleDateFormat can only be in " + TIME_ZONE_STRING);
 	}
 }

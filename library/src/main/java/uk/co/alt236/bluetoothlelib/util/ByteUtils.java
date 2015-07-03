@@ -40,7 +40,7 @@ public class ByteUtils {
 	 * @param prefix the prefix
 	 * @return true, if successful
 	 */
-	public static boolean doesArrayBeginWith(byte[] array, byte[] prefix){
+	public static boolean doesArrayBeginWith(final byte[] array, final byte[] prefix){
 		if(array.length < prefix.length){return false;}
 
 		for(int i = 0; i < prefix.length; i++){
@@ -58,7 +58,7 @@ public class ByteUtils {
 	 * @param input the input
 	 * @return the int from the array
 	 */
-	public static int getIntFrom2ByteArray(byte[] input){
+	public static int getIntFrom2ByteArray(final byte[] input){
 		final byte[] result = new byte[4];
 
 		result[0] = 0;
@@ -108,7 +108,7 @@ public class ByteUtils {
 	 * @param array the array
 	 * @return the byte[]
 	 */
-	public static byte[] invertArray(byte[] array){
+	public static byte[] invertArray(final byte[] array){
 		final int size = array.length;
 		byte temp;
 

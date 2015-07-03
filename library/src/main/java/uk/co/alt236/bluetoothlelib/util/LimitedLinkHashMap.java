@@ -8,13 +8,13 @@ public class LimitedLinkHashMap<K, V> extends LinkedHashMap<K, V>{
 
 	private final int mMaxSize;
 
-	public LimitedLinkHashMap(int maxSize){
+	public LimitedLinkHashMap(final int maxSize){
 		super(maxSize + 1, 1, false);
 		mMaxSize = maxSize;
 	}
 
     @Override
-    protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+    protected boolean removeEldestEntry(final Map.Entry<K, V> eldest) {
        return this.size() > mMaxSize;
     }
 }

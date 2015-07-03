@@ -81,7 +81,7 @@ public class DeviceControlActivity extends Activity {
 	// Code to manage Service lifecycle.
 	private final ServiceConnection mServiceConnection = new ServiceConnection() {
 		@Override
-		public void onServiceConnected(ComponentName componentName, IBinder service) {
+		public void onServiceConnected(final ComponentName componentName, final IBinder service) {
 			mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
 			if (!mBluetoothLeService.initialize()) {
 				Log.e(TAG, "Unable to initialize Bluetooth");
@@ -92,7 +92,7 @@ public class DeviceControlActivity extends Activity {
 		}
 
 		@Override
-		public void onServiceDisconnected(ComponentName componentName) {
+		public void onServiceDisconnected(final ComponentName componentName) {
 			mBluetoothLeService = null;
 		}
 	};
@@ -105,7 +105,7 @@ public class DeviceControlActivity extends Activity {
 	//					      this can be a result of read or notification operations.
 	private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
 		@Override
-		public void onReceive(Context context, Intent intent) {
+		public void onReceive(final Context context, final Intent intent) {
 			final String action = intent.getAction();
 			if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
 				mConnected = true;
@@ -138,7 +138,7 @@ public class DeviceControlActivity extends Activity {
 	// list of supported characteristic features.
 	private final ExpandableListView.OnChildClickListener servicesListClickListner = new ExpandableListView.OnChildClickListener() {
 		@Override
-		public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+		public boolean onChildClick(final ExpandableListView parent, final View v, final int groupPosition, final int childPosition, final long id) {
 			if (mGattCharacteristics != null) {
 				final BluetoothGattCharacteristic characteristic = mGattCharacteristics.get(groupPosition).get(childPosition);
 				final int charaProp = characteristic.getProperties();
@@ -169,7 +169,7 @@ public class DeviceControlActivity extends Activity {
 		mDataAsString.setText(R.string.no_data);
 	}
 
-	private void generateExportString(List<BluetoothGattService> gattServices){
+	private void generateExportString(final List<BluetoothGattService> gattServices){
 		final String unknownServiceString = getResources().getString(R.string.unknown_service);
 		final String unknownCharaString = getResources().getString(R.string.unknown_characteristic);
 		final StringBuilder exportBuilder = new StringBuilder();
@@ -187,7 +187,7 @@ public class DeviceControlActivity extends Activity {
 		exportBuilder.append('\n');
 
 		String uuid = null;
-		for (BluetoothGattService gattService : gattServices) {
+		for (final BluetoothGattService gattService : gattServices) {
 			uuid = gattService.getUuid().toString();
 
 			exportBuilder.append(GattAttributeResolver.getAttributeName(uuid, unknownServiceString));
@@ -221,7 +221,7 @@ public class DeviceControlActivity extends Activity {
 	// Demonstrates how to iterate through the supported GATT Services/Characteristics.
 	// In this sample, we populate the data structure that is bound to the ExpandableListView
 	// on the UI.
-	private void displayGattServices(List<BluetoothGattService> gattServices) {
+	private void displayGattServices(final List<BluetoothGattService> gattServices) {
 		if (gattServices == null) return;
 		generateExportString(gattServices);
 
@@ -233,7 +233,7 @@ public class DeviceControlActivity extends Activity {
 		mGattCharacteristics = new ArrayList<List<BluetoothGattCharacteristic>>();
 
 		// Loops through available GATT Services.
-		for (BluetoothGattService gattService : gattServices) {
+		for (final BluetoothGattService gattService : gattServices) {
 			final Map<String, String> currentServiceData = new HashMap<String, String>();
 			uuid = gattService.getUuid().toString();
 			currentServiceData.put(LIST_NAME, GattAttributeResolver.getAttributeName(uuid, unknownServiceString));
@@ -275,7 +275,7 @@ public class DeviceControlActivity extends Activity {
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gatt_services);
 
@@ -298,7 +298,7 @@ public class DeviceControlActivity extends Activity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(final Menu menu) {
 		getMenuInflater().inflate(R.menu.gatt_services, menu);
 		if (mConnected) {
 			menu.findItem(R.id.menu_connect).setVisible(false);
@@ -325,7 +325,7 @@ public class DeviceControlActivity extends Activity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(final MenuItem item) {
 		switch(item.getItemId()) {
 		case R.id.menu_connect:
 			mBluetoothLeService.connect(mDeviceAddress);
@@ -402,7 +402,7 @@ public class DeviceControlActivity extends Activity {
 		return intentFilter;
 	}
 
-	private static String tryString(String string, String fallback){
+	private static String tryString(final String string, final String fallback){
 		if(string == null){
 			return fallback;
 		} else{

@@ -28,7 +28,7 @@ public class DeviceDetailsActivity extends ListActivity{
 
 	private BluetoothLeDevice mDevice;
 
-	private void appendAdRecordView(MergeAdapter adapter, String title, AdRecord record){
+	private void appendAdRecordView(final MergeAdapter adapter, final String title, final AdRecord record){
 		final LinearLayout lt = (LinearLayout) getLayoutInflater().inflate(R.layout.list_item_view_adrecord, null);
 		final TextView tvString = (TextView) lt.findViewById(R.id.data_as_string);
 		final TextView tvArray = (TextView) lt.findViewById(R.id.data_as_array);
@@ -41,7 +41,7 @@ public class DeviceDetailsActivity extends ListActivity{
 		adapter.addView(lt);
 	}
 
-	private void appendDeviceInfo(MergeAdapter adapter, BluetoothLeDevice device){
+	private void appendDeviceInfo(final MergeAdapter adapter, final BluetoothLeDevice device){
 		final LinearLayout lt = (LinearLayout) getLayoutInflater().inflate(R.layout.list_item_view_device_info, null);
 		final TextView tvName = (TextView) lt.findViewById(R.id.deviceName);
 		final TextView tvAddress = (TextView) lt.findViewById(R.id.deviceAddress);
@@ -56,7 +56,7 @@ public class DeviceDetailsActivity extends ListActivity{
 		adapter.addView(lt);
 	}
 
-	private void appendHeader(MergeAdapter adapter, String title){
+	private void appendHeader(final MergeAdapter adapter, final String title){
 		final LinearLayout lt = (LinearLayout) getLayoutInflater().inflate(R.layout.list_item_view_header, null);
 		final TextView tvTitle = (TextView) lt.findViewById(R.id.title);
 		tvTitle.setText(title);
@@ -64,7 +64,7 @@ public class DeviceDetailsActivity extends ListActivity{
 		adapter.addView(lt);
 	}
 
-	private void appendIBeaconInfo(MergeAdapter adapter, IBeaconManufacturerData iBeaconData){
+	private void appendIBeaconInfo(final MergeAdapter adapter, final IBeaconManufacturerData iBeaconData){
 		final LinearLayout lt = (LinearLayout) getLayoutInflater().inflate(R.layout.list_item_view_ibeacon_details, null);
 		final TextView tvCompanyId = (TextView) lt.findViewById(R.id.companyId);
 		final TextView tvAdvert = (TextView) lt.findViewById(R.id.advertisement);
@@ -85,7 +85,7 @@ public class DeviceDetailsActivity extends ListActivity{
 		adapter.addView(lt);
 	}
 
-	private void appendRssiInfo(MergeAdapter adapter, BluetoothLeDevice device){
+	private void appendRssiInfo(final MergeAdapter adapter, final BluetoothLeDevice device){
 		final LinearLayout lt = (LinearLayout) getLayoutInflater().inflate(R.layout.list_item_view_rssi_info, null);
 		final TextView tvFirstTimestamp = (TextView) lt.findViewById(R.id.firstTimestamp);
 		final TextView tvFirstRssi = (TextView) lt.findViewById(R.id.firstRssi);
@@ -102,11 +102,11 @@ public class DeviceDetailsActivity extends ListActivity{
 		adapter.addView(lt);
 	}
 
-	private void appendSimpleText(MergeAdapter adapter, byte data[]){
+	private void appendSimpleText(final MergeAdapter adapter, final byte[] data){
 		appendSimpleText(adapter, ByteUtils.byteArrayToHexString(data));
 	}
 
-	private void appendSimpleText(MergeAdapter adapter, String data){
+	private void appendSimpleText(final MergeAdapter adapter, final String data){
 		final LinearLayout lt = (LinearLayout) getLayoutInflater().inflate(R.layout.list_item_view_textview, null);
 		final TextView tvData = (TextView) lt.findViewById(R.id.data);
 
@@ -116,16 +116,16 @@ public class DeviceDetailsActivity extends ListActivity{
 	}
 
 
-	private String formatRssi(double rssi){
+	private String formatRssi(final double rssi){
 		return getString(R.string.formatter_db, String.valueOf(rssi));
 	}
 
-	private String formatRssi(int rssi){
+	private String formatRssi(final int rssi){
 		return getString(R.string.formatter_db, String.valueOf(rssi));
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_details);
 		ButterKnife.inject(this);
@@ -136,13 +136,13 @@ public class DeviceDetailsActivity extends ListActivity{
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(final Menu menu) {
 		getMenuInflater().inflate(R.menu.details, menu);
 		return true;
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(final MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_connect:
 
@@ -156,7 +156,7 @@ public class DeviceDetailsActivity extends ListActivity{
 		return true;
 	}
 
-	private void pupulateDetails(BluetoothLeDevice device) {
+	private void pupulateDetails(final BluetoothLeDevice device) {
 		final MergeAdapter adapter = new MergeAdapter();
 
 		if(device == null){
@@ -196,11 +196,11 @@ public class DeviceDetailsActivity extends ListActivity{
 		getListView().setAdapter(adapter);
 	}
 
-	private static String formatTime(long time){
+	private static String formatTime(final long time){
 		return TimeFormatter.getIsoDateTime(time);
 	}
 
-	private static String hexEncode(int integer){
+	private static String hexEncode(final int integer){
 		return "0x" + Integer.toHexString(integer).toUpperCase(Locale.US);
 	}
 }

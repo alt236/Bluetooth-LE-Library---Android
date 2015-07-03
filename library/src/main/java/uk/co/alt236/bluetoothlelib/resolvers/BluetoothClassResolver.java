@@ -4,7 +4,7 @@ import android.bluetooth.BluetoothClass;
 
 public class BluetoothClassResolver {
 
-	public static String resolveDeviceClass(int btClass){
+	public static String resolveDeviceClass(final int btClass){
 		switch (btClass){
 		case BluetoothClass.Device.AUDIO_VIDEO_CAMCORDER:
 			return "A/V, Camcorder";

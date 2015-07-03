@@ -53,7 +53,7 @@ public final class IBeaconManufacturerData {
 	private final int mMinor;
 	private final String mUUID;
 
-	public IBeaconManufacturerData(BluetoothLeDevice device){
+	public IBeaconManufacturerData(final BluetoothLeDevice device){
 		this(device.getAdRecordStore().getRecord(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getData());
 	}
 
@@ -63,7 +63,7 @@ public final class IBeaconManufacturerData {
 	 * @param data the {@link uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord#TYPE_MANUFACTURER_SPECIFIC_DATA} data array
 	 * @throws IndexOutOfBoundsException if the data array is shorter than expected
 	 */
-	public IBeaconManufacturerData(byte[] data){
+	public IBeaconManufacturerData(final byte[] data){
 		mData = data;
 
 		mCompanyIdentidier = ByteUtils.getIntFrom2ByteArray(

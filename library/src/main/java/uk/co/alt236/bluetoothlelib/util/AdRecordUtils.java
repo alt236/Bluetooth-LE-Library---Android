@@ -93,7 +93,7 @@ public class AdRecordUtils {
 		return Collections.unmodifiableMap(records);
 	}
 
-	public static SparseArray<AdRecord> parseScanRecordAsSparseArray(byte[] scanRecord) {
+	public static SparseArray<AdRecord> parseScanRecordAsSparseArray(final byte[] scanRecord) {
 		final SparseArray<AdRecord> records = new SparseArray<AdRecord>();
 
 		int index = 0;

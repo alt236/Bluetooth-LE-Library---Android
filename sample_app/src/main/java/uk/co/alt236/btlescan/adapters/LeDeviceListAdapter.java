@@ -18,7 +18,7 @@ public class LeDeviceListAdapter extends SimpleCursorAdapter {
 	private final LayoutInflater mInflator;
 	private final Activity mActivity;
 
-	public LeDeviceListAdapter(Activity activity, EasyObjectCursor<BluetoothLeDevice> cursor) {
+	public LeDeviceListAdapter(final Activity activity, final EasyObjectCursor<BluetoothLeDevice> cursor) {
 		super(activity, R.layout.list_item_device, cursor, new String[0], new int[0], 0);
 		mInflator = activity.getLayoutInflater();
 		mActivity = activity;
@@ -31,18 +31,18 @@ public class LeDeviceListAdapter extends SimpleCursorAdapter {
 	}
 
 	@Override
-	public BluetoothLeDevice getItem(int i){
+	public BluetoothLeDevice getItem(final int i){
 		return getCursor().getItem(i);
 	}
 
 	@Override
-	public long getItemId(int i) {
+	public long getItemId(final int i) {
 		return i;
 	}
 
 	@Override
-	public View getView(int i, View view, ViewGroup viewGroup) {
-		ViewHolder viewHolder;
+	public View getView(final int i, View view, final ViewGroup viewGroup) {
+		final ViewHolder viewHolder;
 		// General ListView optimization code.
 		if (view == null) {
 			view = mInflator.inflate(R.layout.list_item_device, null);

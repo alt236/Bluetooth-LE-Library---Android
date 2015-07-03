@@ -2,15 +2,15 @@ package uk.co.alt236.btlescan.util;
 
 public class CsvWriterHelper {
 	private static final String QUOTE = "\"";
-	public static String addStuff(Integer text){
+	public static String addStuff(final Integer text){
 		return QUOTE + text + QUOTE + ","; 
 	}
 
-	public static String addStuff(Long text){
+	public static String addStuff(final Long text){
 		return QUOTE + text + QUOTE + ","; 
 	}
 
-	public static String addStuff(boolean value){
+	public static String addStuff(final boolean value){
 		return QUOTE + value + QUOTE + ","; 
 	}
 	

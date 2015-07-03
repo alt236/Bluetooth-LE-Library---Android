@@ -14,7 +14,7 @@ public final class BluetoothUtils {
 	
 	public final static int REQUEST_ENABLE_BT = 2001;
 	
-	public BluetoothUtils(Activity activity){
+	public BluetoothUtils(final Activity activity){
 		mActivity = activity;
 		mBluetoothManager = (BluetoothManager) mActivity.getSystemService(Context.BLUETOOTH_SERVICE);
 		mBluetoothAdapter = mBluetoothManager.getAdapter();

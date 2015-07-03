@@ -10,7 +10,7 @@ public class IBeaconUtils {
 
 	private static final byte[] MANUFACTURER_DATA_IBEACON_PREFIX = new byte[]{0x4C, 0x00, 0x02, 0x15};
 
-	public static IBeaconDistanceDescriptor getDistanceDescriptor(double accuracy){
+	public static IBeaconDistanceDescriptor getDistanceDescriptor(final double accuracy){
 		if(accuracy < DISTANCE_THRESHOLD_WTF){
 			return IBeaconDistanceDescriptor.UNKNOWN;
 		}
@@ -35,12 +35,12 @@ public class IBeaconUtils {
 	 * @param rssi the RSSI value of the iBeacon
 	 * @return the calculated Accuracy
 	 */
-	public static double calculateAccuracy(int txPower, double rssi) {
+	public static double calculateAccuracy(final int txPower, final double rssi) {
 		if (rssi == 0) {
 			return -1.0; // if we cannot determine accuracy, return -1.
 		}
 
-		double ratio = rssi*1.0/txPower;
+		final double ratio = rssi*1.0/txPower;
 		if (ratio < 1.0) {
 			return Math.pow(ratio,10);
 		}
@@ -56,7 +56,7 @@ public class IBeaconUtils {
 	 * @param device a {@link uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice} device.
 	 * @return true if the device is an iBeacon, false otherwise
 	 */
-	public static boolean isThisAnIBeacon(BluetoothLeDevice device){
+	public static boolean isThisAnIBeacon(final BluetoothLeDevice device){
 		return isThisAnIBeacon(
 				device.getAdRecordStore().getRecordDataAsString(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getBytes());
 	}
@@ -67,7 +67,7 @@ public class IBeaconUtils {
 	 * @param manufacturerData a Bluetooth LE device's raw manufacturerData.
 	 * @return
 	 */
-	public static boolean isThisAnIBeacon(byte[] manufacturerData){
+	public static boolean isThisAnIBeacon(final byte[] manufacturerData){
 		if(manufacturerData == null){return false;}
 
 		// An iBeacon record must be at least 25 chars long

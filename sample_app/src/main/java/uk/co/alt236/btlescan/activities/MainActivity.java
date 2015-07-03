@@ -37,7 +37,7 @@ public class MainActivity extends ListActivity {
 
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 		@Override
-		public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
+		public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
 
 			final BluetoothLeDevice deviceLe = new BluetoothLeDevice(device, rssi, scanRecord, System.currentTimeMillis());
 			mDeviceStore.addDevice(deviceLe);
@@ -53,7 +53,7 @@ public class MainActivity extends ListActivity {
 		}
 	};
 
-	private void updateItemCount(int count){
+	private void updateItemCount(final int count){
 		mTvItemCount.setText(
 				getString(
 						R.string.formatter_item_count,
@@ -79,14 +79,14 @@ public class MainActivity extends ListActivity {
 		.setTitle(R.string.menu_about)
 		.setCancelable(false)
 		.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {}
+			public void onClick(final DialogInterface dialog, final int id) {}
 		})
 		.setView(textView)
 		.show();
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		ButterKnife.inject(this);
@@ -98,7 +98,7 @@ public class MainActivity extends ListActivity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(final Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
 		if (!mScanner.isScanning()) {
 			menu.findItem(R.id.menu_stop).setVisible(false);
@@ -120,7 +120,7 @@ public class MainActivity extends ListActivity {
 	}
 
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
+	protected void onListItemClick(final ListView l, final View v, final int position, final long id) {
 		final BluetoothLeDevice device = (BluetoothLeDevice) mLeDeviceListAdapter.getItem(position);
 		if (device == null) return;
 
@@ -132,7 +132,7 @@ public class MainActivity extends ListActivity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(final MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_scan:
 			startScan();

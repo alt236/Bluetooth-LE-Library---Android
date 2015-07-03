@@ -136,22 +136,22 @@ public final class AdRecord implements Parcelable{
 
 
 	public static final Parcelable.Creator<AdRecord> CREATOR = new Parcelable.Creator<AdRecord>() {
-		public AdRecord createFromParcel(Parcel in) {
+		public AdRecord createFromParcel(final Parcel in) {
 			return new AdRecord(in);
 		}
 
-		public AdRecord[] newArray(int size) {
+		public AdRecord[] newArray(final int size) {
 			return new AdRecord[size];
 		}
 	};
 
-	public AdRecord(int length, int type, byte[] data) {
+	public AdRecord(final int length, final int type, final byte[] data) {
 		mLength = length;
 		mType = type;
 		mData = data;
 	}
 
-	public AdRecord(Parcel in) {
+	public AdRecord(final Parcel in) {
 		final Bundle b = in.readBundle(getClass().getClassLoader());
 		mLength = b.getInt(PARCEL_RECORD_LENGTH);
 		mType = b.getInt(PARCEL_RECORD_TYPE);
@@ -185,7 +185,7 @@ public final class AdRecord implements Parcelable{
 	}
 
 	@Override
-	public void writeToParcel(Parcel parcel, int arg1) {
+	public void writeToParcel(final Parcel parcel, final int arg1) {
 		final Bundle b = new Bundle(getClass().getClassLoader());
 
 		b.putInt(PARCEL_RECORD_LENGTH, mLength);
@@ -195,7 +195,7 @@ public final class AdRecord implements Parcelable{
 		parcel.writeBundle(b);
 	}
 
-	private static String getHumanReadableAdType(int type){
+	private static String getHumanReadableAdType(final int type){
 		switch(type){
 		case TYPE_CONNECTION_INTERVAL_RANGE:
 			return "Slave Connection Interval Range";

@@ -195,7 +195,7 @@ public class GattAttributeResolver {
 
 	private final static Map<String, String> sGattAttributesMap = populateGattAttributesMap();
 
-	public static String getAttributeName(String uuid, String fallback){
+	public static String getAttributeName(final String uuid, final String fallback){
 		final String name = sGattAttributesMap.get(uuid.toLowerCase(Locale.US));
 		return name == null ? fallback : name;
 	}
