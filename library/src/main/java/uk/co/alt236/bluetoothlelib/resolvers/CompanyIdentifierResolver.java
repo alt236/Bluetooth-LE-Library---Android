@@ -324,7 +324,7 @@ public class CompanyIdentifierResolver {
     }
 
     private static SparseArray<String> populateCompanyNameMap() {
-        final SparseArray<String> map = new SparseArray<String>();
+        final SparseArray<String> map = new SparseArray<>();
 
         map.put(ERICSSON_TECHNOLOGY_LICENSING, "Ericsson Technology Licensing");
         map.put(NOKIA_MOBILE_PHONES, "Nokia Mobile Phones");

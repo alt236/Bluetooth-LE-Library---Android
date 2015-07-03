@@ -198,7 +198,7 @@ public class GattAttributeResolver {
     }
 
     private static Map<String, String> populateGattAttributesMap() {
-        final Map<String, String> map = new HashMap<String, String>();
+        final Map<String, String> map = new HashMap<>();
 
         map.put(BASE_GUID, "Service Discovery Protocol (SDP)");
         map.put(SERVICE_DISCOVERY_PROTOCOL_SDP, "User Datagram Protocol (UDP)");

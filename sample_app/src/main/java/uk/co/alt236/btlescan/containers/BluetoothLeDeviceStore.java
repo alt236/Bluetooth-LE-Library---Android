@@ -29,7 +29,7 @@ public class BluetoothLeDeviceStore {
 
 
     public BluetoothLeDeviceStore() {
-        mDeviceMap = new HashMap<String, BluetoothLeDevice>();
+        mDeviceMap = new HashMap<>();
     }
 
     public void addDevice(final BluetoothLeDevice device) {
@@ -45,14 +45,14 @@ public class BluetoothLeDeviceStore {
     }
 
     public EasyObjectCursor<BluetoothLeDevice> getDeviceCursor() {
-        return new EasyObjectCursor<BluetoothLeDevice>(
+        return new EasyObjectCursor<>(
                 BluetoothLeDevice.class,
                 getDeviceList(),
                 "address");
     }
 
     public List<BluetoothLeDevice> getDeviceList() {
-        final List<BluetoothLeDevice> methodResult = new ArrayList<BluetoothLeDevice>(mDeviceMap.values());
+        final List<BluetoothLeDevice> methodResult = new ArrayList<>(mDeviceMap.values());
 
         Collections.sort(methodResult, new Comparator<BluetoothLeDevice>() {
 

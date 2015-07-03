@@ -82,7 +82,7 @@ public class ByteUtils {
      * @return the int from byte
      */
     public static int getIntFromByte(final byte bite) {
-        return Integer.valueOf(bite & 0xFF);
+        return bite & 0xFF;
     }
 
     /**

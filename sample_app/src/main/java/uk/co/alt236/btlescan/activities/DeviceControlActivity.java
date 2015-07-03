@@ -73,7 +73,7 @@ public class DeviceControlActivity extends Activity {
     TextView mDataAsArray;
     private BluetoothGattCharacteristic mNotifyCharacteristic;
     private BluetoothLeService mBluetoothLeService;
-    private List<List<BluetoothGattCharacteristic>> mGattCharacteristics = new ArrayList<List<BluetoothGattCharacteristic>>();
+    private List<List<BluetoothGattCharacteristic>> mGattCharacteristics = new ArrayList<>();
     // If a given GATT characteristic is selected, check for supported features.  This sample
     // demonstrates 'Read' and 'Notify' features.  See
     // http://d.android.com/reference/android/bluetooth/BluetoothGatt.html for the complete
@@ -177,26 +177,26 @@ public class DeviceControlActivity extends Activity {
         String uuid = null;
         final String unknownServiceString = getResources().getString(R.string.unknown_service);
         final String unknownCharaString = getResources().getString(R.string.unknown_characteristic);
-        final List<Map<String, String>> gattServiceData = new ArrayList<Map<String, String>>();
-        final List<List<Map<String, String>>> gattCharacteristicData = new ArrayList<List<Map<String, String>>>();
-        mGattCharacteristics = new ArrayList<List<BluetoothGattCharacteristic>>();
+        final List<Map<String, String>> gattServiceData = new ArrayList<>();
+        final List<List<Map<String, String>>> gattCharacteristicData = new ArrayList<>();
+        mGattCharacteristics = new ArrayList<>();
 
         // Loops through available GATT Services.
         for (final BluetoothGattService gattService : gattServices) {
-            final Map<String, String> currentServiceData = new HashMap<String, String>();
+            final Map<String, String> currentServiceData = new HashMap<>();
             uuid = gattService.getUuid().toString();
             currentServiceData.put(LIST_NAME, GattAttributeResolver.getAttributeName(uuid, unknownServiceString));
             currentServiceData.put(LIST_UUID, uuid);
             gattServiceData.add(currentServiceData);
 
-            final List<Map<String, String>> gattCharacteristicGroupData = new ArrayList<Map<String, String>>();
+            final List<Map<String, String>> gattCharacteristicGroupData = new ArrayList<>();
             final List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
-            final List<BluetoothGattCharacteristic> charas = new ArrayList<BluetoothGattCharacteristic>();
+            final List<BluetoothGattCharacteristic> charas = new ArrayList<>();
 
             // Loops through available Characteristics.
             for (final BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
                 charas.add(gattCharacteristic);
-                final Map<String, String> currentCharaData = new HashMap<String, String>();
+                final Map<String, String> currentCharaData = new HashMap<>();
                 uuid = gattCharacteristic.getUuid().toString();
                 currentCharaData.put(LIST_NAME, GattAttributeResolver.getAttributeName(uuid, unknownCharaString));
                 currentCharaData.put(LIST_UUID, uuid);

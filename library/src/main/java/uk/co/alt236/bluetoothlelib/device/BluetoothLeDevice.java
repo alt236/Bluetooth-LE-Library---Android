@@ -7,7 +7,6 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Map;
 
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecordStore;
@@ -71,7 +70,7 @@ public class BluetoothLeDevice implements Parcelable {
         mFirstTimestamp = timestamp;
         mRecordStore = new AdRecordStore(AdRecordUtils.parseScanRecordAsSparseArray(scanRecord));
         mScanRecord = scanRecord;
-        mRssiLog = new LimitedLinkHashMap<Long, Integer>(MAX_RSSI_LOG_SIZE);
+        mRssiLog = new LimitedLinkHashMap<>(MAX_RSSI_LOG_SIZE);
         updateRssiReading(timestamp, rssi);
     }
 
@@ -279,17 +278,12 @@ public class BluetoothLeDevice implements Parcelable {
         int count = 0;
 
         synchronized (mRssiLog) {
-            final Iterator<Long> it1 = mRssiLog.keySet().iterator();
 
-            while (it1.hasNext()) {
+            for (final Long aLong : mRssiLog.keySet()) {
                 count++;
-                sum += mRssiLog.get(it1.next());
+                sum += mRssiLog.get(aLong);
             }
         }
-        //		for(final Map.Entry<Long,Integer> e : mRssiLog.entrySet()){
-        //        	count ++;
-        //        	sum += e.getValue();
-        //	    }
 
         if (count > 0) {
             return sum / count;

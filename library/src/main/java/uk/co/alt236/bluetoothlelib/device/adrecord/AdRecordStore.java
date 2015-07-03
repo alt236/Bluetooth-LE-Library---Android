@@ -148,7 +148,7 @@ public class AdRecordStore implements Parcelable {
     public static <C> Collection<C> asList(final SparseArray<C> sparseArray) {
         if (sparseArray == null) return null;
 
-        final Collection<C> arrayList = new ArrayList<C>(sparseArray.size());
+        final Collection<C> arrayList = new ArrayList<>(sparseArray.size());
         for (int i = 0; i < sparseArray.size(); i++) {
             arrayList.add(sparseArray.valueAt(i));
         }

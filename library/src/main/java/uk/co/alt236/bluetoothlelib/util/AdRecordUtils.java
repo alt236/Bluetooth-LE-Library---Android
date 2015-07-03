@@ -50,7 +50,7 @@ public class AdRecordUtils {
      * Read out all the AD structures from the raw scan record
      */
     public static List<AdRecord> parseScanRecordAsList(final byte[] scanRecord) {
-        final List<AdRecord> records = new ArrayList<AdRecord>();
+        final List<AdRecord> records = new ArrayList<>();
 
         int index = 0;
         while (index < scanRecord.length) {
@@ -76,7 +76,7 @@ public class AdRecordUtils {
 
     @SuppressLint("UseSparseArrays")
     public static Map<Integer, AdRecord> parseScanRecordAsMap(final byte[] scanRecord) {
-        final Map<Integer, AdRecord> records = new HashMap<Integer, AdRecord>();
+        final Map<Integer, AdRecord> records = new HashMap<>();
 
         int index = 0;
         while (index < scanRecord.length) {
@@ -101,7 +101,7 @@ public class AdRecordUtils {
     }
 
     public static SparseArray<AdRecord> parseScanRecordAsSparseArray(final byte[] scanRecord) {
-        final SparseArray<AdRecord> records = new SparseArray<AdRecord>();
+        final SparseArray<AdRecord> records = new SparseArray<>();
 
         int index = 0;
         while (index < scanRecord.length) {
