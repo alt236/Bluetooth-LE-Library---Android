@@ -8,7 +8,7 @@ public class IBeaconUtils {
     private static final double DISTANCE_THRESHOLD_IMMEDIATE = 0.5;
     private static final double DISTANCE_THRESHOLD_NEAR = 3.0;
 
-    private static final byte[] MANUFACTURER_DATA_IBEACON_PREFIX = new byte[]{0x4C, 0x00, 0x02, 0x15};
+    private static final byte[] MANUFACTURER_DATA_IBEACON_PREFIX = {0x4C, 0x00, 0x02, 0x15};
 
     /**
      * Calculates the accuracy of an RSSI reading.
@@ -103,7 +103,7 @@ public class IBeaconUtils {
      * @return true if the device is an iBeacon, false otherwise
      */
     public static boolean isThisAnIBeacon(final BluetoothLeDevice device) {
-        return isThisAnIBeacon(
-                device.getAdRecordStore().getRecordDataAsString(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getBytes());
+        final int key = AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA;
+        return isThisAnIBeacon(device.getAdRecordStore().getRecordDataAsString(key).getBytes());
     }
 }
