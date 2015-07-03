@@ -30,5 +30,7 @@ android {
 }
 
 dependencies {
+    testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:1.9.5"
     compile fileTree(include: ['*.jar'], dir: 'libs')
 }

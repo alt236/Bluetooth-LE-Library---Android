@@ -36,7 +36,7 @@ public class ByteUtils {
     }
 
     /**
-     * Checks to see if a byte arry starts with another byte array.
+     * Checks to see if a byte array starts with another byte array.
      *
      * @param array  the array
      * @param prefix the prefix
@@ -78,7 +78,7 @@ public class ByteUtils {
      * <p/>
      * For example, FF will be converted to 255 and not -1.
      *
-     * @param bite the bite
+     * @param bite the byte
      * @return the int from byte
      */
     public static int getIntFromByte(final byte bite) {
@@ -107,12 +107,11 @@ public class ByteUtils {
 
 
     /**
-     * Inverts an array
+     * Inverts an byte array in place.
      *
      * @param array the array
-     * @return the byte[]
      */
-    public static byte[] invertArray(final byte[] array) {
+    public static void invertArray(final byte[] array) {
         final int size = array.length;
         byte temp;
 
@@ -121,7 +120,5 @@ public class ByteUtils {
             array[i] = array[size - 1 - i];
             array[size - 1 - i] = temp;
         }
-
-        return array;
     }
 }

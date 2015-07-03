@@ -65,8 +65,10 @@ public final class IBeaconManufacturerData {
     public IBeaconManufacturerData(final byte[] data) {
         mData = data;
 
-        mCompanyIdentidier = ByteUtils.getIntFrom2ByteArray(
-                ByteUtils.invertArray(Arrays.copyOfRange(mData, 0, 2)));
+        final byte[] intArray = Arrays.copyOfRange(mData, 0, 2);
+        ByteUtils.invertArray(intArray);
+
+        mCompanyIdentidier = ByteUtils.getIntFrom2ByteArray(intArray);
 
         mIBeaconAdvertisment = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 2, 4));
         mUUID = calculateUUIDString(Arrays.copyOfRange(mData, 4, 20));
