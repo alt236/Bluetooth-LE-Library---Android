@@ -1,6 +1,6 @@
-/bin
-/gen
-local.properties
-.idea/
-lint.xml
-/.apt_generated
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
