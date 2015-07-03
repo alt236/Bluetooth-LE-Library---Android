@@ -8,9 +8,9 @@ import uk.co.alt236.bluetoothlelib.util.ByteUtils;
 
 /**
  * Parses the Manufactured Data field of an iBeacon
- *
+ * <p/>
  * The parsing is based on the following schema:
- *
+ * <p/>
  * <p>
  * 0	4C - Byte 1 (LSB) of Company identifier code
  * 1	00 - Byte 0 (MSB) of Company identifier code (0x004C == Apple)
@@ -37,108 +37,115 @@ import uk.co.alt236.bluetoothlelib.util.ByteUtils;
  * 22	00 - minor
  * 23	00
  * 24	c5 - The 2's complement of the calibrated Tx Power
- *
+ * <p/>
  * </p>
  *
  * @author Alexandros Schillings
- *
  */
 
 public final class IBeaconManufacturerData {
-	private final byte[] mData;
-	private final int mCalibratedTxPower;
-	private final int mCompanyIdentidier;
-	private final int mIBeaconAdvertisment;
-	private final int mMajor;
-	private final int mMinor;
-	private final String mUUID;
+    private final byte[] mData;
+    private final int mCalibratedTxPower;
+    private final int mCompanyIdentidier;
+    private final int mIBeaconAdvertisment;
+    private final int mMajor;
+    private final int mMinor;
+    private final String mUUID;
 
-	public IBeaconManufacturerData(final BluetoothLeDevice device){
-		this(device.getAdRecordStore().getRecord(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getData());
-	}
+    public IBeaconManufacturerData(final BluetoothLeDevice device) {
+        this(device.getAdRecordStore().getRecord(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getData());
+    }
 
-	/**
-	 * Instantiates a new iBeacon manufacturer data object.
+    /**
+     * Instantiates a new iBeacon manufacturer data object.
+     *
+     * @param data the {@link uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord#TYPE_MANUFACTURER_SPECIFIC_DATA} data array
+     * @throws IndexOutOfBoundsException if the data array is shorter than expected
+     */
+    public IBeaconManufacturerData(final byte[] data) {
+        mData = data;
 
-	 * @param data the {@link uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord#TYPE_MANUFACTURER_SPECIFIC_DATA} data array
-	 * @throws IndexOutOfBoundsException if the data array is shorter than expected
-	 */
-	public IBeaconManufacturerData(final byte[] data){
-		mData = data;
+        mCompanyIdentidier = ByteUtils.getIntFrom2ByteArray(
+                ByteUtils.invertArray(Arrays.copyOfRange(mData, 0, 2)));
 
-		mCompanyIdentidier = ByteUtils.getIntFrom2ByteArray(
-				ByteUtils.invertArray(Arrays.copyOfRange(mData, 0, 2)));
+        mIBeaconAdvertisment = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 2, 4));
+        mUUID = calculateUUIDString(Arrays.copyOfRange(mData, 4, 20));
+        mMajor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 20, 22));
+        mMinor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 22, 24));
+        mCalibratedTxPower = data[24];
+    }
 
-		mIBeaconAdvertisment = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 2, 4));
-		mUUID =  calculateUUIDString(Arrays.copyOfRange(mData, 4, 20));
-		mMajor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 20, 22));
-		mMinor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 22, 24));
-		mCalibratedTxPower = data[24];
-	}
+    /**
+     * Gets the calibrated TX power of the iBeacon device as reported.
+     *
+     * @return the calibrated TX power
+     */
+    public int getCalibratedTxPower() {
+        return mCalibratedTxPower;
+    }
 
-	/**
-	 * Gets the calibrated TX power of the iBeacon device as reported.
-	 *
-	 * @return the calibrated TX power
-	 */
-	public int getCalibratedTxPower(){
-		return mCalibratedTxPower;
-	}
+    /**
+     * Gets the iBeacon company identifier.
+     *
+     * @return the company identifier
+     */
+    public int getCompanyIdentifier() {
+        return mCompanyIdentidier;
+    }
 
-	/**
-	 * Gets the iBeacon company identifier.
-	 *
-	 * @return the company identifier
-	 */
-	public int getCompanyIdentifier(){
-		return mCompanyIdentidier;
-	}
+    public int getIBeaconAdvertisement() {
+        return mIBeaconAdvertisment;
+    }
 
-	public int getIBeaconAdvertisement(){
-		return mIBeaconAdvertisment;
-	}
+    /**
+     * Gets the iBeacon Major value.
+     *
+     * @return the Major value
+     */
+    public int getMajor() {
+        return mMajor;
+    }
 
-	/**
-	 * Gets the iBeacon Major value.
-	 *
-	 * @return the Major value
-	 */
-	public int getMajor(){
-		return mMajor;
-	}
+    /**
+     * Gets the iBeacon Minor value.
+     *
+     * @return the Minor value
+     */
+    public int getMinor() {
+        return mMinor;
+    }
 
-	/**
-	 * Gets the iBeacon Minor value.
-	 *
-	 * @return the Minor value
-	 */
-	public int getMinor(){
-		return mMinor;
-	}
+    /**
+     * Gets the iBeacon UUID.
+     *
+     * @return the UUID
+     */
+    public String getUUID() {
+        return mUUID;
+    }
 
-	/**
-	 * Gets the iBeacon UUID.
-	 *
-	 * @return the UUID
-	 */
-	public String getUUID(){
-		return mUUID;
-	}
+    private static String calculateUUIDString(final byte[] uuid) {
+        final StringBuilder sb = new StringBuilder();
 
-	private static String calculateUUIDString(final byte[] uuid){
-		final StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < uuid.length; i++) {
+            if (i == 4) {
+                sb.append('-');
+            }
+            if (i == 6) {
+                sb.append('-');
+            }
+            if (i == 8) {
+                sb.append('-');
+            }
+            if (i == 10) {
+                sb.append('-');
+            }
 
-		for(int i = 0 ; i< uuid.length; i++){
-			if(i == 4){sb.append('-');}
-			if(i == 6){sb.append('-');}
-			if(i == 8){sb.append('-');}
-			if(i == 10){sb.append('-');}
-
-			sb.append(
-					Integer.toHexString(ByteUtils.getIntFromByte(uuid[i])));
-		}
+            sb.append(
+                    Integer.toHexString(ByteUtils.getIntFromByte(uuid[i])));
+        }
 
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 }

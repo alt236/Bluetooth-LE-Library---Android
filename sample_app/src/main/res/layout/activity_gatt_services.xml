@@ -15,13 +15,13 @@
      limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin" >
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin">
 
     <GridLayout
         android:id="@+id/deviceInformation"
@@ -29,27 +29,27 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:columnCount="2"
-        android:useDefaultMargins="true" >
+        android:useDefaultMargins="true">
 
         <TextView
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_device_address" />
+            android:text="@string/label_device_address"/>
 
         <TextView
             android:id="@+id/device_address"
-            style="@style/GridLayoutDataTextView" />
+            style="@style/GridLayoutDataTextView"/>
 
         <TextView
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_state" />
+            android:text="@string/label_state"/>
 
         <TextView
             android:id="@+id/connection_state"
-            style="@style/GridLayoutDataTextView" />
+            style="@style/GridLayoutDataTextView"/>
     </GridLayout>
 
     <View
@@ -57,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/deviceInformation"
-        android:background="@android:color/holo_blue_dark" />
+        android:background="@android:color/holo_blue_dark"/>
 
     <GridLayout
         android:id="@+id/gattInformation"
@@ -65,47 +65,47 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:columnCount="2"
-        android:useDefaultMargins="true" >
+        android:useDefaultMargins="true">
 
         <TextView
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_uuid" />
+            android:text="@string/label_uuid"/>
 
         <TextView
             android:id="@+id/uuid"
-            style="@style/GridLayoutDataTextViewMonospace" />
+            style="@style/GridLayoutDataTextViewMonospace"/>
 
         <TextView
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_desc" />
+            android:text="@string/label_desc"/>
 
         <TextView
             android:id="@+id/description"
-            style="@style/GridLayoutDataTextViewMonospace" />
+            style="@style/GridLayoutDataTextViewMonospace"/>
 
         <TextView
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_as_string" />
+            android:text="@string/label_as_string"/>
 
         <TextView
             android:id="@+id/data_as_string"
-            style="@style/GridLayoutDataTextViewMonospace" />
+            style="@style/GridLayoutDataTextViewMonospace"/>
 
         <TextView
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_as_array" />
+            android:text="@string/label_as_array"/>
 
         <TextView
             android:id="@+id/data_as_array"
-            style="@style/GridLayoutDataTextViewMonospace" />
+            style="@style/GridLayoutDataTextViewMonospace"/>
     </GridLayout>
 
     <View
@@ -113,13 +113,13 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_above="@id/gattInformation"
-        android:background="@android:color/holo_blue_dark" />
+        android:background="@android:color/holo_blue_dark"/>
 
     <ExpandableListView
         android:id="@+id/gatt_services_list"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_above="@id/lowerSepparator"
-        android:layout_below="@id/upperSepparator" />
+        android:layout_below="@id/upperSepparator"/>
 
 </RelativeLayout>

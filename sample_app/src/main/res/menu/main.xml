@@ -14,7 +14,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/menu_refresh"
@@ -33,9 +33,9 @@
         android:title="@string/menu_stop"/>
     <item
         android:id="@+id/menu_share"
+        android:icon="@drawable/ic_action_share"
         android:orderInCategory="102"
         android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_share"
         android:title="@string/menu_share"/>
     <item
         android:id="@+id/menu_about"
