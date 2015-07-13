@@ -4,10 +4,11 @@ import android.bluetooth.BluetoothDevice;
 import android.os.Parcel;
 
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconDevice;
 import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
 import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils;
 
-public class IBeaconDevice extends BluetoothLeDevice {
+public class IBeaconDevice extends BluetoothLeDevice implements BeaconDevice{
 
     /**
      * The m iBeacon data.
@@ -73,6 +74,11 @@ public class IBeaconDevice extends BluetoothLeDevice {
         return IBeaconUtils.calculateAccuracy(
                 getCalibratedTxPower(),
                 getRunningAverageRssi());
+    }
+
+    @Override
+    public BeaconType getBeaconType() {
+        return BeaconType.IBEACON;
     }
 
     /**
