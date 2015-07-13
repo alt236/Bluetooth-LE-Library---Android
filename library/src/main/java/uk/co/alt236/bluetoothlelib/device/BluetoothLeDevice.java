@@ -7,7 +7,10 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecordStore;
 import uk.co.alt236.bluetoothlelib.resolvers.BluetoothClassResolver;
@@ -55,6 +58,7 @@ public class BluetoothLeDevice implements Parcelable {
     private final long mFirstTimestamp;
     private int mCurrentRssi;
     private long mCurrentTimestamp;
+    private transient Set<BluetoothService> mServiceSet;
 
     /**
      * Instantiates a new Bluetooth LE device.
@@ -219,6 +223,25 @@ public class BluetoothLeDevice implements Parcelable {
      */
     public String getBluetoothDeviceMajorClassName() {
         return BluetoothClassResolver.resolveMajorDeviceClass(mDevice.getBluetoothClass().getMajorDeviceClass());
+    }
+
+    public Set<BluetoothService> getBluetoothDeviceKnownSupportedServices() {
+        if (mServiceSet == null) {
+            synchronized (this) {
+                if (mServiceSet == null) {
+                    final Set<BluetoothService> serviceSet = new HashSet<>();
+                    for (final BluetoothService service : BluetoothService.values()) {
+
+                        if (mDevice.getBluetoothClass().hasService(service.getAndroidConstant())) {
+                            serviceSet.add(service);
+                        }
+                    }
+                    mServiceSet = Collections.unmodifiableSet(serviceSet);
+                }
+            }
+        }
+
+        return mServiceSet;
     }
 
     /**

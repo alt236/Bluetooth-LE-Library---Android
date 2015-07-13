@@ -19,6 +19,7 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
+import uk.co.alt236.bluetoothlelib.device.BluetoothService;
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord;
 import uk.co.alt236.bluetoothlelib.device.mfdata.IBeaconManufacturerData;
 import uk.co.alt236.bluetoothlelib.resolvers.CompanyIdentifierResolver;
@@ -56,6 +57,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         final TextView tvAddress = (TextView) lt.findViewById(R.id.deviceAddress);
         final TextView tvClass = (TextView) lt.findViewById(R.id.deviceClass);
         final TextView tvMajorClass = (TextView) lt.findViewById(R.id.deviceMajorClass);
+        final TextView tvServices = (TextView) lt.findViewById(R.id.deviceServiceList);
         final TextView tvBondingState = (TextView) lt.findViewById(R.id.deviceBondingState);
 
         tvName.setText(device.getName());
@@ -63,6 +65,24 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         tvClass.setText(device.getBluetoothDeviceClassName());
         tvMajorClass.setText(device.getBluetoothDeviceMajorClassName());
         tvBondingState.setText(device.getBluetoothDeviceBondState());
+
+        final String supportedServices;
+        if(device.getBluetoothDeviceKnownSupportedServices().isEmpty()){
+            supportedServices = getString(R.string.no_known_services);
+        } else {
+            final StringBuilder sb = new StringBuilder();
+
+            for(final BluetoothService service : device.getBluetoothDeviceKnownSupportedServices()){
+                if(sb.length() > 0){
+                    sb.append(", ");
+                }
+
+                sb.append(service);
+            }
+            supportedServices = sb.toString();
+        }
+
+        tvServices.setText(supportedServices);
 
         adapter.addView(lt);
     }
