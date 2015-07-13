@@ -8,6 +8,20 @@ final def androidVersionCode = 100
 final def targetSdk = rootProject.targetSdkVersion;
 final def minSdkRed = rootProject.minSdkVersion;
 
+repositories {
+    maven {
+        url "https://repo.commonsware.com.s3.amazonaws.com"
+    }
+}
+
+dependencies {
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.commonsware.cwac:merge:1.1.0'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':library')
+}
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
@@ -32,9 +46,4 @@ android {
     }
     productFlavors {
     }
-}
-
-dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':library')
 }

@@ -16,7 +16,6 @@
 
 package uk.co.alt236.btlescan.activities;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
@@ -27,6 +26,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,8 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.resolvers.GattAttributeResolver;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
@@ -54,23 +54,23 @@ import uk.co.alt236.btlescan.services.BluetoothLeService;
  * communicates with {@code BluetoothLeService}, which in turn interacts with the
  * Bluetooth LE API.
  */
-public class DeviceControlActivity extends Activity {
+public class DeviceControlActivity extends AppCompatActivity {
     public static final String EXTRA_DEVICE = "extra_device";
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
     private static final String LIST_NAME = "NAME";
     private static final String LIST_UUID = "UUID";
-    @InjectView(R.id.gatt_services_list)
-    ExpandableListView mGattServicesList;
-    @InjectView(R.id.connection_state)
-    TextView mConnectionState;
-    @InjectView(R.id.uuid)
-    TextView mGattUUID;
-    @InjectView(R.id.description)
-    TextView mGattUUIDDesc;
-    @InjectView(R.id.data_as_string)
-    TextView mDataAsString;
-    @InjectView(R.id.data_as_array)
-    TextView mDataAsArray;
+    @Bind(R.id.gatt_services_list)
+    protected ExpandableListView mGattServicesList;
+    @Bind(R.id.connection_state)
+    protected TextView mConnectionState;
+    @Bind(R.id.uuid)
+    protected TextView mGattUUID;
+    @Bind(R.id.description)
+    protected TextView mGattUUIDDesc;
+    @Bind(R.id.data_as_string)
+    protected TextView mDataAsString;
+    @Bind(R.id.data_as_array)
+    protected TextView mDataAsArray;
     private BluetoothGattCharacteristic mNotifyCharacteristic;
     private BluetoothLeService mBluetoothLeService;
     private List<List<BluetoothGattCharacteristic>> mGattCharacteristics = new ArrayList<>();
@@ -282,14 +282,14 @@ public class DeviceControlActivity extends Activity {
         mDeviceName = device.getName();
         mDeviceAddress = device.getAddress();
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         // Sets up UI references.
         ((TextView) findViewById(R.id.device_address)).setText(mDeviceAddress);
         mGattServicesList.setOnChildClickListener(servicesListClickListner);
 
-        getActionBar().setTitle(mDeviceName);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(mDeviceName);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);

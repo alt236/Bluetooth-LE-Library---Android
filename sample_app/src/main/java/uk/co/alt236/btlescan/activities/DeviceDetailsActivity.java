@@ -1,11 +1,14 @@
 package uk.co.alt236.btlescan.activities;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.commonsware.cwac.merge.MergeAdapter;
@@ -13,6 +16,7 @@ import com.commonsware.cwac.merge.MergeAdapter;
 import java.util.Collection;
 import java.util.Locale;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord;
@@ -24,9 +28,13 @@ import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.util.TimeFormatter;
 
-public class DeviceDetailsActivity extends ListActivity {
+public class DeviceDetailsActivity extends AppCompatActivity {
     public static final String EXTRA_DEVICE = "extra_device";
-
+    @Bind(android.R.id.list)
+    protected ListView mList;
+    @Nullable
+    @Bind(android.R.id.empty)
+    protected View mEmpty;
     private BluetoothLeDevice mDevice;
 
     private void appendAdRecordView(final MergeAdapter adapter, final String title, final AdRecord record) {
@@ -129,7 +137,9 @@ public class DeviceDetailsActivity extends ListActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
+
+        mList.setEmptyView(mEmpty);
 
         mDevice = getIntent().getParcelableExtra(EXTRA_DEVICE);
 
@@ -194,7 +204,7 @@ public class DeviceDetailsActivity extends ListActivity {
             }
 
         }
-        getListView().setAdapter(adapter);
+        mList.setAdapter(adapter);
     }
 
     private static String formatTime(final long time) {
