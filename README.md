@@ -33,7 +33,7 @@ In the `onLeScan()` method of your `BluetoothAdapter.LeScanCallback()` create a 
 
 For example:
 
-<pre>
+```
    private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
    
         @Override
@@ -51,7 +51,7 @@ For example:
 			});
 		}
 	};
-</pre>
+```
 
 ### Device Properties
 
@@ -83,7 +83,17 @@ Once you've created a BluetoothLe device, you can access the AdRecord store via 
 They are also declared as constants in `AdRecord.java`.
 
 ### Fun with iBeacons
-You can check if a device is an iBeacon by using `IBeaconUtils.isThisAnIBeacon(BluetootLeDevice device)`. Once you have confirmed that it is, you can create a new IBeaconDevice via the IBeaconDevice constructor.
+You can check if a device is an iBeacon by using `BeaconUtils.getBeaconType(BluetootLeDevice device)`. Once you have confirmed that it is, you can create a new IBeaconDevice via the IBeaconDevice constructor.
+
+Example Flow:
+```
+	final BluetoothLeDevice device = ... // A generic BLE device
+
+	if (BeaconUtils.getBeaconType(device) == BeaconType.IBEACON) {
+		final IBeaconDevice iBeacon = new IBeaconDevice(device);
+		// DO STUFF
+	}
+```
 
 An IBeaconDevice extends BluetoothLeDevice, so you still have access to the same methods as before. In addition you can do the following:
 
@@ -114,6 +124,7 @@ You can also lookup values and convert them to human friendly strings:
     * Added some Estimote UUIDs
 * v1.0.0:
  	* Migrated project to Android Studio/ gradle
+ 	* We now use the more generic `BeaconUtils.getBeaconType()` method instead of `IBeaconUtils.isThisAnIBeacon()`
  	* Fix for [issue 5](https://github.com/alt236/Bluetooth-LE-Library---Android/issues/5)
 	* Fix for [issue 9](https://github.com/alt236/Bluetooth-LE-Library---Android/issues/9)
 

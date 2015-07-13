@@ -21,11 +21,12 @@ import butterknife.ButterKnife;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.BluetoothService;
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord;
-import uk.co.alt236.bluetoothlelib.device.mfdata.IBeaconManufacturerData;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils;
+import uk.co.alt236.bluetoothlelib.device.beacon.ibeacon.IBeaconManufacturerData;
 import uk.co.alt236.bluetoothlelib.resolvers.CompanyIdentifierResolver;
 import uk.co.alt236.bluetoothlelib.util.AdRecordUtils;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
-import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.util.TimeFormatter;
 
@@ -218,7 +219,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
                 }
             }
 
-            final boolean isIBeacon = IBeaconUtils.isThisAnIBeacon(device);
+            final boolean isIBeacon = BeaconUtils.getBeaconType(device) == BeaconType.IBEACON;
             if (isIBeacon) {
                 final IBeaconManufacturerData iBeaconData = new IBeaconManufacturerData(device);
                 appendHeader(adapter, getString(R.string.header_ibeacon_data));

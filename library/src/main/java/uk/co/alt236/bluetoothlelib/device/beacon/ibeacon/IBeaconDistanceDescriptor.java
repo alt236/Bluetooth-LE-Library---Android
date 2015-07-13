@@ -1,4 +1,4 @@
-package uk.co.alt236.bluetoothlelib.util;
+package uk.co.alt236.bluetoothlelib.device.beacon.ibeacon;
 
 public enum IBeaconDistanceDescriptor {
     IMMEDIATE,

@@ -1,11 +1,11 @@
-package uk.co.alt236.bluetoothlelib.device;
+package uk.co.alt236.bluetoothlelib.device.beacon.ibeacon;
 
 import android.bluetooth.BluetoothDevice;
 import android.os.Parcel;
 
-import uk.co.alt236.bluetoothlelib.device.mfdata.IBeaconManufacturerData;
-import uk.co.alt236.bluetoothlelib.util.IBeaconDistanceDescriptor;
-import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
+import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils;
 
 public class IBeaconDevice extends BluetoothLeDevice {
 
@@ -139,7 +139,7 @@ public class IBeaconDevice extends BluetoothLeDevice {
     }
 
     private void validate() {
-        if (!IBeaconUtils.isThisAnIBeacon(this)) {
+        if (BeaconUtils.getBeaconType(this) != BeaconType.IBEACON) {
             throw new IllegalArgumentException("Device " + getDevice() + " is not an iBeacon.");
         }
     }

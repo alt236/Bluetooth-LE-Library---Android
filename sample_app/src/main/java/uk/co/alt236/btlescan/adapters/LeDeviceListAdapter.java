@@ -9,8 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
-import uk.co.alt236.bluetoothlelib.device.IBeaconDevice;
-import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils;
+import uk.co.alt236.bluetoothlelib.device.beacon.ibeacon.IBeaconDevice;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.util.Constants;
 import uk.co.alt236.easycursor.objectcursor.EasyObjectCursor;
@@ -76,7 +77,7 @@ public class LeDeviceListAdapter extends SimpleCursorAdapter {
             viewHolder.deviceName.setText(R.string.unknown_device);
         }
 
-        if (IBeaconUtils.isThisAnIBeacon(device)) {
+        if (BeaconUtils.getBeaconType(device) == BeaconType.IBEACON) {
             final IBeaconDevice iBeacon = new IBeaconDevice(device);
             final String accuracy = Constants.DOUBLE_TWO_DIGIT_ACCURACY.format(iBeacon.getAccuracy());
 

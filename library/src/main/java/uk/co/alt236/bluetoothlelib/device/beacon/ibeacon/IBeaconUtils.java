@@ -1,14 +1,15 @@
-package uk.co.alt236.bluetoothlelib.util;
+package uk.co.alt236.bluetoothlelib.device.beacon.ibeacon;
 
-import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
-import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord;
+import uk.co.alt236.bluetoothlelib.util.ByteUtils;
 
-public class IBeaconUtils {
+final class IBeaconUtils {
     private static final double DISTANCE_THRESHOLD_WTF = 0.0;
     private static final double DISTANCE_THRESHOLD_IMMEDIATE = 0.5;
     private static final double DISTANCE_THRESHOLD_NEAR = 3.0;
 
-    private static final byte[] MANUFACTURER_DATA_IBEACON_PREFIX = {0x4C, 0x00, 0x02, 0x15};
+    private IBeaconUtils(){
+        // TO AVOID INSTANTIATION
+    }
 
     /**
      * Calculates the accuracy of an RSSI reading.
@@ -74,39 +75,5 @@ public class IBeaconUtils {
         }
 
         return IBeaconDistanceDescriptor.FAR;
-    }
-
-    /**
-     * Ascertains whether a Manufacturer Data byte array belongs to an iBeacon;
-     *
-     * @param manufacturerData a Bluetooth LE device's raw manufacturerData.
-     * @return true if the manufacturer data belong to an iBeacon
-     */
-    public static boolean isThisAnIBeacon(final byte[] manufacturerData) {
-        if (manufacturerData == null) {
-            return false;
-        }
-
-        // An iBeacon record must be at least 25 chars long
-        if (!(manufacturerData.length >= 25)) {
-            return false;
-        }
-
-        if (ByteUtils.doesArrayBeginWith(manufacturerData, MANUFACTURER_DATA_IBEACON_PREFIX)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Ascertains whether a {@link uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice} is an iBeacon;
-     *
-     * @param device a {@link uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice} device.
-     * @return true if the device is an iBeacon, false otherwise
-     */
-    public static boolean isThisAnIBeacon(final BluetoothLeDevice device) {
-        final int key = AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA;
-        return isThisAnIBeacon(device.getAdRecordStore().getRecordDataAsString(key).getBytes());
     }
 }

@@ -16,9 +16,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
-import uk.co.alt236.bluetoothlelib.device.IBeaconDevice;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils;
+import uk.co.alt236.bluetoothlelib.device.beacon.ibeacon.IBeaconDevice;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
-import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.util.CsvWriterHelper;
 import uk.co.alt236.btlescan.util.TimeFormatter;
@@ -92,7 +93,7 @@ public class BluetoothLeDeviceStore {
             sb.append(CsvWriterHelper.addStuff(TimeFormatter.getIsoDateTime(device.getTimestamp())));
             sb.append(CsvWriterHelper.addStuff(device.getRssi()));
             sb.append(CsvWriterHelper.addStuff(ByteUtils.byteArrayToHexString(device.getScanRecord())));
-            final boolean isIBeacon = IBeaconUtils.isThisAnIBeacon(device);
+            final boolean isIBeacon = BeaconUtils.getBeaconType(device) == BeaconType.IBEACON;
             final String uuid;
             final String minor;
             final String major;

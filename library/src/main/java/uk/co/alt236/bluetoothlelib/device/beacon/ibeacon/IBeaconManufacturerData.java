@@ -1,11 +1,12 @@
-package uk.co.alt236.bluetoothlelib.device.mfdata;
+package uk.co.alt236.bluetoothlelib.device.beacon.ibeacon;
 
 import java.util.Arrays;
 
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
-import uk.co.alt236.bluetoothlelib.util.IBeaconUtils;
 
 /**
  * Parses the Manufactured Data field of an iBeacon
@@ -72,7 +73,7 @@ public final class IBeaconManufacturerData {
     public IBeaconManufacturerData(final byte[] manufacturerData) {
         mData = manufacturerData;
 
-        if (!IBeaconUtils.isThisAnIBeacon(manufacturerData)) {
+        if (BeaconUtils.getBeaconType(mData) != BeaconType.IBEACON) {
             throw new IllegalArgumentException(
                     "Manufacturer record '"
                     + Arrays.toString(manufacturerData)
