@@ -1,9 +1,9 @@
 apply plugin: 'com.android.library'
 
-final def versionMajor = 0
+final def versionMajor = 1
 final def versionMinor = 0
-final def versionPatch = 2
-final def androidVersionCode = 2
+final def versionPatch = 0
+final def androidVersionCode = 100
 
 final def targetSdk = rootProject.targetSdkVersion;
 final def minSdkRed = rootProject.minSdkVersion;
