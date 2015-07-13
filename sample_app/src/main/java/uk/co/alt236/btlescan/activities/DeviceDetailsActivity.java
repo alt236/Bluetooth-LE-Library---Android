@@ -55,11 +55,13 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         final TextView tvName = (TextView) lt.findViewById(R.id.deviceName);
         final TextView tvAddress = (TextView) lt.findViewById(R.id.deviceAddress);
         final TextView tvClass = (TextView) lt.findViewById(R.id.deviceClass);
+        final TextView tvMajorClass = (TextView) lt.findViewById(R.id.deviceMajorClass);
         final TextView tvBondingState = (TextView) lt.findViewById(R.id.deviceBondingState);
 
         tvName.setText(device.getName());
         tvAddress.setText(device.getAddress());
         tvClass.setText(device.getBluetoothDeviceClassName());
+        tvMajorClass.setText(device.getBluetoothDeviceMajorClassName());
         tvBondingState.setText(device.getBluetoothDeviceBondState());
 
         adapter.addView(lt);

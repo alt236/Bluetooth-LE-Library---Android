@@ -110,4 +110,33 @@ public class BluetoothClassResolver {
                 return "Unknown, Unknown (class=" + btClass + ")";
         }
     }
+
+    public static String resolveMajorDeviceClass(final int majorBtClass) {
+        switch (majorBtClass) {
+            case BluetoothClass.Device.Major.AUDIO_VIDEO:
+                return "Audio/ Video";
+            case BluetoothClass.Device.Major.COMPUTER:
+                return "Computer";
+            case BluetoothClass.Device.Major.HEALTH:
+                return "Health";
+            case BluetoothClass.Device.Major.IMAGING:
+                return "Imaging";
+            case BluetoothClass.Device.Major.MISC:
+                return "Misc";
+            case BluetoothClass.Device.Major.NETWORKING:
+                return "Networking";
+            case BluetoothClass.Device.Major.PERIPHERAL:
+                return "Peripheral";
+            case BluetoothClass.Device.Major.PHONE:
+                return "Phone";
+            case BluetoothClass.Device.Major.TOY:
+                return "Toy";
+            case BluetoothClass.Device.Major.UNCATEGORIZED:
+                return "Uncategorized";
+            case BluetoothClass.Device.Major.WEARABLE:
+                return "Wearable";
+            default:
+                return "Unknown (" +majorBtClass+ ")";
+        }
+    }
 }

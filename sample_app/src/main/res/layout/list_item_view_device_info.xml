@@ -46,6 +46,16 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/label_device_major_class"/>
+
+        <TextView
+            android:id="@+id/deviceMajorClass"
+            style="@style/GridLayoutDataTextView"/>
+
+        <TextView
+            style="@style/GridLayoutTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/label_bonding_state"/>
 
         <TextView

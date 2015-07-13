@@ -53,6 +53,7 @@
     <string name="label_desc">Desc:</string>
     <string name="label_device_address">Device address:</string>
     <string name="label_device_class">Device Class:</string>
+    <string name="label_device_major_class">Major Class:</string>
     <string name="label_device_name">Device Name:</string>
     <string name="label_distance">Distance:</string>
     <string name="label_first_rssi">First RSSI:</string>
