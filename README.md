@@ -9,49 +9,51 @@ It also offers:
 * For iBeacons: A decently inaccurate (due to real world issues) distance approximation.
 * All the new object types are Parcelable.
 
-This will only work on Android 4.3 (API Level 18). 
+This will only work on devices with Android 4.3 (API Level 18) and above.
 
 Sample app available on the [Play Store](https://play.google.com/store/apps/details?id=uk.co.alt236.btlescan) 
 
 ## Including the Library in Your Project
-There are two ways to use this library:
 
-* Download a copy of the Bluetooth LE Library project and reference it in your project.
-* Create a Jar file (see Jarification below) and add it into your project.
+This project is available as an artifact for use with Gradle. To use that, add the following blocks to your build.gradle file:
+```
+	repositories {
+		maven {
+			url "https://dl.bintray.com/alt236/maven"
+		}
+	}
 
-
-### Jarification
-
-Type `ant jar` at the root of the Library Project to produce a Jar file.
-
-The library jar along with it's javadoc jar will be found in the `dist` directory inside the library project.
-
-You will need to provide your own `local.properties` inside the library project.
+	dependencies {
+		compile 'uk.co.alt236:bluetooth-le-library-android:1.0.0'
+	}
+```
+If you *really* need a Jar file, fork the project and execute `./gradlew clean build generateRelease` at the root of the project.
+This will create a zip file under `<PROJECT_ROOT>/library/build/` the Jar can be found inside.
 
 ## Using the Library
 In the `onLeScan()` method of your `BluetoothAdapter.LeScanCallback()` create a new BluetoothLeDevice with the given information.
 
 For example:
 
-<pre>
-   private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
-   
-        @Override
+```
+	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+
+		@Override
 		public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-		
+
 			final BluetoothLeDevice deviceLe = new BluetoothLeDevice(device, rssi, scanRecord, System.currentTimeMillis());
-			
+
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
 					mDeviceStore.addDevice(deviceLe);
 					mLeDeviceListAdapter.replaceData(mDeviceStore.getDeviceList());
 				}
-				
+
 			});
 		}
 	};
-</pre>
+```
 
 ### Device Properties
 
@@ -83,7 +85,17 @@ Once you've created a BluetoothLe device, you can access the AdRecord store via 
 They are also declared as constants in `AdRecord.java`.
 
 ### Fun with iBeacons
-You can check if a device is an iBeacon by using `IBeaconUtils.isThisAnIBeacon(BluetootLeDevice device)`. Once you have confirmed that it is, you can create a new IBeaconDevice via the IBeaconDevice constructor.
+You can check if a device is an iBeacon by using `BeaconUtils.getBeaconType(BluetootLeDevice device)`. Once you have confirmed that it is, you can create a new IBeaconDevice via the IBeaconDevice constructor.
+
+Example Flow:
+```
+	final BluetoothLeDevice device = ... // A generic BLE device
+
+	if (BeaconUtils.getBeaconType(device) == BeaconType.IBEACON) {
+		final IBeaconDevice iBeacon = new IBeaconDevice(device);
+		// DO STUFF
+	}
+```
 
 An IBeaconDevice extends BluetoothLeDevice, so you still have access to the same methods as before. In addition you can do the following:
 
@@ -112,6 +124,12 @@ You can also lookup values and convert them to human friendly strings:
     * Attempting to create an iBeaconDevice from a device which is not an iBeacon will now throw an IllegalArgumentException exception.
     * Fixed a ConcurrentModificationException on getRunningAverageRssi()
     * Added some Estimote UUIDs
+* v1.0.0:
+ 	* Migrated project to Android Studio/ gradle
+ 	* Note that the API has slightly changed in this version.
+ 	* We now use the more generic `BeaconUtils.getBeaconType()` method instead of `IBeaconUtils.isThisAnIBeacon()`
+ 	* Fix for [issue 5](https://github.com/alt236/Bluetooth-LE-Library---Android/issues/5)
+	* Fix for [issue 9](https://github.com/alt236/Bluetooth-LE-Library---Android/issues/9)
 
 ## Sample Application Changelog
 * v0.0.1 
@@ -120,7 +138,10 @@ You can also lookup values and convert them to human friendly strings:
     * Can now export scanned devices as a CSV file. 
 * v0.0.3: 
     * UI Refresh.
-    
+* v1.0.0:
+ 	* Migrated project to Android Studio/ gradle
+    * Using version v1.0.0 of the library project
+
 ## Permission Explanation
 You will need the following permissions to access the Bluetooth Hardware
 
