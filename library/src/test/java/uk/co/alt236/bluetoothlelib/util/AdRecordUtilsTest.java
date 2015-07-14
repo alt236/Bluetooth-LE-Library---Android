@@ -49,10 +49,10 @@ public class AdRecordUtilsTest extends TestCase {
         //
         // Cannot be tested here as it relies on Android code...
         //
-//        final SparseArray<AdRecord> adRecords = AdRecordUtils.parseScanRecordAsSparseArray(NON_IBEACON);
-//        assertNotNull(adRecords);
-//        assertEquals(2, adRecords.size());
-//        assertEquals(AdRecord.TYPE_FLAGS, adRecords.get(AdRecord.TYPE_FLAGS).getType());
-//        assertEquals(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA, adRecords.get(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getType());
+        //        final SparseArray<AdRecord> adRecords = AdRecordUtils.parseScanRecordAsSparseArray(NON_IBEACON);
+        //        assertNotNull(adRecords);
+        //        assertEquals(2, adRecords.size());
+        //        assertEquals(AdRecord.TYPE_FLAGS, adRecords.get(AdRecord.TYPE_FLAGS).getType());
+        //        assertEquals(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA, adRecords.get(AdRecord.TYPE_MANUFACTURER_SPECIFIC_DATA).getType());
     }
 }

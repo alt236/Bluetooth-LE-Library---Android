@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconManufacturerData;
 import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
-import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
 
 /**
@@ -45,8 +45,7 @@ import uk.co.alt236.bluetoothlelib.util.ByteUtils;
  * @author Alexandros Schillings
  */
 
-public final class IBeaconManufacturerData {
-    private final byte[] mData;
+public final class IBeaconManufacturerData extends BeaconManufacturerData{
     private final int mCalibratedTxPower;
     private final int mCompanyIdentidier;
     private final int mIBeaconAdvertisment;
@@ -71,24 +70,17 @@ public final class IBeaconManufacturerData {
      * @throws IllegalArgumentException if the data is not from an iBeacon.
      */
     public IBeaconManufacturerData(final byte[] manufacturerData) {
-        mData = manufacturerData;
+        super(BeaconType.IBEACON, manufacturerData);
 
-        if (BeaconUtils.getBeaconType(mData) != BeaconType.IBEACON) {
-            throw new IllegalArgumentException(
-                    "Manufacturer record '"
-                    + Arrays.toString(manufacturerData)
-                    + "' is not from an iBeacon.");
-        }
-
-        final byte[] intArray = Arrays.copyOfRange(mData, 0, 2);
+        final byte[] intArray = Arrays.copyOfRange(manufacturerData, 0, 2);
         ByteUtils.invertArray(intArray);
 
         mCompanyIdentidier = ByteUtils.getIntFrom2ByteArray(intArray);
-        mIBeaconAdvertisment = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 2, 4));
-        mUUID = IBeaconUtils.calculateUuidString(Arrays.copyOfRange(mData, 4, 20));
-        mMajor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 20, 22));
-        mMinor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(mData, 22, 24));
-        mCalibratedTxPower = mData[24];
+        mIBeaconAdvertisment = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(manufacturerData, 2, 4));
+        mUUID = IBeaconUtils.calculateUuidString(Arrays.copyOfRange(manufacturerData, 4, 20));
+        mMajor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(manufacturerData, 20, 22));
+        mMinor = ByteUtils.getIntFrom2ByteArray(Arrays.copyOfRange(manufacturerData, 22, 24));
+        mCalibratedTxPower = manufacturerData[24];
     }
 
     /**

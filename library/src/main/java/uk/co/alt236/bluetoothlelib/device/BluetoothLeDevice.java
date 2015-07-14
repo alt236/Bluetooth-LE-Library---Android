@@ -216,15 +216,6 @@ public class BluetoothLeDevice implements Parcelable {
         return BluetoothClassResolver.resolveDeviceClass(mDevice.getBluetoothClass().getDeviceClass());
     }
 
-    /**
-     * Gets the bluetooth device major class name.
-     *
-     * @return the bluetooth device major class name
-     */
-    public String getBluetoothDeviceMajorClassName() {
-        return BluetoothClassResolver.resolveMajorDeviceClass(mDevice.getBluetoothClass().getMajorDeviceClass());
-    }
-
     public Set<BluetoothService> getBluetoothDeviceKnownSupportedServices() {
         if (mServiceSet == null) {
             synchronized (this) {
@@ -242,6 +233,15 @@ public class BluetoothLeDevice implements Parcelable {
         }
 
         return mServiceSet;
+    }
+
+    /**
+     * Gets the bluetooth device major class name.
+     *
+     * @return the bluetooth device major class name
+     */
+    public String getBluetoothDeviceMajorClassName() {
+        return BluetoothClassResolver.resolveMajorDeviceClass(mDevice.getBluetoothClass().getMajorDeviceClass());
     }
 
     /**

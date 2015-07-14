@@ -21,7 +21,7 @@ public final class BeaconUtils {
      * @return the {@link BeaconType}
      */
     public static BeaconType getBeaconType(final byte[] manufacturerData) {
-        if (manufacturerData == null) {
+        if (manufacturerData == null || manufacturerData.length == 0) {
             return BeaconType.NOT_A_BEACON;
         }
 

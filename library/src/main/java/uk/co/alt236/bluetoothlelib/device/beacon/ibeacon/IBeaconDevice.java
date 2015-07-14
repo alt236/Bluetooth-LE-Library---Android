@@ -25,7 +25,6 @@ public class IBeaconDevice extends BluetoothLeDevice implements BeaconDevice{
      */
     public IBeaconDevice(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
         super(device, rssi, scanRecord, 0);
-        validate();
         mIBeaconData = new IBeaconManufacturerData(this);
     }
 
@@ -40,7 +39,6 @@ public class IBeaconDevice extends BluetoothLeDevice implements BeaconDevice{
      */
     public IBeaconDevice(final BluetoothDevice device, final int rssi, final byte[] scanRecord, final long timestamp) {
         super(device, rssi, scanRecord, timestamp);
-        validate();
         mIBeaconData = new IBeaconManufacturerData(this);
     }
 
@@ -53,13 +51,11 @@ public class IBeaconDevice extends BluetoothLeDevice implements BeaconDevice{
      */
     public IBeaconDevice(final BluetoothLeDevice device) {
         super(device);
-        validate();
         mIBeaconData = new IBeaconManufacturerData(this);
     }
 
     private IBeaconDevice(final Parcel in) {
         super(in);
-        validate();
         mIBeaconData = new IBeaconManufacturerData(this);
     }
 
@@ -142,11 +138,5 @@ public class IBeaconDevice extends BluetoothLeDevice implements BeaconDevice{
      */
     public String getUUID() {
         return getIBeaconData().getUUID();
-    }
-
-    private void validate() {
-        if (BeaconUtils.getBeaconType(this) != BeaconType.IBEACON) {
-            throw new IllegalArgumentException("Device " + getDevice() + " is not an iBeacon.");
-        }
     }
 }
