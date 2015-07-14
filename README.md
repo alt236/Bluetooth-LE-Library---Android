@@ -14,19 +14,21 @@ This will only work on devices with Android 4.3 (API Level 18) and above.
 Sample app available on the [Play Store](https://play.google.com/store/apps/details?id=uk.co.alt236.btlescan) 
 
 ## Including the Library in Your Project
-There are two ways to use this library:
 
-* Download a copy of the Bluetooth LE Library project and reference it in your project.
-* Create a Jar file (see Jarification below) and add it into your project.
+This project is available as an artifact for use with Gradle. To use that, add the following blocks to your build.gradle file:
+```
+	repositories {
+		maven {
+			url "https://dl.bintray.com/alt236/maven"
+		}
+	}
 
-
-### Jarification
-
-Type `ant jar` at the root of the Library Project to produce a Jar file.
-
-The library jar along with it's javadoc jar will be found in the `dist` directory inside the library project.
-
-You will need to provide your own `local.properties` inside the library project.
+	dependencies {
+		compile 'uk.co.alt236:bluetooth-le-library-android:1.0.0'
+	}
+```
+If you *really* need a Jar file, fork the project and execute `./gradlew clean build generateRelease` at the root of the project.
+This will create a zip file under `<PROJECT_ROOT>/library/build/` the Jar can be found inside.
 
 ## Using the Library
 In the `onLeScan()` method of your `BluetoothAdapter.LeScanCallback()` create a new BluetoothLeDevice with the given information.
@@ -34,20 +36,20 @@ In the `onLeScan()` method of your `BluetoothAdapter.LeScanCallback()` create a 
 For example:
 
 ```
-   private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
-   
-        @Override
+	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+
+		@Override
 		public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-		
+
 			final BluetoothLeDevice deviceLe = new BluetoothLeDevice(device, rssi, scanRecord, System.currentTimeMillis());
-			
+
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
 					mDeviceStore.addDevice(deviceLe);
 					mLeDeviceListAdapter.replaceData(mDeviceStore.getDeviceList());
 				}
-				
+
 			});
 		}
 	};
@@ -124,6 +126,7 @@ You can also lookup values and convert them to human friendly strings:
     * Added some Estimote UUIDs
 * v1.0.0:
  	* Migrated project to Android Studio/ gradle
+ 	* Note that the API has slightly changed in this version.
  	* We now use the more generic `BeaconUtils.getBeaconType()` method instead of `IBeaconUtils.isThisAnIBeacon()`
  	* Fix for [issue 5](https://github.com/alt236/Bluetooth-LE-Library---Android/issues/5)
 	* Fix for [issue 9](https://github.com/alt236/Bluetooth-LE-Library---Android/issues/9)
