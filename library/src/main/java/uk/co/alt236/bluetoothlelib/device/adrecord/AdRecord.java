@@ -9,7 +9,7 @@ import java.util.Arrays;
 /**
  * Created by Dave Smith
  * Double Encore, Inc.
- * <p/>
+ * <p>
  * Expanded by Alexandros Schillings
  */
 public final class AdRecord implements Parcelable {
@@ -34,9 +34,9 @@ public final class AdRecord implements Parcelable {
 
     /**
      * General FLAGS
-     * <p/>
+     * <p>
      * Description: Flags
-     * <p/>
+     * <p>
      * Information:
      * Bit 0: LE Limited Discoverable Mode
      * Bit 1: LE General Discoverable Mode

@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
 
-final def versionMajor = 1
-final def versionMinor = 0
-final def versionPatch = 0
-final def androidVersionCode = 100
+final int versionMajor = 1
+final int versionMinor = 0
+final int versionPatch = 0
+final int androidVersionCode = 5
 
-final def targetSdk = rootProject.targetSdkVersion;
-final def minSdkRed = rootProject.minSdkVersion;
+final int targetSdk = rootProject.targetSdkVersion;
+final int minSdkRed = rootProject.minSdkVersion;
+final String semanticVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 repositories {
     maven {
@@ -35,7 +36,7 @@ android {
         minSdkVersion minSdkRed
         targetSdkVersion targetSdk
         versionCode androidVersionCode
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        versionName semanticVersion
     }
 
     buildTypes {

@@ -15,7 +15,7 @@ public class ByteUtils {
 
     /**
      * Gets a pretty representation of a Byte Array as a HEX String.
-     * <p/>
+     * <p>
      * Sample output: [01, 30, FF, AA]
      *
      * @param array the array
@@ -79,7 +79,7 @@ public class ByteUtils {
 
     /**
      * Converts a byte to an int, preserving the sign.
-     * <p/>
+     * <p>
      * For example, FF will be converted to 255 and not -1.
      *
      * @param bite the byte

@@ -70,5 +70,6 @@
     <string name="label_state">State:</string>
     <string name="label_tx_power">TX Power:</string>
     <string name="label_uuid">UUID:</string>
-
+    <string name="label_updated">Updated:</string>
+    <string name="label_decriptor">Descriptor:</string>
 </resources>

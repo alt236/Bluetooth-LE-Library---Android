@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * The UUIDS have been collected from the following sources:
- * <p/>
+ * <p>
  * - http://developer.nokia.com/community/wiki/Bluetooth_Services_for_Windows_Phone
  * - The Bluez project
  *

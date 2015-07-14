@@ -10,10 +10,11 @@ import uk.co.alt236.bluetoothlelib.util.ByteUtils;
 
 /**
  * Parses the Manufactured Data field of an iBeacon
- * <p/>
- * The parsing is based on the following schema:
- * <p/>
  * <p>
+ * The parsing is based on the following schema:
+ * <pre>
+ * Byte|Value
+ * -------------------------------------------------
  * 0	4C - Byte 1 (LSB) of Company identifier code
  * 1	00 - Byte 0 (MSB) of Company identifier code (0x004C == Apple)
  * 2	02 - Byte 0 of iBeacon advertisement indicator
@@ -25,8 +26,8 @@ import uk.co.alt236.bluetoothlelib.util.ByteUtils;
  * 8	df |###\\
  * 9	fb |####\\
  * 10	48 |#####\\
- * 11	d2 |#####|| iBeacon proximity UUID
- * 12	b0 |#####||
+ * 11	d2 |#####|| iBeacon
+ * 12	b0 |#####|| Proximity UUID
  * 13	60 |#####//
  * 14	d0 |####//
  * 15	f5 |###//
@@ -39,9 +40,7 @@ import uk.co.alt236.bluetoothlelib.util.ByteUtils;
  * 22	00 - minor
  * 23	00
  * 24	c5 - The 2's complement of the calibrated Tx Power
- * <p/>
- * </p>
- *
+ * </pre>
  * @author Alexandros Schillings
  */
 
