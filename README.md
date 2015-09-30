@@ -73,7 +73,7 @@ Once you have created a device, you can access the following methods:
 **Note:** The Running Average RSSI is not updated automatically (i.e. the library does not monitor on its own in the background). To add another measurement, you need to call `updateRssiReading(long timestamp, int rssiReading)`.
 
 
-### Accessing the Advertisment (Ad) Records
+### Accessing the Advertisement (Ad) Records
 
 Once you've created a BluetoothLe device, you can access the AdRecord store via the `leDevice.getAdRecordStore()`. Once you have the AdRecordStore you can use the following methods:
 
