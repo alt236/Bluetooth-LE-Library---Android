@@ -16,7 +16,7 @@ Sample app available on the [Play Store](https://play.google.com/store/apps/deta
 ## Including the Library in Your Project
 
 This project is available as an artifact for use with Gradle. To use that, add the following blocks to your build.gradle file:
-```
+```groovy
 	repositories {
 		maven {
 			url "https://dl.bintray.com/alt236/maven"
@@ -35,7 +35,7 @@ In the `onLeScan()` method of your `BluetoothAdapter.LeScanCallback()` create a 
 
 For example:
 
-```
+```java
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 
 		@Override
@@ -88,7 +88,7 @@ They are also declared as constants in `AdRecord.java`.
 You can check if a device is an iBeacon by using `BeaconUtils.getBeaconType(BluetootLeDevice device)`. Once you have confirmed that it is, you can create a new IBeaconDevice via the IBeaconDevice constructor.
 
 Example Flow:
-```
+```java
 	final BluetoothLeDevice device = ... // A generic BLE device
 
 	if (BeaconUtils.getBeaconType(device) == BeaconType.IBEACON) {
