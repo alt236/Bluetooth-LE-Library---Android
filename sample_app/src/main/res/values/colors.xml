@@ -1,3 +1,9 @@
 <resources>
     <color name="light_gray">#66e0e0e0</color>
+    <color name="colorPrimary">#0000FF</color>
+    <color name="colorPrimaryDark">#4400FF</color>
+    <color name="colorAccent">#F06292</color>
+
+
+    <color name="colorSeparator">@color/colorAccent</color>
 </resources>

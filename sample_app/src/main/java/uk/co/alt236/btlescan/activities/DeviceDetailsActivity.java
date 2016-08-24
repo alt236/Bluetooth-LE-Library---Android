@@ -46,8 +46,11 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         final TextView tvTitle = (TextView) lt.findViewById(R.id.title);
 
         tvTitle.setText(title);
-        tvString.setText("'" + AdRecordUtils.getRecordDataAsString(record) + "'");
-        tvArray.setText("'" + ByteUtils.byteArrayToHexString(record.getData()) + "'");
+
+        tvString.setText(getString(R.string.formatter_single_quoted_string,
+                AdRecordUtils.getRecordDataAsString(record)));
+        tvArray.setText(getString(R.string.formatter_single_quoted_string,
+                ByteUtils.byteArrayToHexString(record.getData())));
 
         adapter.addView(lt);
     }
@@ -68,13 +71,13 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         tvBondingState.setText(device.getBluetoothDeviceBondState());
 
         final String supportedServices;
-        if(device.getBluetoothDeviceKnownSupportedServices().isEmpty()){
+        if (device.getBluetoothDeviceKnownSupportedServices().isEmpty()) {
             supportedServices = getString(R.string.no_known_services);
         } else {
             final StringBuilder sb = new StringBuilder();
 
-            for(final BluetoothService service : device.getBluetoothDeviceKnownSupportedServices()){
-                if(sb.length() > 0){
+            for (final BluetoothService service : device.getBluetoothDeviceKnownSupportedServices()) {
+                if (sb.length() > 0) {
                     sb.append(", ");
                 }
 

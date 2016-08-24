@@ -1,21 +1,22 @@
 package uk.co.alt236.btlescan.activities;
 
-import android.app.AlertDialog;
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.anthonycr.grant.PermissionsManager;
+import com.anthonycr.grant.PermissionsResultAction;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -61,32 +62,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             });
         }
     };
-
-    private void displayAboutDialog() {
-        // REALLY REALLY LAZY LINKIFIED DIALOG
-        final int paddingSizeDp = 5;
-        final float scale = getResources().getDisplayMetrics().density;
-        final int dpAsPixels = (int) (paddingSizeDp * scale + 0.5f);
-
-        final TextView textView = new TextView(this);
-        final SpannableString text = new SpannableString(getString(R.string.about_dialog_text));
-
-        textView.setText(text);
-        textView.setAutoLinkMask(RESULT_OK);
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
-        textView.setPadding(dpAsPixels, dpAsPixels, dpAsPixels, dpAsPixels);
-
-        Linkify.addLinks(text, Linkify.ALL);
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.menu_about)
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                    }
-                })
-                .setView(textView)
-                .show();
-    }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -138,14 +113,29 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_scan:
-                startScan();
+                PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, new PermissionsResultAction() {
+
+                            @Override
+                            public void onGranted() {
+                                startScan();
+                            }
+
+                            @Override
+                            public void onDenied(String permission) {
+                                Toast.makeText(MainActivity.this,
+                                        R.string.permission_not_granted_coarse_location,
+                                        Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        });
                 break;
             case R.id.menu_stop:
                 mScanner.scanLeDevice(-1, false);
                 invalidateOptionsMenu();
                 break;
             case R.id.menu_about:
-                displayAboutDialog();
+                DialogFactory.createAboutDialog(this).show();
                 break;
             case R.id.menu_share:
                 mDeviceStore.shareDataAsEmail(this);
@@ -203,4 +193,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         String.valueOf(count)));
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        PermissionsManager.getInstance().notifyPermissionsChange(permissions, grantResults);
+    }
 }

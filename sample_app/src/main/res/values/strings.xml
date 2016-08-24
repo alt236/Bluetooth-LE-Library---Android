@@ -21,6 +21,7 @@
     <string name="formatter_meters">%sm</string>
     <string name="formatter_db">%sdb</string>
     <string name="formatter_item_count">Items: %s</string>
+    <string name="formatter_single_quoted_string">\'%s\'</string>
 
     <!-- Menu items -->
     <string name="menu_about">About</string>
@@ -72,4 +73,6 @@
     <string name="label_uuid">UUID:</string>
     <string name="label_updated">Updated:</string>
     <string name="label_decriptor">Descriptor:</string>
+
+    <string name="permission_not_granted_coarse_location">The ACCESS_COARSE_LOCATION permission is needed to receive bluetooth scan results</string>
 </resources>
