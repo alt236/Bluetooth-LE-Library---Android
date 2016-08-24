@@ -1,4 +1,4 @@
-package uk.co.alt236.btlescan.activities;
+package uk.co.alt236.btlescan.ui.main;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
@@ -22,8 +22,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.btlescan.R;
-import uk.co.alt236.btlescan.adapters.LeDeviceListAdapter;
 import uk.co.alt236.btlescan.containers.BluetoothLeDeviceStore;
+import uk.co.alt236.btlescan.ui.details.DeviceDetailsActivity;
 import uk.co.alt236.btlescan.util.BluetoothLeScanner;
 import uk.co.alt236.btlescan.util.BluetoothUtils;
 import uk.co.alt236.easycursor.objectcursor.EasyObjectCursor;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private BluetoothUtils mBluetoothUtils;
     private BluetoothLeScanner mScanner;
-    private LeDeviceListAdapter mLeDeviceListAdapter;
+    private DeviceListAdapter mDeviceListAdapter;
     private BluetoothLeDeviceStore mDeviceStore;
 
     private final BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mLeDeviceListAdapter.swapCursor(c);
-                    updateItemCount(mLeDeviceListAdapter.getCount());
+                    mDeviceListAdapter.swapCursor(c);
+                    updateItemCount(mDeviceListAdapter.getCount());
                 }
             });
         }
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        final BluetoothLeDevice device = mLeDeviceListAdapter.getItem(position);
+        final BluetoothLeDevice device = mDeviceListAdapter.getItem(position);
         if (device == null) return;
 
         final Intent intent = new Intent(this, DeviceDetailsActivity.class);
@@ -176,8 +176,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mDeviceStore.clear();
         updateItemCount(0);
 
-        mLeDeviceListAdapter = new LeDeviceListAdapter(this, mDeviceStore.getDeviceCursor());
-        mList.setAdapter(mLeDeviceListAdapter);
+        mDeviceListAdapter = new DeviceListAdapter(this, mDeviceStore.getDeviceCursor());
+        mList.setAdapter(mDeviceListAdapter);
 
         mBluetoothUtils.askUserToEnableBluetoothIfNeeded();
         if (mIsBluetoothOn && mIsBluetoothLePresent) {

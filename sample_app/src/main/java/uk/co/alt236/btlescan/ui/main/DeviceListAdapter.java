@@ -1,4 +1,4 @@
-package uk.co.alt236.btlescan.adapters;
+package uk.co.alt236.btlescan.ui.main;
 
 import android.app.Activity;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -17,11 +17,11 @@ import uk.co.alt236.btlescan.util.Constants;
 import uk.co.alt236.easycursor.objectcursor.EasyObjectCursor;
 
 // Adapter for holding devices found through scanning.
-public class LeDeviceListAdapter extends SimpleCursorAdapter {
+/*package*/ class DeviceListAdapter extends SimpleCursorAdapter {
     private final LayoutInflater mInflator;
     private final Activity mActivity;
 
-    public LeDeviceListAdapter(final Activity activity, final EasyObjectCursor<BluetoothLeDevice> cursor) {
+    public DeviceListAdapter(final Activity activity, final EasyObjectCursor<BluetoothLeDevice> cursor) {
         super(activity, R.layout.list_item_device, cursor, new String[0], new int[0], 0);
         mInflator = activity.getLayoutInflater();
         mActivity = activity;

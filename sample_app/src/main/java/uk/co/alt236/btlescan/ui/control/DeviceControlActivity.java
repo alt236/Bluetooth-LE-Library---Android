@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.co.alt236.btlescan.activities;
+package uk.co.alt236.btlescan.ui.control;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
@@ -71,6 +71,7 @@ public class DeviceControlActivity extends AppCompatActivity {
     protected TextView mDataAsString;
     @Bind(R.id.data_as_array)
     protected TextView mDataAsArray;
+    private Exporter mExporter;
     private BluetoothGattCharacteristic mNotifyCharacteristic;
     private BluetoothLeService mBluetoothLeService;
     private List<List<BluetoothGattCharacteristic>> mGattCharacteristics = new ArrayList<>();
@@ -172,7 +173,7 @@ public class DeviceControlActivity extends AppCompatActivity {
     // on the UI.
     private void displayGattServices(final List<BluetoothGattService> gattServices) {
         if (gattServices == null) return;
-        generateExportString(gattServices);
+        mExportString = mExporter.generateExportString(mDeviceName, mDeviceAddress, gattServices);
 
         String uuid = null;
         final String unknownServiceString = getResources().getString(R.string.unknown_service);
@@ -223,55 +224,6 @@ public class DeviceControlActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
-    private void generateExportString(final List<BluetoothGattService> gattServices) {
-        final String unknownServiceString = getResources().getString(R.string.unknown_service);
-        final String unknownCharaString = getResources().getString(R.string.unknown_characteristic);
-        final StringBuilder exportBuilder = new StringBuilder();
-
-        exportBuilder.append("Device Name: ");
-        exportBuilder.append(mDeviceName);
-        exportBuilder.append('\n');
-        exportBuilder.append("Device Address: ");
-        exportBuilder.append(mDeviceAddress);
-        exportBuilder.append('\n');
-        exportBuilder.append('\n');
-
-        exportBuilder.append("Services:");
-        exportBuilder.append("--------------------------");
-        exportBuilder.append('\n');
-
-        String uuid = null;
-        for (final BluetoothGattService gattService : gattServices) {
-            uuid = gattService.getUuid().toString();
-
-            exportBuilder.append(GattAttributeResolver.getAttributeName(uuid, unknownServiceString));
-            exportBuilder.append(" (");
-            exportBuilder.append(uuid);
-            exportBuilder.append(')');
-            exportBuilder.append('\n');
-
-            final List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
-            for (final BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
-                uuid = gattCharacteristic.getUuid().toString();
-
-                exportBuilder.append('\t');
-                exportBuilder.append(GattAttributeResolver.getAttributeName(uuid, unknownCharaString));
-                exportBuilder.append(" (");
-                exportBuilder.append(uuid);
-                exportBuilder.append(')');
-                exportBuilder.append('\n');
-            }
-
-            exportBuilder.append('\n');
-            exportBuilder.append('\n');
-        }
-
-        exportBuilder.append("--------------------------");
-        exportBuilder.append('\n');
-
-        mExportString = exportBuilder.toString();
-    }
-
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -281,7 +233,6 @@ public class DeviceControlActivity extends AppCompatActivity {
         final BluetoothLeDevice device = intent.getParcelableExtra(EXTRA_DEVICE);
         mDeviceName = device.getName();
         mDeviceAddress = device.getAddress();
-
         ButterKnife.bind(this);
 
         // Sets up UI references.
@@ -290,6 +241,8 @@ public class DeviceControlActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(mDeviceName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mExporter = new Exporter(this);
 
         final Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);

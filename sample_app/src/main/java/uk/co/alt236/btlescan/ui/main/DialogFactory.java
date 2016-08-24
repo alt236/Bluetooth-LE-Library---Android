@@ -1,4 +1,4 @@
-package uk.co.alt236.btlescan.activities;
+package uk.co.alt236.btlescan.ui.main;
 
 import android.app.Activity;
 import android.app.Dialog;

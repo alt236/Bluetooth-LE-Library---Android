@@ -1,4 +1,4 @@
-package uk.co.alt236.btlescan.activities;
+package uk.co.alt236.btlescan.ui.details;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +28,7 @@ import uk.co.alt236.bluetoothlelib.resolvers.CompanyIdentifierResolver;
 import uk.co.alt236.bluetoothlelib.util.AdRecordUtils;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
 import uk.co.alt236.btlescan.R;
+import uk.co.alt236.btlescan.ui.control.DeviceControlActivity;
 import uk.co.alt236.btlescan.util.TimeFormatter;
 
 public class DeviceDetailsActivity extends AppCompatActivity {
