@@ -7,7 +7,7 @@
               android:paddingBottom="5dp">
 
     <TextView
-        android:id="@+id/data"
+        android:id="@+id/text"
         style="@style/GridLayoutDataTextViewMonospace"/>
 
 </LinearLayout>

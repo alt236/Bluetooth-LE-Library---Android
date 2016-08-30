@@ -55,7 +55,7 @@ import uk.co.alt236.btlescan.services.BluetoothLeService;
  * Bluetooth LE API.
  */
 public class DeviceControlActivity extends AppCompatActivity {
-    public static final String EXTRA_DEVICE = "extra_device";
+    public static final String EXTRA_DEVICE = DeviceControlActivity.class.getName() + ".EXTRA_DEVICE";
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
     private static final String LIST_NAME = "NAME";
     private static final String LIST_UUID = "UUID";

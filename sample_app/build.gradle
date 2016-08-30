@@ -13,12 +13,16 @@ repositories {
     maven {
         url "https://repo.commonsware.com.s3.amazonaws.com"
     }
+
+    maven {
+        url "https://s3.amazonaws.com/repo.commonsware.com"
+    }
 }
 
 dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.android.support:appcompat-v7:24.2.0'
-    compile 'com.commonsware.cwac:merge:1.1.0'
+    compile 'com.android.support:recyclerview-v7:24.2.0'
     compile 'com.anthonycr.grant:permissions:1.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':library')
