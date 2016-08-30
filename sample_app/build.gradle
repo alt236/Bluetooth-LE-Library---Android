@@ -17,6 +17,10 @@ repositories {
     maven {
         url "https://s3.amazonaws.com/repo.commonsware.com"
     }
+
+    maven {
+        url "https://dl.bintray.com/alt236/maven"
+    }
 }
 
 dependencies {
@@ -24,6 +28,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.0'
     compile 'com.android.support:recyclerview-v7:24.2.0'
     compile 'com.anthonycr.grant:permissions:1.0'
+    compile 'uk.co.alt236:easycursor-android:1.0.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':library')
 }
