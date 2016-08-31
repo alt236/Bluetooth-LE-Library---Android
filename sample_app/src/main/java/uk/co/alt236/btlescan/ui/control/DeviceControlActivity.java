@@ -26,6 +26,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -55,7 +56,7 @@ import uk.co.alt236.btlescan.services.BluetoothLeService;
  * Bluetooth LE API.
  */
 public class DeviceControlActivity extends AppCompatActivity {
-    public static final String EXTRA_DEVICE = DeviceControlActivity.class.getName() + ".EXTRA_DEVICE";
+    private static final String EXTRA_DEVICE = DeviceControlActivity.class.getName() + ".EXTRA_DEVICE";
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
     private static final String LIST_NAME = "NAME";
     private static final String LIST_UUID = "UUID";
@@ -103,7 +104,7 @@ public class DeviceControlActivity extends AppCompatActivity {
             return false;
         }
     };
-    private String mDeviceAddress;
+
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
@@ -114,7 +115,7 @@ public class DeviceControlActivity extends AppCompatActivity {
                 finish();
             }
             // Automatically connects to the device upon successful start-up initialization.
-            mBluetoothLeService.connect(mDeviceAddress);
+            mBluetoothLeService.connect(mDevice.getAddress());
         }
 
         @Override
@@ -122,7 +123,7 @@ public class DeviceControlActivity extends AppCompatActivity {
             mBluetoothLeService = null;
         }
     };
-    private String mDeviceName;
+    private BluetoothLeDevice mDevice;
     private boolean mConnected = false;
     private String mExportString;
     // Handles various events fired by the Service.
@@ -173,7 +174,10 @@ public class DeviceControlActivity extends AppCompatActivity {
     // on the UI.
     private void displayGattServices(final List<BluetoothGattService> gattServices) {
         if (gattServices == null) return;
-        mExportString = mExporter.generateExportString(mDeviceName, mDeviceAddress, gattServices);
+        mExportString = mExporter.generateExportString(
+                mDevice.getName(),
+                mDevice.getAddress(),
+                gattServices);
 
         String uuid = null;
         final String unknownServiceString = getResources().getString(R.string.unknown_service);
@@ -230,16 +234,14 @@ public class DeviceControlActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gatt_services);
 
         final Intent intent = getIntent();
-        final BluetoothLeDevice device = intent.getParcelableExtra(EXTRA_DEVICE);
-        mDeviceName = device.getName();
-        mDeviceAddress = device.getAddress();
+        mDevice = intent.getParcelableExtra(EXTRA_DEVICE);
         ButterKnife.bind(this);
 
         // Sets up UI references.
-        ((TextView) findViewById(R.id.device_address)).setText(mDeviceAddress);
+        ((TextView) findViewById(R.id.device_address)).setText(mDevice.getAddress());
         mGattServicesList.setOnChildClickListener(servicesListClickListner);
 
-        getSupportActionBar().setTitle(mDeviceName);
+        getSupportActionBar().setTitle(mDevice.getName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mExporter = new Exporter(this);
@@ -279,7 +281,7 @@ public class DeviceControlActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_connect:
-                mBluetoothLeService.connect(mDeviceAddress);
+                mBluetoothLeService.connect(mDevice.getAddress());
                 return true;
             case R.id.menu_disconnect:
                 mBluetoothLeService.disconnect();
@@ -289,7 +291,10 @@ public class DeviceControlActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_share:
                 final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-                final String subject = getString(R.string.exporter_email_device_services_subject, mDeviceName, mDeviceAddress);
+                final String subject = getString(
+                        R.string.exporter_email_device_services_subject,
+                        mDevice.getName(),
+                        mDevice.getAddress());
 
                 intent.setType("text/plain");
                 intent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
@@ -315,7 +320,7 @@ public class DeviceControlActivity extends AppCompatActivity {
         super.onResume();
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
-            final boolean result = mBluetoothLeService.connect(mDeviceAddress);
+            final boolean result = mBluetoothLeService.connect(mDevice.getAddress());
             Log.d(TAG, "Connect request result=" + result);
         }
     }
@@ -339,7 +344,7 @@ public class DeviceControlActivity extends AppCompatActivity {
                 }
 
                 mConnectionState.setText(resourceId);
-                mConnectionState.setTextColor(getResources().getColor(colourId));
+                mConnectionState.setTextColor(ContextCompat.getColor(DeviceControlActivity.this, colourId));
             }
         });
     }
@@ -359,5 +364,11 @@ public class DeviceControlActivity extends AppCompatActivity {
         } else {
             return string;
         }
+    }
+
+    public static Intent createIntent(final Context context, final BluetoothLeDevice device) {
+        final Intent intent = new Intent(context, DeviceControlActivity.class);
+        intent.putExtra(DeviceControlActivity.EXTRA_DEVICE, device);
+        return intent;
     }
 }

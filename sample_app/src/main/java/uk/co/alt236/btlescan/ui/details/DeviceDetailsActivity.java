@@ -1,5 +1,6 @@
 package uk.co.alt236.btlescan.ui.details;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,9 +22,9 @@ import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils;
 import uk.co.alt236.bluetoothlelib.device.beacon.ibeacon.IBeaconManufacturerData;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
 import uk.co.alt236.btlescan.R;
+import uk.co.alt236.btlescan.ui.common.Navigation;
 import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewBinderCore;
 import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem;
-import uk.co.alt236.btlescan.ui.control.DeviceControlActivity;
 import uk.co.alt236.btlescan.ui.details.recyclerview.model.AdRecordItem;
 import uk.co.alt236.btlescan.ui.details.recyclerview.model.DeviceInfoItem;
 import uk.co.alt236.btlescan.ui.details.recyclerview.model.HeaderItem;
@@ -32,7 +33,7 @@ import uk.co.alt236.btlescan.ui.details.recyclerview.model.RssiItem;
 import uk.co.alt236.btlescan.ui.details.recyclerview.model.TextItem;
 
 public class DeviceDetailsActivity extends AppCompatActivity {
-    public static final String EXTRA_DEVICE = DeviceDetailsActivity.class.getName() + ".EXTRA_DEVICE";
+    private static final String EXTRA_DEVICE = DeviceDetailsActivity.class.getName() + ".EXTRA_DEVICE";
     private static final int LAYOUT_ID = R.layout.activity_details;
 
     @Bind(R.id.recycler)
@@ -48,6 +49,9 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mDevice = getIntent().getParcelableExtra(EXTRA_DEVICE);
 
+        getSupportActionBar().setTitle(mDevice.getName());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         pupulateDetails(mDevice);
     }
 
@@ -61,15 +65,13 @@ public class DeviceDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_connect:
-
-                final Intent intent = new Intent(this, DeviceControlActivity.class);
-                intent.putExtra(DeviceControlActivity.EXTRA_DEVICE, mDevice);
-
-                startActivity(intent);
-
-                break;
+                new Navigation(this).startControlActivity(mDevice);
+                return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private void pupulateDetails(final BluetoothLeDevice device) {
@@ -112,5 +114,12 @@ public class DeviceDetailsActivity extends AppCompatActivity {
 
         final RecyclerViewBinderCore core = RecyclerViewCoreFactory.create(this);
         mRecycler.setAdapter(new DetailsRecyclerAdapter(core, list));
+    }
+
+    public static Intent createIntent(Context context, BluetoothLeDevice device) {
+        final Intent intent = new Intent(context, DeviceDetailsActivity.class);
+        intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE, device);
+
+        return intent;
     }
 }

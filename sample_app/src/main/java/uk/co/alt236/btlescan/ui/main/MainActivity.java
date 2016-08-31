@@ -3,7 +3,6 @@ package uk.co.alt236.btlescan.ui.main;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +22,7 @@ import butterknife.ButterKnife;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.containers.BluetoothLeDeviceStore;
-import uk.co.alt236.btlescan.ui.details.DeviceDetailsActivity;
+import uk.co.alt236.btlescan.ui.common.Navigation;
 import uk.co.alt236.btlescan.util.BluetoothLeScanner;
 import uk.co.alt236.btlescan.util.BluetoothUtils;
 import uk.co.alt236.easycursor.objectcursor.EasyObjectCursor;
@@ -101,12 +100,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         final BluetoothLeDevice device = mDeviceListAdapter.getItem(position);
-        if (device == null) return;
-
-        final Intent intent = new Intent(this, DeviceDetailsActivity.class);
-        intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE, device);
-
-        startActivity(intent);
+        new Navigation(this).openDetailsActivity(device);
     }
 
     @Override
