@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 DialogFactory.createAboutDialog(this).show();
                 break;
             case R.id.menu_share:
-                mDeviceStore.shareDataAsEmail(this);
+                new Sharer().shareDataAsEmail(this, mDeviceStore);
         }
         return true;
     }

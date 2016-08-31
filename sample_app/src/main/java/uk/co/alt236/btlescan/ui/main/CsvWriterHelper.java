@@ -1,6 +1,6 @@
-package uk.co.alt236.btlescan.util;
+package uk.co.alt236.btlescan.ui.main;
 
-public class CsvWriterHelper {
+/*package*/ class CsvWriterHelper {
     private static final String QUOTE = "\"";
 
     public static String addStuff(final Integer text) {
