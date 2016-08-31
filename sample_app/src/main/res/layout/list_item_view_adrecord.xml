@@ -4,7 +4,7 @@
               android:layout_height="wrap_content"
               android:gravity="top"
               android:orientation="vertical"
-              android:paddingBottom="5dp">
+    android:paddingBottom="@dimen/space_between_sections">
 
     <TextView
         android:id="@+id/title"
