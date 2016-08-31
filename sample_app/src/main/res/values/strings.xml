@@ -5,6 +5,7 @@
     <string name="app_name">Bluetooth LE Scanner</string>
     <string name="connected">Connected</string>
     <string name="disconnected">Disconnected</string>
+    <string name="connecting">Connecting</string>
     <string name="invalid_device_data">Invalid Device Data!</string>
     <string name="no_data">No data</string>
     <string name="not_supported">Not supported</string>

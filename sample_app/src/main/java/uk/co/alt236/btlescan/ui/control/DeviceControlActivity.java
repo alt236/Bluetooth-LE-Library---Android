@@ -121,7 +121,8 @@ public class DeviceControlActivity extends AppCompatActivity {
         }
     };
     private BluetoothLeDevice mDevice;
-    private boolean mConnected = false;
+    private State mCurrentState = State.DISCONNECTED;
+
     private String mExportString;
     // Handles various events fired by the Service.
     // ACTION_GATT_CONNECTED: connected to a GATT server.
@@ -134,14 +135,16 @@ public class DeviceControlActivity extends AppCompatActivity {
         public void onReceive(final Context context, final Intent intent) {
             final String action = intent.getAction();
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-                mConnected = true;
-                updateConnectionState(R.string.connected);
+                updateConnectionState(State.CONNECTED);
                 invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
-                mConnected = false;
-                updateConnectionState(R.string.disconnected);
-                invalidateOptionsMenu();
                 clearUI();
+                updateConnectionState(State.DISCONNECTED);
+                invalidateOptionsMenu();
+            } else if (BluetoothLeService.ACTION_GATT_CONNECTING.equals(action)) {
+                clearUI();
+                updateConnectionState(State.CONNECTING);
+                invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
@@ -159,6 +162,7 @@ public class DeviceControlActivity extends AppCompatActivity {
     };
 
     private void clearUI() {
+        mExportString = null;
         mGattServicesList.setAdapter((SimpleExpandableListAdapter) null);
         mGattUUID.setText(R.string.no_data);
         mGattUUIDDesc.setText(R.string.no_data);
@@ -206,12 +210,26 @@ public class DeviceControlActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.gatt_services, menu);
-        if (mConnected) {
-            menu.findItem(R.id.menu_connect).setVisible(false);
-            menu.findItem(R.id.menu_disconnect).setVisible(true);
-        } else {
-            menu.findItem(R.id.menu_connect).setVisible(true);
-            menu.findItem(R.id.menu_disconnect).setVisible(false);
+
+        switch (mCurrentState) {
+
+            case DISCONNECTED:
+                menu.findItem(R.id.menu_connect).setVisible(true);
+                menu.findItem(R.id.menu_disconnect).setVisible(false);
+                menu.findItem(R.id.menu_refresh).setActionView(null);
+                break;
+            case CONNECTING:
+                menu.findItem(R.id.menu_connect).setVisible(false);
+                menu.findItem(R.id.menu_disconnect).setVisible(false);
+                menu.findItem(R.id.menu_refresh).setActionView(R.layout.actionbar_progress_indeterminate);
+                break;
+            case CONNECTED:
+                menu.findItem(R.id.menu_connect).setVisible(false);
+                menu.findItem(R.id.menu_disconnect).setVisible(true);
+                menu.findItem(R.id.menu_refresh).setActionView(null);
+                break;
+            default:
+                throw new IllegalStateException("Don't know how to handle: " + mCurrentState);
         }
 
         if (mExportString == null) {
@@ -278,25 +296,35 @@ public class DeviceControlActivity extends AppCompatActivity {
         }
     }
 
-    private void updateConnectionState(final int resourceId) {
+    private void updateConnectionState(final State state) {
+        mCurrentState = state;
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 final int colourId;
+                final int resId;
 
-                switch (resourceId) {
-                    case R.string.connected:
+                switch (state) {
+                    case CONNECTED:
                         colourId = android.R.color.holo_green_dark;
+                        resId = R.string.connected;
                         break;
-                    case R.string.disconnected:
+                    case DISCONNECTED:
                         colourId = android.R.color.holo_red_dark;
+                        resId = R.string.disconnected;
+                        break;
+                    case CONNECTING:
+                        colourId = android.R.color.black;
+                        resId = R.string.connecting;
                         break;
                     default:
                         colourId = android.R.color.black;
+                        resId = 0;
                         break;
                 }
 
-                mConnectionState.setText(resourceId);
+                mConnectionState.setText(resId);
                 mConnectionState.setTextColor(ContextCompat.getColor(DeviceControlActivity.this, colourId));
             }
         });
@@ -308,6 +336,7 @@ public class DeviceControlActivity extends AppCompatActivity {
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTING);
         return intentFilter;
     }
 
@@ -323,5 +352,11 @@ public class DeviceControlActivity extends AppCompatActivity {
         final Intent intent = new Intent(context, DeviceControlActivity.class);
         intent.putExtra(DeviceControlActivity.EXTRA_DEVICE, device);
         return intent;
+    }
+
+    private enum State {
+        DISCONNECTED,
+        CONNECTING,
+        CONNECTED
     }
 }
