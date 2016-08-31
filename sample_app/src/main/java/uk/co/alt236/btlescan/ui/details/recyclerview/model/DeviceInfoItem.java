@@ -23,7 +23,7 @@ public class DeviceInfoItem implements RecyclerViewItem {
     }
 
     public String getBluetoothDeviceMajorClassName() {
-        return mDevice.getBluetoothDeviceClassName();
+        return mDevice.getBluetoothDeviceMajorClassName();
     }
 
     public String getBluetoothDeviceClassName() {
