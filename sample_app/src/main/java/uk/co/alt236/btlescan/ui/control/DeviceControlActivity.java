@@ -79,7 +79,7 @@ public class DeviceControlActivity extends AppCompatActivity {
         @Override
         public boolean onChildClick(final ExpandableListView parent, final View v, final int groupPosition, final int childPosition, final long id) {
             final GattDataAdapterFactory.GattDataAdapter adapter =
-                    (GattDataAdapterFactory.GattDataAdapter) parent.getAdapter();
+                    (GattDataAdapterFactory.GattDataAdapter) parent.getExpandableListAdapter();
 
             final BluetoothGattCharacteristic characteristic =
                     adapter.getBluetoothGattCharacteristic(groupPosition, childPosition);
