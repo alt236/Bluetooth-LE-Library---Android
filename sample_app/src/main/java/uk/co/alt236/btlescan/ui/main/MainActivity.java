@@ -6,28 +6,37 @@ import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anthonycr.grant.PermissionsManager;
 import com.anthonycr.grant.PermissionsResultAction;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils;
+import uk.co.alt236.bluetoothlelib.device.beacon.ibeacon.IBeaconDevice;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.containers.BluetoothLeDeviceStore;
 import uk.co.alt236.btlescan.ui.common.Navigation;
+import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewBinderCore;
+import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem;
+import uk.co.alt236.btlescan.ui.main.recyclerview.model.IBeaconItem;
+import uk.co.alt236.btlescan.ui.main.recyclerview.model.LeDeviceItem;
 import uk.co.alt236.btlescan.util.BluetoothLeScanner;
 import uk.co.alt236.btlescan.util.BluetoothUtils;
-import uk.co.alt236.easycursor.objectcursor.EasyObjectCursor;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity {
     @Bind(R.id.tvBluetoothLe)
     protected TextView mTvBluetoothLeStatus;
     @Bind(R.id.tvBluetoothStatus)
@@ -35,14 +44,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Bind(R.id.tvItemCount)
     protected TextView mTvItemCount;
     @Bind(android.R.id.list)
-    protected ListView mList;
+    protected RecyclerView mList;
     @Bind(android.R.id.empty)
     protected View mEmpty;
 
+    private RecyclerViewBinderCore mCore;
     private BluetoothUtils mBluetoothUtils;
     private BluetoothLeScanner mScanner;
-    private DeviceListAdapter mDeviceListAdapter;
     private BluetoothLeDeviceStore mDeviceStore;
+    private DeviceRecyclerAdapter mRecyclerAdapter;
 
     private final BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
@@ -50,13 +60,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             final BluetoothLeDevice deviceLe = new BluetoothLeDevice(device, rssi, scanRecord, System.currentTimeMillis());
             mDeviceStore.addDevice(deviceLe);
-            final EasyObjectCursor<BluetoothLeDevice> c = mDeviceStore.getDeviceCursor();
+            final List<RecyclerViewItem> itemList = new ArrayList<>();
+
+            for (final BluetoothLeDevice leDevice : mDeviceStore.getDeviceList()) {
+                if (BeaconUtils.getBeaconType(leDevice) == BeaconType.IBEACON) {
+                    itemList.add(new IBeaconItem(new IBeaconDevice(leDevice)));
+                } else {
+                    itemList.add(new LeDeviceItem(leDevice));
+                }
+            }
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mDeviceListAdapter.swapCursor(c);
-                    updateItemCount(mDeviceListAdapter.getCount());
+                    mRecyclerAdapter.setData(itemList);
+                    updateItemCount(mRecyclerAdapter.getItemCount());
                 }
             });
         }
@@ -67,8 +85,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mList.setEmptyView(mEmpty);
-        mList.setOnItemClickListener(this);
+        mCore = RecyclerViewCoreFactory.create(this, new Navigation(this));
+        mList.setLayoutManager(new LinearLayoutManager(this));
         mDeviceStore = new BluetoothLeDeviceStore();
         mBluetoothUtils = new BluetoothUtils(this);
         mScanner = new BluetoothLeScanner(mLeScanCallback, mBluetoothUtils);
@@ -88,19 +106,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             menu.findItem(R.id.menu_refresh).setActionView(R.layout.actionbar_progress_indeterminate);
         }
 
-        if (mList.getCount() > 0) {
+        if (mRecyclerAdapter != null && mRecyclerAdapter.getItemCount() > 0) {
             menu.findItem(R.id.menu_share).setVisible(true);
         } else {
             menu.findItem(R.id.menu_share).setVisible(false);
         }
 
         return true;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        final BluetoothLeDevice device = mDeviceListAdapter.getItem(position);
-        new Navigation(this).openDetailsActivity(device);
     }
 
     @Override
@@ -146,16 +158,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onResume() {
         super.onResume();
-        final boolean mIsBluetoothOn = mBluetoothUtils.isBluetoothOn();
-        final boolean mIsBluetoothLePresent = mBluetoothUtils.isBluetoothLeSupported();
 
-        if (mIsBluetoothOn) {
+        if (mBluetoothUtils.isBluetoothOn()) {
             mTvBluetoothStatus.setText(R.string.on);
         } else {
             mTvBluetoothStatus.setText(R.string.off);
         }
 
-        if (mIsBluetoothLePresent) {
+        if (mBluetoothUtils.isBluetoothLeSupported()) {
             mTvBluetoothLeStatus.setText(R.string.supported);
         } else {
             mTvBluetoothLeStatus.setText(R.string.not_supported);
@@ -170,8 +180,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mDeviceStore.clear();
         updateItemCount(0);
 
-        mDeviceListAdapter = new DeviceListAdapter(this, mDeviceStore.getDeviceCursor());
-        mList.setAdapter(mDeviceListAdapter);
+        mRecyclerAdapter = new DeviceRecyclerAdapter(mCore);
+        mList.setAdapter(mRecyclerAdapter);
 
         mBluetoothUtils.askUserToEnableBluetoothIfNeeded();
         if (mIsBluetoothOn && mIsBluetoothLePresent) {

@@ -1,5 +1,6 @@
 package uk.co.alt236.btlescan.ui.common.recyclerview;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import java.util.List;
 public class RecyclerViewBinderCore {
     public static final int INVALID_VIEWTYPE = -1;
 
+    private static final String TAG = RecyclerViewBinderCore.class.getSimpleName();
     private final List<Class<? extends BaseViewHolder<? extends RecyclerViewItem>>> mViewHolderClasses;
     private final List<BaseViewBinder<? extends RecyclerViewItem>> mViewBinders;
     private final List<Integer> mLayoutIds;
@@ -62,6 +64,10 @@ public class RecyclerViewBinderCore {
             }
 
             count++;
+        }
+
+        if (result == INVALID_VIEWTYPE) {
+            Log.w(TAG, "Could not get viewType for " + item);
         }
 
         return result;

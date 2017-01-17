@@ -3,25 +3,24 @@ package uk.co.alt236.btlescan.ui.common.recyclerview;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<BaseViewHolder<? extends RecyclerViewItem>> {
 
-    private final List<? extends RecyclerViewItem> mItemList;
+    private final List<RecyclerViewItem> mItemList;
     private final RecyclerViewBinderCore mCore;
 
     public BaseRecyclerViewAdapter(final RecyclerViewBinderCore core,
                                    final List<RecyclerViewItem> items) {
-        mItemList = items;
+        mItemList = new ArrayList<>();
         mCore = core;
+        mItemList.addAll(items);
     }
 
-    private static <T extends RecyclerViewItem> void bind(final BaseViewBinder<T> binder,
-                                                          final BaseViewHolder<?> holder,
-                                                          final RecyclerViewItem item) {
-
-        //noinspection unchecked
-        binder.bind((BaseViewHolder<T>) holder, (T) item);
+    public BaseRecyclerViewAdapter(final RecyclerViewBinderCore core) {
+        this(core, new ArrayList<RecyclerViewItem>());
     }
 
     @Override
@@ -51,5 +50,20 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<BaseV
 
     public RecyclerViewItem getItem(final int position) {
         return mItemList.get(position);
+    }
+
+    public void setData(Collection<? extends RecyclerViewItem> data) {
+
+        mItemList.clear();
+        mItemList.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    private static <T extends RecyclerViewItem> void bind(final BaseViewBinder<T> binder,
+                                                          final BaseViewHolder<?> holder,
+                                                          final RecyclerViewItem item) {
+
+        //noinspection unchecked
+        binder.bind((BaseViewHolder<T>) holder, (T) item);
     }
 }
