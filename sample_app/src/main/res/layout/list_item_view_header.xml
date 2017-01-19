@@ -4,20 +4,15 @@
               android:layout_height="wrap_content"
               android:gravity="top"
               android:orientation="vertical"
-              android:paddingBottom="5dp">
+    android:paddingBottom="6dp">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAllCaps="true"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="@color/colorSeparator"
         android:textSize="14sp"
         android:textStyle="bold"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/holo_blue_dark"/>
 
 </LinearLayout>

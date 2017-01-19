@@ -38,22 +38,21 @@ import java.util.List;
  * given Bluetooth LE device.
  */
 public class BluetoothLeService extends Service {
-    public final static String ACTION_GATT_CONNECTED = "com.example.bluetooth.le.ACTION_GATT_CONNECTED";
-    public final static String ACTION_GATT_DISCONNECTED = "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED";
-    public final static String ACTION_GATT_SERVICES_DISCOVERED = "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
-    public final static String ACTION_DATA_AVAILABLE = "com.example.bluetooth.le.ACTION_DATA_AVAILABLE";
-    public final static String EXTRA_DATA_RAW = "com.example.bluetooth.le.EXTRA_DATA_RAW";
-    public final static String EXTRA_UUID_CHAR = "com.example.bluetooth.le.EXTRA_UUID_CHAR";
+    public final static String ACTION_GATT_CONNECTED = BluetoothLeService.class.getName() + ".ACTION_GATT_CONNECTED";
+    public final static String ACTION_GATT_CONNECTING = BluetoothLeService.class.getName() + ".ACTION_GATT_CONNECTING";
+    public final static String ACTION_GATT_DISCONNECTED = BluetoothLeService.class.getName() + ".ACTION_GATT_DISCONNECTED";
+    public final static String ACTION_GATT_SERVICES_DISCOVERED = BluetoothLeService.class.getName() + ".ACTION_GATT_SERVICES_DISCOVERED";
+    public final static String ACTION_DATA_AVAILABLE = BluetoothLeService.class.getName() + ".ACTION_DATA_AVAILABLE";
+    public final static String EXTRA_DATA_RAW = BluetoothLeService.class.getName() + ".EXTRA_DATA_RAW";
+    public final static String EXTRA_UUID_CHAR = BluetoothLeService.class.getName() + ".EXTRA_UUID_CHAR";
     private final static String TAG = BluetoothLeService.class.getSimpleName();
-    private static final int STATE_DISCONNECTED = 0;
-    private static final int STATE_CONNECTING = 1;
-    private static final int STATE_CONNECTED = 2;
     private final IBinder mBinder = new LocalBinder();
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
     private String mBluetoothDeviceAddress;
     private BluetoothGatt mBluetoothGatt;
-    private int mConnectionState = STATE_DISCONNECTED;
+    private State mConnectionState = State.DISCONNECTED;
+
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.
     private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
@@ -63,28 +62,35 @@ public class BluetoothLeService extends Service {
         }
 
         @Override
-        public void onCharacteristicRead(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic, final int status) {
+        public void onCharacteristicRead(final BluetoothGatt gatt,
+                                         final BluetoothGattCharacteristic characteristic,
+                                         final int status) {
+
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
             }
         }
 
         @Override
-        public void onConnectionStateChange(final BluetoothGatt gatt, final int status, final int newState) {
-            final String intentAction;
+        public void onConnectionStateChange(final BluetoothGatt gatt,
+                                            final int status,
+                                            final int newState) {
+
+            Log.d(TAG, "onConnectionStateChange: status=" + status + ", newState=" + newState);
+
             if (newState == BluetoothProfile.STATE_CONNECTED) {
-                intentAction = ACTION_GATT_CONNECTED;
-                mConnectionState = STATE_CONNECTED;
-                broadcastUpdate(intentAction);
+                setConnectionState(State.CONNECTED, true);
                 Log.i(TAG, "Connected to GATT server.");
                 // Attempts to discover services after successful connection.
                 Log.i(TAG, "Attempting to start service discovery:" + mBluetoothGatt.discoverServices());
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                intentAction = ACTION_GATT_DISCONNECTED;
-                mConnectionState = STATE_DISCONNECTED;
+                // Make sure we tidy up. On certain devices reusing a Gatt after a disconnection
+                // can cause problems.
+                disconnect();
+
+                setConnectionState(State.DISCONNECTED, true);
                 Log.i(TAG, "Disconnected from GATT server.");
-                broadcastUpdate(intentAction);
             }
         }
 
@@ -138,37 +144,73 @@ public class BluetoothLeService extends Service {
      * callback.
      */
     public boolean connect(final String address) {
+
+        final boolean retVal;
         if (mBluetoothAdapter == null || address == null) {
             Log.w(TAG, "BluetoothAdapter not initialized or unspecified address.");
-            return false;
-        }
+            retVal = false;
 
-        // Previously connected device.  Try to reconnect.
-        if (mBluetoothDeviceAddress != null
+            // Previously connected device.  Try to reconnect.
+        } else if (mBluetoothDeviceAddress != null
                 && address.equals(mBluetoothDeviceAddress)
                 && mBluetoothGatt != null) {
 
             Log.d(TAG, "Trying to use an existing mBluetoothGatt for connection.");
             if (mBluetoothGatt.connect()) {
-                mConnectionState = STATE_CONNECTING;
-                return true;
+                Log.d(TAG, "Connection attempt OK.");
+                setConnectionState(State.CONNECTING, true);
+                retVal = true;
             } else {
-                return false;
+                Log.w(TAG, "Connection attempt failed.");
+                setConnectionState(State.DISCONNECTED, true);
+                retVal = false;
+            }
+        } else {
+
+            final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+            if (device == null) {
+                Log.w(TAG, "Device not found.  Unable to connect.");
+                retVal = false;
+            } else {
+                // We want to directly connect to the device, so we are setting the autoConnect
+                // parameter to false.
+
+                Log.d(TAG, "Trying to create a new connection.");
+                mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
+                mBluetoothDeviceAddress = address;
+                setConnectionState(State.CONNECTING, true);
+                retVal = true;
             }
         }
 
-        final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-        if (device == null) {
-            Log.w(TAG, "Device not found.  Unable to connect.");
-            return false;
+        return retVal;
+    }
+
+    private synchronized void setConnectionState(final State newState, final boolean broadCast) {
+        Log.i(TAG, "Setting internal state to " + newState);
+        mConnectionState = newState;
+
+        final String broadcastAction;
+
+        switch (newState) {
+            case CONNECTED:
+                broadcastAction = ACTION_GATT_CONNECTED;
+                break;
+            case CONNECTING:
+                broadcastAction = ACTION_GATT_CONNECTING;
+                break;
+            case DISCONNECTED:
+                broadcastAction = ACTION_GATT_DISCONNECTED;
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown state: " + newState);
         }
-        // We want to directly connect to the device, so we are setting the autoConnect
-        // parameter to false.
-        mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
-        Log.d(TAG, "Trying to create a new connection.");
-        mBluetoothDeviceAddress = address;
-        mConnectionState = STATE_CONNECTING;
-        return true;
+
+        if (broadCast) {
+            Log.i(TAG, "Broadcasting " + broadcastAction);
+            broadcastUpdate(broadcastAction);
+        }
+
     }
 
     /**
@@ -183,6 +225,9 @@ public class BluetoothLeService extends Service {
             return;
         }
         mBluetoothGatt.disconnect();
+
+        // Reusing a Gatt after disconnecting can cause problems
+        mBluetoothGatt = null;
     }
 
     /**
@@ -269,5 +314,11 @@ public class BluetoothLeService extends Service {
         public BluetoothLeService getService() {
             return BluetoothLeService.this;
         }
+    }
+
+    private enum State {
+        DISCONNECTED,
+        CONNECTING,
+        CONNECTED
     }
 }

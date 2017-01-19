@@ -7,7 +7,7 @@
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
-              tools:context=".MainActivity">
+    tools:context=".ui.main.MainActivity">
 
     <GridLayout
         android:id="@+id/gridLayout1"
@@ -61,7 +61,7 @@
         android:id="@+id/upperSepparator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/holo_blue_dark"/>
+        android:background="@color/colorSeparator" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                 android:id="@+id/lowerSepparator"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/holo_blue_dark"/>
+                android:background="@color/colorSeparator" />
 
             <TextView
                 android:id="@+id/tvItemCount"
@@ -96,7 +96,7 @@
             android:layout_alignParentTop="true"
             android:orientation="vertical">
 
-            <ListView
+            <android.support.v7.widget.RecyclerView
                 android:id="@android:id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

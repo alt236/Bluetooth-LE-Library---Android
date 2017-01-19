@@ -57,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/deviceInformation"
-        android:background="@android:color/holo_blue_dark"/>
+        android:background="@color/colorSeparator" />
 
     <GridLayout
         android:id="@+id/gattInformation"
@@ -113,7 +113,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_above="@id/gattInformation"
-        android:background="@android:color/holo_blue_dark"/>
+        android:background="@color/colorSeparator" />
 
     <ExpandableListView
         android:id="@+id/gatt_services_list"
