@@ -146,6 +146,8 @@ You can also lookup values and convert them to human friendly strings:
 * v1.1.0:
 	* App refactor and materialisation.
 	* Added runtime permissions.
+* v1.1.1:
+    * Fix for [issue 23](https://github.com/alt236/Bluetooth-LE-Library---Android/issues/23)
 
 ## Permission Explanation
 You will need the following permissions to access the Bluetooth Hardware
