@@ -3,6 +3,7 @@ package uk.co.alt236.btlescan.ui.main;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -119,22 +120,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_scan:
-                PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
-                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, new PermissionsResultAction() {
-
-                            @Override
-                            public void onGranted() {
-                                startScan();
-                            }
-
-                            @Override
-                            public void onDenied(String permission) {
-                                Toast.makeText(MainActivity.this,
-                                        R.string.permission_not_granted_coarse_location,
-                                        Toast.LENGTH_SHORT)
-                                        .show();
-                            }
-                        });
+                startScanPrepare();
                 break;
             case R.id.menu_stop:
                 mScanner.scanLeDevice(-1, false);
@@ -174,9 +160,36 @@ public class MainActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
+
+    private void startScanPrepare() {
+        //
+        // The COARSE_LOCATION permission is only needed after API 23 to do a BTLE scan
+        //
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, new PermissionsResultAction() {
+
+                        @Override
+                        public void onGranted() {
+                            startScan();
+                        }
+
+                        @Override
+                        public void onDenied(String permission) {
+                            Toast.makeText(MainActivity.this,
+                                    R.string.permission_not_granted_coarse_location,
+                                    Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+        } else {
+            startScan();
+        }
+    }
+
     private void startScan() {
-        final boolean mIsBluetoothOn = mBluetoothUtils.isBluetoothOn();
-        final boolean mIsBluetoothLePresent = mBluetoothUtils.isBluetoothLeSupported();
+        final boolean isBluetoothOn = mBluetoothUtils.isBluetoothOn();
+        final boolean isBluetoothLePresent = mBluetoothUtils.isBluetoothLeSupported();
         mDeviceStore.clear();
         updateItemCount(0);
 
@@ -184,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         mList.setAdapter(mRecyclerAdapter);
 
         mBluetoothUtils.askUserToEnableBluetoothIfNeeded();
-        if (mIsBluetoothOn && mIsBluetoothLePresent) {
+        if (isBluetoothOn && isBluetoothLePresent) {
             mScanner.scanLeDevice(-1, true);
             invalidateOptionsMenu();
         }
