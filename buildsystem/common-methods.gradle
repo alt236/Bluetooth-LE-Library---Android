@@ -1,0 +1,93 @@
+def execGitHashShort() {
+    return cleanString('git rev-parse --short HEAD'.execute().text)
+}
+
+def execGitHash() {
+    return cleanString('git rev-parse HEAD'.execute().text)
+}
+
+def execGitBranch() {
+    return cleanString('git show -s --pretty=%d HEAD'.execute().text)
+}
+
+def execGitCommitDate() {
+    final String cmd = "git show -s --format=%ci " + this.execGitHash()
+    return cleanString(cmd.execute().text)
+}
+
+def execGitLog(int items) {
+    final String cmd = "git log -n " + items + " --abbrev-commit --pretty=oneline"
+    return cmd.execute().text
+}
+
+def getBuildNumber() {
+    def buildNumberVariable = "CIRCLE_BUILD_NUM"
+    def buildNumberValue = System.getenv(buildNumberVariable)
+
+    if (buildNumberValue != null && !buildNumberValue.isEmpty()) {
+        return buildNumberValue as Integer
+    } else {
+        return 1
+    }
+}
+
+def isRunningOnCi() {
+    def envVariable = "CI"
+   return Boolean.parseBoolean(System.getenv(envVariable) ?: "false")
+}
+
+def cleanString(final String text) {
+    return text.trim().replaceAll('/', '_').replaceAll('-', '_')
+}
+
+def quoteString(final String str) {
+    final String quote = "\""
+
+    if (str.length() > 0) {
+        if (str.startsWith(quote) && str.endsWith(quote)) {
+            return str
+        } else {
+            return quote + str + quote
+        }
+    } else {
+        return quote + quote
+    }
+}
+
+
+
+def getLastGitCommitMessage() {
+    return 'git log -1 --pretty=%B'.execute().text.trim()
+}
+
+def collectCommonProguardRules() {
+    def proguardFileDirectory = "${project.rootDir}/buildsystem/proguard-rules/"
+
+    def proguardFileSet =  fileTree(proguardFileDirectory).filter { it.isFile() }.files
+    if(proguardFileSet.isEmpty()) {
+        throw new IllegalStateException("No proguard rules found in $proguardFileDirectory")
+    }
+
+    return proguardFileSet.toList().sort()
+}
+
+
+def getPropertySafe(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+ext {
+    execGitHashShort = this.&execGitHashShort
+    execGitHash = this.&execGitHash
+    execGitBranch = this.&execGitBranch
+    execGitCommitDate = this.&execGitCommitDate
+    execGitLog = this.&execGitLog
+    isRunningOnCi = this.&isRunningOnCi
+    getLibVersions = this.&getLibVersions
+    quoteString = this.&quoteString
+    getBuildNumber = this.&getBuildNumber
+    getLastGitCommitMessage = this.&getLastGitCommitMessage
+    shouldSkipFlakyRobolectricTests = this.&shouldSkipFlakyRobolectricTests
+    collectCommonProguardRules = this.&collectCommonProguardRules
+    getPropertySafe = this.&getPropertySafe
+}

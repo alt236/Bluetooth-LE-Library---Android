@@ -1,12 +1,15 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+    id 'com.github.triplet.play' version '2.5.0'
+}
+
+apply from: "${project.rootDir}/buildsystem/android-defaults.gradle"
 
 final int versionMajor = 1
 final int versionMinor = 1
-final int versionPatch = 1
-final int androidVersionCode = 7
+final int versionPatch = getBuildNumber()
+final int androidVersionCode = getBuildNumber()
 
-final int targetSdk = rootProject.targetSdkVersion
-final int minSdkRed = rootProject.minSdkVersion
 final String semanticVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 repositories {
@@ -14,6 +17,49 @@ repositories {
     maven { url "https://repo.commonsware.com.s3.amazonaws.com" }
     maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
     maven { url "https://dl.bintray.com/alt236/maven" }
+}
+
+android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(System.getenv("ANDROID_KEYSTORE") ?: "[KEY_NOT_DEFINED]")
+            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD")
+        }
+
+        debug {
+            storeFile file("${project.rootDir}/buildsystem/signing_keys/debug.keystore")
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storePassword 'android'
+        }
+    }
+
+    defaultConfig {
+        versionCode androidVersionCode
+        versionName semanticVersion
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            if(isRunningOnCi()) {
+                signingConfig signingConfigs.release
+            }
+        }
+
+        debug {
+            minifyEnabled false
+            applicationIdSuffix ".debug"
+            signingConfig signingConfigs.debug
+        }
+    }
 }
 
 dependencies {
@@ -32,28 +78,22 @@ dependencies {
     testImplementation 'org.mockito:mockito-all:1.10.19'
 }
 
-android {
-    compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
+play {
+    def credentialsPath = System.getenv("GPLAY_DEPLOY_KEY") ?: "[KEY_NOT_DEFINED]"
+    def lastCommitMessage = getLastGitCommitMessage().take(50)
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
-    }
+    logger.warn("GPP Config: $credentialsPath")
+    logger.warn("Release Name: '$lastCommitMessage'")
 
-    defaultConfig {
-        minSdkVersion minSdkRed
-        targetSdkVersion targetSdk
-        versionCode androidVersionCode
-        versionName semanticVersion
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    productFlavors {
+    if(isRunningOnCi()) {
+        enabled = true
+        track = "internal"
+        //userFraction = 1.0
+        releaseStatus = "completed"
+        serviceAccountCredentials = file(credentialsPath)
+        releaseName = lastCommitMessage
+        artifactDir = file("${project.rootDir}/sample_app/build/outputs/apk/release/")
+    } else {
+        enabled = false
     }
 }

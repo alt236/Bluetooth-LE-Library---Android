@@ -305,3 +305,4 @@ Thumbs.db
 
 documents/.~lock.Bluetooth_UUIDs.ods#
 /projectFilesBackup/
+!/buildsystem/**/*.jar

@@ -1,0 +1,119 @@
+// The versions are defined in "${project.rootDir}/buildconstants/android-sdk-versions.gradle"
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = jacoco_version
+}
+
+android {
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
+
+    defaultConfig {
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+
+        multiDexEnabled false
+        multiDexKeepProguard file("${project.rootDir}/buildsystem/multidex/multidex.pro")
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            testCoverageEnabled false
+
+            // PROGUARD
+            def proguardRuleFiles = collectCommonProguardRules()
+            proguardRuleFiles.add(0, getDefaultProguardFile('proguard-android.txt'))
+            proguardRuleFiles.add(1, 'proguard-rules.pro')
+            logger.warn("Common proguard files: $proguardRuleFiles")
+
+            proguardFiles proguardRuleFiles.toArray()
+        }
+
+        debug {
+            minifyEnabled false
+            testCoverageEnabled true
+
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        lintConfig file("${project.rootDir}/buildsystem/codequality/lint.xml")
+    }
+
+    testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        animationsDisabled = true
+
+        unitTests {
+            //returnDefaultValues = true
+            includeAndroidResources = true
+        }
+    }
+
+    aaptOptions {
+        noCompress 'zip'
+    }
+}
+
+task jacocoTestReport2(type: JacocoReport) {
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    def fileFilter = ['jdk.internal.*',
+                      'android/**/*.*',
+                      '**/R.class',
+                      '**/R$*.class',
+                      '**/BuildConfig.*',
+                      '**/Manifest*.*',
+                      '**/*Test*.*',
+                      '**/*$ViewInjector*.*',
+                      '**/*$ViewBinder*.*',
+                      // DAGGER 2
+                      '**/*_*Factory*.*',
+                      '**/*_MembersInjector*.*',
+                      '**/*_MembersInjector.class',
+                      '**/*Module*.*',
+                      '**/Dagger*Component$Builder.class',
+                      '**/Dagger*Component*.*']
+
+    def mainSrc = "$project.projectDir/src/main/java"
+
+    def javaClasses = fileTree(
+            dir: "$buildDir/intermediates/classes/",
+            excludes: fileFilter
+    )
+
+    def kotlinClasses = fileTree(
+            dir: "$buildDir/tmp/kotlin-classes/",
+            excludes: fileFilter
+    )
+
+    classDirectories = files([ javaClasses ], [ kotlinClasses ])
+    sourceDirectories = files(mainSrc)
+    executionData = fileTree(dir: "$buildDir",
+            includes: ['jacoco/*.exec', 'connected/*.ec']
+    )
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = false
+}

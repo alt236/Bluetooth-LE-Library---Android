@@ -1,0 +1,42 @@
+ext {
+    // androidx libraries
+    androidx_appcompat_version = "1.1.0"
+    androidx_espresso_core_version = "3.1.0"
+    androidx_legacy_v4 = "1.0.0"
+    androidx_lifecycle_version = "2.1.0"
+    androidx_room_version = "2.2.0"
+    androidx_core_ktx = "1.1.0"
+    androidx_preferences = "1.1.0"
+
+    androidx_contraint_layout_version = "1.1.3"
+    androidx_recyclerview = "1.0.0"
+
+    androidx_test_core_version = "1.1.0"
+    androidx_test_ext_junit_version = "1.0.0"
+    androidx_test_runner_version = "1.1.1"
+    androidx_test_rules_version = "1.1.1"
+
+    // Google libs
+    google_play_services_version = "17.0.0"
+    google_material_lib_version = "1.0.0"
+
+    // testing
+    mockito_version = "2.13.0"
+    mockito_kotlin_version = "2.1.0"
+    junit_version = "4.12"
+
+    // code quality
+    jacoco_version = "0.8.5"
+
+    // Build tools
+    easylauncher_version = "1.3.1"
+    multidex_version = "1.0.3"
+
+    //debug
+    phoenix_version = "2.0.0"
+    jsonviewer_version = "1.0.6"
+
+    // Other
+    osmdroid_version = "6.1.2"
+    material_intro_screen_version = "0.0.6"
+}
