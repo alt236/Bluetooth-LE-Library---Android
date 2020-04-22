@@ -77,4 +77,5 @@
 
     <string name="error_unable_to_access_external_storage">"Could not access external storage!"</string>
     <string name="permission_not_granted_coarse_location">The ACCESS_COARSE_LOCATION permission is needed to receive bluetooth scan results</string>
+    <string name="permission_not_granted_fine_location">The ACCESS_FINE_LOCATION permission is needed to receive bluetooth scan results</string>
 </resources>

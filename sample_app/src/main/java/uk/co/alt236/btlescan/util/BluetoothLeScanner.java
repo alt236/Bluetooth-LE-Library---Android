@@ -28,13 +28,10 @@ public class BluetoothLeScanner {
             Log.d("TAG", "~ Starting Scan");
             // Stops scanning after a pre-defined scan period.
             if (duration > 0) {
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("TAG", "~ Stopping Scan (timeout)");
-                        mScanning = false;
-                        mBluetoothUtils.getBluetoothAdapter().stopLeScan(mLeScanCallback);
-                    }
+                mHandler.postDelayed(() -> {
+                    Log.d("TAG", "~ Stopping Scan (timeout)");
+                    mScanning = false;
+                    mBluetoothUtils.getBluetoothAdapter().stopLeScan(mLeScanCallback);
                 }, duration);
             }
             mScanning = true;
