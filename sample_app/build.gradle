@@ -5,36 +5,31 @@ final int versionMinor = 1
 final int versionPatch = 1
 final int androidVersionCode = 7
 
-final int targetSdk = rootProject.targetSdkVersion;
-final int minSdkRed = rootProject.minSdkVersion;
+final int targetSdk = rootProject.targetSdkVersion
+final int minSdkRed = rootProject.minSdkVersion
 final String semanticVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 repositories {
-    maven {
-        url "https://repo.commonsware.com.s3.amazonaws.com"
-    }
-
-    maven {
-        url "https://s3.amazonaws.com/repo.commonsware.com"
-    }
-
-    maven {
-        url "https://dl.bintray.com/alt236/maven"
-    }
+    google()
+    maven { url "https://repo.commonsware.com.s3.amazonaws.com" }
+    maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
+    maven { url "https://dl.bintray.com/alt236/maven" }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':library')
+    implementation project(':library')
 
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.android.support:appcompat-v7:24.2.0'
-    compile 'com.android.support:recyclerview-v7:24.2.0'
-    compile 'com.anthonycr.grant:permissions:1.0'
-    compile 'uk.co.alt236:easycursor-android:1.0.0'
+    implementation 'com.jakewharton:butterknife:7.0.1'
+    annotationProcessor 'com.jakewharton:butterknife:7.0.1'
+    testAnnotationProcessor 'com.jakewharton:butterknife:7.0.1'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-all:1.9.5'
+    implementation 'com.android.support:appcompat-v7:24.2.0'
+    implementation 'com.android.support:recyclerview-v7:24.2.0'
+    implementation 'com.anthonycr.grant:permissions:1.0'
+    implementation 'uk.co.alt236:easycursor-android:1.0.0'
+
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.mockito:mockito-all:1.10.19'
 }
 
 android {

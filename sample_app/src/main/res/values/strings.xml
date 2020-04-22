@@ -34,7 +34,7 @@
 
     <!-- Export Email Strings -->
     <string name="exporter_email_device_list_subject">Bluetooth LE Scan Results (%s)</string>
-    <string name="exporter_email_device_services_subject" formatted="false">Bluetooth LE Device GATT Results (%s, %s)</string>
+    <string name="exporter_email_device_services_subject">Bluetooth LE Device GATT Results (%s, %s)</string>
     <string name="exporter_email_device_list_body">Please find attached the scan results.</string>
     <string name="exporter_email_device_list_picker_text">Please select your email client:</string>
 
