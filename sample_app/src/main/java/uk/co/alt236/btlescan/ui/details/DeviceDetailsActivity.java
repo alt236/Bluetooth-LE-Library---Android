@@ -3,9 +3,6 @@ package uk.co.alt236.btlescan.ui.details;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,7 +10,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import butterknife.Bind;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord;
@@ -36,7 +36,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
     private static final String EXTRA_DEVICE = DeviceDetailsActivity.class.getName() + ".EXTRA_DEVICE";
     private static final int LAYOUT_ID = R.layout.activity_details;
 
-    @Bind(R.id.recycler)
+    @BindView(R.id.recycler)
     protected RecyclerView mRecycler;
     private BluetoothLeDevice mDevice;
 

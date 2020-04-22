@@ -1,11 +1,12 @@
 package uk.co.alt236.btlescan.ui.common.recyclerview;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<BaseViewHolder<? extends RecyclerViewItem>> {
 

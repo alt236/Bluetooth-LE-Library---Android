@@ -3,8 +3,8 @@ package uk.co.alt236.btlescan.ui.common;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
 
+import androidx.core.app.ActivityCompat;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.ui.control.DeviceControlActivity;

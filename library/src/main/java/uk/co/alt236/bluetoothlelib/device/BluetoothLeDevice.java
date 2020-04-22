@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.RequiresPermission;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -14,6 +13,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.annotation.RequiresPermission;
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecordStore;
 import uk.co.alt236.bluetoothlelib.resolvers.BluetoothClassResolver;
 import uk.co.alt236.bluetoothlelib.util.AdRecordUtils;
