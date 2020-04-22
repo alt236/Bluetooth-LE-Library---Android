@@ -1,16 +1,18 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 ext.compileSdkVersion = 24
-ext.buildToolsVersion = "24.0.1"
+ext.buildToolsVersion = "28.0.3"
 ext.minSdkVersion = 18
 ext.targetSdkVersion = 24
 
 buildscript {
     repositories {
+        google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.novoda:bintray-release:0.9.2'
     }
 }
 

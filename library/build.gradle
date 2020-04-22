@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 final int versionMajor = 1
 final int versionMinor = 0
@@ -10,16 +11,32 @@ final int minSdkRed = rootProject.minSdkVersion;
 final String semanticVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 
+repositories {
+    google()
+}
+
 dependencies {
-    testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:1.9.5"
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:support-annotations:24.2.0'
+
+    testImplementation 'junit:junit:4.13'
+    testImplementation "org.mockito:mockito-core:3.1.0"
 }
 
 ext {
     PUBLISH_GROUP_ID = 'uk.co.alt236'
     PUBLISH_ARTIFACT_ID = 'bluetooth-le-library-android'
     PUBLISH_VERSION = "${semanticVersion}"
+}
+
+publish {
+    groupId = 'uk.co.alt236'
+    artifactId = 'bluetooth-le-library-android'
+    publishVersion = "${semanticVersion}"
+    userOrg = ''
+    desc = ''
+    bintrayUser = "${alt236JCenterUser}"
+    bintrayKey = "${alt236JCenterToken}"
+    //website = 'https://github.com/novoda/bintray-release'
 }
 
 android {
@@ -48,6 +65,5 @@ android {
     }
 }
 
-// Script from https://github.com/blundell/release-android-library
-// execute: ./gradlew clean build generateRelease
-apply from: 'https://raw.githubusercontent.com/ArthurHub/release-android-library/master/android-release-jar.gradle'
+// Script from https://github.com/novoda/bintray-release
+// execute: ./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false

@@ -1,9 +1,11 @@
 package uk.co.alt236.bluetoothlelib.device;
 
+import android.Manifest;
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.RequiresPermission;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -203,6 +205,7 @@ public class BluetoothLeDevice implements Parcelable {
      *
      * @return the bluetooth device bond state
      */
+    @RequiresPermission(Manifest.permission.BLUETOOTH)
     public String getBluetoothDeviceBondState() {
         return resolveBondingState(mDevice.getBondState());
     }
@@ -212,10 +215,12 @@ public class BluetoothLeDevice implements Parcelable {
      *
      * @return the bluetooth device class name
      */
+    @RequiresPermission(Manifest.permission.BLUETOOTH)
     public String getBluetoothDeviceClassName() {
         return BluetoothClassResolver.resolveDeviceClass(mDevice.getBluetoothClass().getDeviceClass());
     }
 
+    @RequiresPermission(Manifest.permission.BLUETOOTH)
     public Set<BluetoothService> getBluetoothDeviceKnownSupportedServices() {
         if (mServiceSet == null) {
             synchronized (this) {
@@ -240,6 +245,7 @@ public class BluetoothLeDevice implements Parcelable {
      *
      * @return the bluetooth device major class name
      */
+    @RequiresPermission(Manifest.permission.BLUETOOTH)
     public String getBluetoothDeviceMajorClassName() {
         return BluetoothClassResolver.resolveMajorDeviceClass(mDevice.getBluetoothClass().getMajorDeviceClass());
     }
@@ -276,6 +282,7 @@ public class BluetoothLeDevice implements Parcelable {
      *
      * @return the name
      */
+    @RequiresPermission(Manifest.permission.BLUETOOTH)
     public String getName() {
         return mDevice.getName();
     }
@@ -365,6 +372,7 @@ public class BluetoothLeDevice implements Parcelable {
      * @see java.lang.Object#toString()
      */
     @Override
+    @RequiresPermission(Manifest.permission.BLUETOOTH)
     public String toString() {
         return "BluetoothLeDevice [mDevice=" + mDevice + ", mRssi=" + mFirstRssi + ", mScanRecord=" + ByteUtils.byteArrayToHexString(mScanRecord) + ", mRecordStore=" + mRecordStore + ", getBluetoothDeviceBondState()=" + getBluetoothDeviceBondState() + ", getBluetoothDeviceClassName()=" + getBluetoothDeviceClassName() + "]";
     }
