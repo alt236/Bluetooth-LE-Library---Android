@@ -1,7 +1,5 @@
 package uk.co.alt236.btlescan.containers;
 
-import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.easycursor.objectcursor.EasyObjectCursor;
 

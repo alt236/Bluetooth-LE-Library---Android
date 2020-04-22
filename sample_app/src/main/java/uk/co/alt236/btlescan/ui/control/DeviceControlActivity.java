@@ -26,8 +26,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,7 +36,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import butterknife.Bind;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.resolvers.GattAttributeResolver;
@@ -55,17 +55,17 @@ import uk.co.alt236.btlescan.services.BluetoothLeService;
 public class DeviceControlActivity extends AppCompatActivity {
     private static final String EXTRA_DEVICE = DeviceControlActivity.class.getName() + ".EXTRA_DEVICE";
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
-    @Bind(R.id.gatt_services_list)
+    @BindView(R.id.gatt_services_list)
     protected ExpandableListView mGattServicesList;
-    @Bind(R.id.connection_state)
+    @BindView(R.id.connection_state)
     protected TextView mConnectionState;
-    @Bind(R.id.uuid)
+    @BindView(R.id.uuid)
     protected TextView mGattUUID;
-    @Bind(R.id.description)
+    @BindView(R.id.description)
     protected TextView mGattUUIDDesc;
-    @Bind(R.id.data_as_string)
+    @BindView(R.id.data_as_string)
     protected TextView mDataAsString;
-    @Bind(R.id.data_as_array)
+    @BindView(R.id.data_as_array)
     protected TextView mDataAsArray;
     private Exporter mExporter;
     private BluetoothGattCharacteristic mNotifyCharacteristic;

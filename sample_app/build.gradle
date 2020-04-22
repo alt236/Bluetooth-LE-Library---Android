@@ -64,18 +64,22 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation project(':library')
 
-    implementation 'com.jakewharton:butterknife:7.0.1'
-    annotationProcessor 'com.jakewharton:butterknife:7.0.1'
-    testAnnotationProcessor 'com.jakewharton:butterknife:7.0.1'
+    implementation "com.jakewharton:butterknife:$butterknife_version"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
 
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
-    implementation 'com.anthonycr.grant:permissions:1.0'
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
+    implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview"
+    implementation "com.anthonycr.grant:permissions:$grant_permissions_version"
     implementation 'uk.co.alt236:easycursor-android:1.0.0'
 
     testImplementation 'junit:junit:4.13'

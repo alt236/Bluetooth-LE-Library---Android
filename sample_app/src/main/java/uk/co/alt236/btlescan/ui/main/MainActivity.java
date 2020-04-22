@@ -5,10 +5,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +17,11 @@ import com.anthonycr.grant.PermissionsResultAction;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
@@ -38,15 +38,15 @@ import uk.co.alt236.btlescan.util.BluetoothLeScanner;
 import uk.co.alt236.btlescan.util.BluetoothUtils;
 
 public class MainActivity extends AppCompatActivity {
-    @Bind(R.id.tvBluetoothLe)
+    @BindView(R.id.tvBluetoothLe)
     protected TextView mTvBluetoothLeStatus;
-    @Bind(R.id.tvBluetoothStatus)
+    @BindView(R.id.tvBluetoothStatus)
     protected TextView mTvBluetoothStatus;
-    @Bind(R.id.tvItemCount)
+    @BindView(R.id.tvItemCount)
     protected TextView mTvItemCount;
-    @Bind(android.R.id.list)
+    @BindView(android.R.id.list)
     protected RecyclerView mList;
-    @Bind(android.R.id.empty)
+    @BindView(android.R.id.empty)
     protected View mEmpty;
 
     private RecyclerViewBinderCore mCore;

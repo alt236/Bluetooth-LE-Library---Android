@@ -3,7 +3,6 @@ package uk.co.alt236.btlescan.ui.main;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import java.io.File;
@@ -12,6 +11,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.core.content.ContextCompat;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
 import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils;

@@ -1,7 +1,8 @@
 package uk.co.alt236.btlescan.ui.common.recyclerview;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class BaseViewHolder<T extends RecyclerViewItem> extends RecyclerView.ViewHolder {
 
