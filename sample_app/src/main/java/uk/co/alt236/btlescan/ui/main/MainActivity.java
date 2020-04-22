@@ -71,12 +71,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mRecyclerAdapter.setData(itemList);
-                    updateItemCount(mRecyclerAdapter.getItemCount());
-                }
+            runOnUiThread(() -> {
+                mRecyclerAdapter.setData(itemList);
+                updateItemCount(mRecyclerAdapter.getItemCount());
             });
         }
     };
@@ -166,8 +163,17 @@ public class MainActivity extends AppCompatActivity {
         // The COARSE_LOCATION permission is only needed after API 23 to do a BTLE scan
         //
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            final String permission;
+            final int message;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                permission = Manifest.permission.ACCESS_FINE_LOCATION;
+                message = R.string.permission_not_granted_fine_location;
+            } else {
+                permission = Manifest.permission.ACCESS_COARSE_LOCATION;
+                message = R.string.permission_not_granted_coarse_location;
+            }
             PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, new PermissionsResultAction() {
+                    new String[]{permission}, new PermissionsResultAction() {
 
                         @Override
                         public void onGranted() {
@@ -177,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onDenied(String permission) {
                             Toast.makeText(MainActivity.this,
-                                    R.string.permission_not_granted_coarse_location,
+                                    message,
                                     Toast.LENGTH_SHORT)
                                     .show();
                         }

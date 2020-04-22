@@ -15,7 +15,12 @@ public final class BluetoothUtils {
     public BluetoothUtils(final Activity activity) {
         mActivity = activity;
         final BluetoothManager btManager = (BluetoothManager) mActivity.getSystemService(Context.BLUETOOTH_SERVICE);
-        mBluetoothAdapter = btManager.getAdapter();
+
+        if (btManager == null) {
+            throw new IllegalStateException("No bluetooth manager adapter present!");
+        } else {
+            mBluetoothAdapter = btManager.getAdapter();
+        }
     }
 
     public void askUserToEnableBluetoothIfNeeded() {
