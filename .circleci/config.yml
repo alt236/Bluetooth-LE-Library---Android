@@ -1,0 +1,213 @@
+version: 2.1
+
+##
+## REFERENCES
+################################################################
+references:
+
+  #
+  # CONFIGURATION
+  #
+  workspace: &workspace
+               ~/code
+
+  environment_config: &environment_config
+    working_directory: *workspace
+    docker:
+      - image: circleci/android:api-29
+    environment:
+      JVM_OPTS: -Xmx2048m
+      GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
+
+  #
+  # CACHE CONTROL
+  #
+  generate_dependency_hashfile: &generate_dependency_hashfile
+    run:
+      name: Generate Dependency Hashfile
+      command: ./buildsystem/generate_dependency_hashfile.sh ./ ./dependency_hashfile.tmp
+
+  print_dependency_hashfile: &print_dependency_hashfile
+    run:
+      name: Print Dependency Hashfile Contents
+      command: cat ./dependency_hashfile.tmp
+
+  cache_key: &cache_key
+    key: cache-v1-{{ checksum "dependency_hashfile.tmp" }}
+
+  cache_key_fallback: &cache_key_fallback
+    key: cache-v1-
+
+  restore_cache: &restore_cache
+    restore_cache:
+      <<: *cache_key
+      <<: *cache_key_fallback
+
+  save_cache: &save_cache
+    save_cache:
+      <<: *cache_key
+      paths:
+        - ~/.gradle
+        - ~/.m2
+
+  #
+  # DOWNLOADING DEPENDENCIES
+  #
+  download_android_dependencies: &download_android_dependencies
+    run:
+      name: Download Dependencies
+      command: ./gradlew dependencies androidDependencies
+
+  #
+  # RUNNING UNIT TESTS
+  #
+  run_android_lint: &run_android_lint
+    run:
+      name: Running lint
+      command: ./gradlew lintDebug
+
+  run_unit_tests: &run_unit_tests
+    run:
+      name: Running unit tests
+      command: ./gradlew testDebug library:testDebug
+
+  produce_code_coverage: &produce_code_coverage
+    run:
+      name: Producing Code Coverage
+      command: ./gradlew jacocoTestReport
+
+  print_code_coverage: &print_code_coverage
+    run:
+      name: Printing code coverage
+      command: ./print_codecov.sh
+
+  #
+  # BUILDING DEBUG APKS (FOR FIREBASE)
+  #
+  build_debug_apks: &build_debug_apks
+    run:
+      name: Building Debug APKs
+      command: |
+        ./gradlew assembleDebug
+
+  #
+  # BUILDING RELEASE APKS
+  #
+  build_release_apks: &build_release_apks
+    run:
+      name: Building Release APKs
+      command: |
+        ./gradlew assembleRelease
+
+  setup_environment: &setup_environment
+    run:
+      name: Setup environment
+      command: |
+        echo "$ENCODED_KEYSTORE" | base64 -di >> "${HOME}"/keystore.jks
+        echo "$ENCODED_GPLAY_DEPLOY_KEY" | base64 -di --decode >> "${HOME}"/deployment_private_key.json
+        echo "export ANDROID_KEYSTORE=${HOME}/keystore.jks" >> "$BASH_ENV"
+        echo "export GPLAY_DEPLOY_KEY=${HOME}/deployment_private_key.json" >> "$BASH_ENV"
+
+##
+## COMMANDS
+################################################################
+commands:
+  upload_test_results_and_artifacts:
+    description: "Upload the test reports and artifacts for a given module"
+    parameters:
+      module_name:
+        type: string
+        default: "[MISSING]"
+    steps:
+      - store_artifacts:
+          path: << parameters.module_name >>/build/reports
+          destination: reports-<< parameters.module_name >>
+      - store_test_results:
+          path: << parameters.module_name >>/build/test-results
+
+  upload_apks_to_ci:
+    description: "Upload the APKs generated for a given module"
+    parameters:
+      module_name:
+        type: string
+        default: "[MISSING]"
+    steps:
+      - store_artifacts:
+          path: << parameters.module_name >>/build/outputs/apk
+          destination: apks-<< parameters.module_name >>
+
+  print_apk_info:
+    description: "Collect information of compiled APKs"
+    parameters:
+      module_name:
+        type: string
+        default: "[MISSING]"
+    steps:
+      - run:
+          name: "Collect information of compiled APKs"
+          when: on_success
+          command: ./apkdetails.sh -i << parameters.module_name >>/build/outputs/apk/ -r -h -v
+
+  setup_dependency_cache:
+    description: "Restore (if present) populate and save (if needed) the dependency cache"
+    steps:
+      - *generate_dependency_hashfile
+      - *print_dependency_hashfile
+      - *restore_cache
+      - *download_android_dependencies
+
+  deploy_to_google_play:
+    description: "Deploy APKs to Google Play"
+    parameters:
+      only_for_branch:
+        type: string
+        default: "[MISSING]"
+    steps:
+      - deploy:
+          name: "Deploy to Google Play"
+          when: on_success
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "<< parameters.only_for_branch >>" ]; then
+              ./gradlew sample_app:publish
+            else
+              echo "Branch is not '<< parameters.only_for_branch >>'. Skipping deployment."
+            fi
+
+##
+## JOBS
+################################################################
+jobs:
+  local_test:
+    <<: *environment_config
+    steps:
+      - checkout
+      - *setup_environment
+      - setup_dependency_cache
+      - *run_unit_tests
+      - *produce_code_coverage # Produce code coverage needs to be straight after running unit tests
+      - *print_code_coverage
+      - *run_android_lint
+      - *build_debug_apks
+      - *build_release_apks
+      - *save_cache  # Moved after test runs to capture dep downloads from the previous step
+      - print_apk_info:
+          module_name: "sample_app"
+      - persist_to_workspace:
+          root: *workspace
+          paths:
+            - sample_app/build/
+            - library/build/
+      - upload_test_results_and_artifacts:
+          module_name: "sample_app"
+      - upload_test_results_and_artifacts:
+          module_name: "library"
+      - upload_apks_to_ci:
+          module_name: "sample_app"
+      - deploy_to_google_play:
+          only_for_branch: "master"
+
+workflows:
+  version: 2.1
+  build-and-deploy:
+    jobs:
+      - local_test

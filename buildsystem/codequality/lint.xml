@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+
+    <!-- Since we do use Kotlin, this will make interop easier -->
+    <!--    <issue id="UnknownNullness" severity="error" />-->
+
+    <issue id="MinSdkTooLow" severity="warning" />
+
+</lint>
