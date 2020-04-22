@@ -1,5 +1,8 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+plugins {
+    id 'com.android.library'
+    id 'com.novoda.bintray-release'
+}
+
 apply from: "${project.rootDir}/buildsystem/android-defaults.gradle"
 
 final int versionMajor = 1
@@ -11,10 +14,11 @@ final String semanticVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 repositories {
     google()
+    mavenCentral()
 }
 
 dependencies {
-    implementation 'com.android.support:support-annotations:24.2.0'
+    implementation 'com.android.support:support-annotations:28.0.0'
 
     testImplementation 'junit:junit:4.13'
     testImplementation "org.mockito:mockito-core:3.1.0"
