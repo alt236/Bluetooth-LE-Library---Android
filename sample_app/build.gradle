@@ -1,5 +1,8 @@
 plugins {
     id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
     id 'com.github.triplet.play' version '2.5.0'
 }
 
@@ -14,6 +17,7 @@ final String semanticVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 repositories {
     google()
+    mavenCentral()
     maven { url "https://repo.commonsware.com.s3.amazonaws.com" }
     maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
     maven { url "https://dl.bintray.com/alt236/maven" }
@@ -69,8 +73,8 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife:7.0.1'
     testAnnotationProcessor 'com.jakewharton:butterknife:7.0.1'
 
-    implementation 'com.android.support:appcompat-v7:24.2.0'
-    implementation 'com.android.support:recyclerview-v7:24.2.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.anthonycr.grant:permissions:1.0'
     implementation 'uk.co.alt236:easycursor-android:1.0.0'
 
