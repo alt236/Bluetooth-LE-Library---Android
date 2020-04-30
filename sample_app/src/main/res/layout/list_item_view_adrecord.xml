@@ -23,11 +23,31 @@
             style="@style/GridLayoutTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_as_string"/>
+            android:text="@string/label_length" />
+
+        <TextView
+            android:id="@+id/length"
+            style="@style/GridLayoutDataTextViewMonospace" />
+
+        <TextView
+            style="@style/GridLayoutTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_as_utf8" />
 
         <TextView
             android:id="@+id/data_as_string"
             style="@style/GridLayoutDataTextViewMonospace"/>
+
+        <TextView
+            style="@style/GridLayoutTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_as_characters" />
+
+        <TextView
+            android:id="@+id/data_as_characters"
+            style="@style/GridLayoutDataTextViewMonospace" />
 
         <TextView
             style="@style/GridLayoutTitleTextView"
