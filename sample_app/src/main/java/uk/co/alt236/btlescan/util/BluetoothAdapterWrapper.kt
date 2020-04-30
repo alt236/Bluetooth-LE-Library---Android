@@ -17,7 +17,7 @@ class BluetoothAdapterWrapper(private val context: Context) {
     }
 
     fun askUserToEnableBluetoothIfNeeded(activity: Activity) {
-        if (isBluetoothLeSupported && isBluetoothOn) {
+        if (isBluetoothLeSupported && !isBluetoothOn) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             activity.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
         }
