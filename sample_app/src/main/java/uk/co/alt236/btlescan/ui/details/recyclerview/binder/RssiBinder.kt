@@ -25,11 +25,11 @@ class RssiBinder(context: Context) : BaseViewBinder<RssiItem>(context) {
     }
 
     private fun formatRssi(rssi: Double): String {
-        return context.getString(R.string.formatter_db, rssi.toString())
+        return getString(R.string.formatter_db, rssi.toString())
     }
 
     private fun formatRssi(rssi: Int): String {
-        return context.getString(R.string.formatter_db, rssi.toString())
+        return getString(R.string.formatter_db, rssi.toString())
     }
 
     companion object {

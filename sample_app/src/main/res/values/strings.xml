@@ -46,8 +46,10 @@
     <string name="header_rssi_info">RSSI Info</string>
     <string name="header_scan_record">Scan Record</string>
     <string name="label_advertisement">Advertisement:</string>
+    <string name="label_length">Length:</string>
     <string name="label_as_array">As Array:</string>
-    <string name="label_as_string">As String:</string>
+    <string name="label_as_utf8">As UTF-8:</string>
+    <string name="label_as_characters">As Chars:</string>
     <string name="label_bluetooth_le_status">Bluetooth LE:</string>
     <string name="label_bluetooth_status">Bluetooth:</string>
     <string name="label_bonding_state">Bonding State:</string>

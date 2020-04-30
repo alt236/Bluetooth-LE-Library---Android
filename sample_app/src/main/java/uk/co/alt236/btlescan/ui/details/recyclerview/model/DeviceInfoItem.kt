@@ -22,6 +22,6 @@ class DeviceInfoItem(private val mDevice: BluetoothLeDevice) : RecyclerViewItem 
         get() = mDevice.address
 
     val name: String
-        get() = mDevice.name
+        get() = mDevice.name ?: ""
 
 }

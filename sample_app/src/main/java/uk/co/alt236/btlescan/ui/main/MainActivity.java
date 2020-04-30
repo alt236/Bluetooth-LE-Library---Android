@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 startScanPrepare();
                 break;
             case R.id.menu_stop:
-                mScanner.stopScan();
+                mScanner.stopScan("menu");
                 invalidateOptionsMenu();
                 break;
             case R.id.menu_about:
@@ -120,19 +120,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mScanner.stopScan();
+        mScanner.stopScan("onPause");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
         view.setBluetoothEnabled(mBluetoothAdapterWrapper.isBluetoothOn());
         view.setBluetoothLeSupported(mBluetoothAdapterWrapper.isBluetoothLeSupported());
-
         invalidateOptionsMenu();
     }
-
 
     private void startScanPrepare() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -184,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
         mBluetoothAdapterWrapper.askUserToEnableBluetoothIfNeeded(this);
         if (isBluetoothOn) {
-            mScanner.scanLeDevice(-1);
+            mScanner.startScan();
             invalidateOptionsMenu();
         }
     }

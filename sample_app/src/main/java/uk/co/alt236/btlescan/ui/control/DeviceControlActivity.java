@@ -29,20 +29,13 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
-import uk.co.alt236.bluetoothlelib.resolvers.GattAttributeResolver;
-import uk.co.alt236.bluetoothlelib.util.ByteUtils;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.services.BluetoothLeService;
 import uk.co.alt236.btlescan.services.LocalBinder;
@@ -56,29 +49,16 @@ import uk.co.alt236.btlescan.services.LocalBinder;
 public class DeviceControlActivity extends AppCompatActivity {
     private static final String EXTRA_DEVICE = DeviceControlActivity.class.getName() + ".EXTRA_DEVICE";
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
-    @BindView(R.id.gatt_services_list)
-    protected ExpandableListView mGattServicesList;
-    @BindView(R.id.connection_state)
-    protected TextView mConnectionState;
-    @BindView(R.id.uuid)
-    protected TextView mGattUUID;
-    @BindView(R.id.description)
-    protected TextView mGattUUIDDesc;
-    @BindView(R.id.data_as_string)
-    protected TextView mDataAsString;
-    @BindView(R.id.data_as_array)
-    protected TextView mDataAsArray;
     private Exporter mExporter;
     private BluetoothGattCharacteristic mNotifyCharacteristic;
     private BluetoothLeService mBluetoothLeService;
-
     // If a given GATT characteristic is selected, check for supported features.  This sample
     // demonstrates 'Read' and 'Notify' features.  See
     // http://d.android.com/reference/android/bluetooth/BluetoothGatt.html for the complete
     // list of supported characteristic features.
     private final ExpandableListView.OnChildClickListener servicesListClickListner = new ExpandableListView.OnChildClickListener() {
         @Override
-        public boolean onChildClick(final ExpandableListView parent, final View v, final int groupPosition, final int childPosition, final long id) {
+        public boolean onChildClick(final ExpandableListView parent, final android.view.View v, final int groupPosition, final int childPosition, final long id) {
             final GattDataAdapterFactory.GattDataAdapter adapter =
                     (GattDataAdapterFactory.GattDataAdapter) parent.getExpandableListAdapter();
 
@@ -102,6 +82,7 @@ public class DeviceControlActivity extends AppCompatActivity {
             return true;
         }
     };
+    private View view;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -150,25 +131,18 @@ public class DeviceControlActivity extends AppCompatActivity {
                 // Show all the supported services and characteristics on the user interface.
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                final String noData = getString(R.string.no_data);
                 final String uuid = intent.getStringExtra(BluetoothLeService.EXTRA_UUID_CHAR);
                 final byte[] dataArr = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA_RAW);
 
-                mGattUUID.setText(tryString(uuid, noData));
-                mGattUUIDDesc.setText(GattAttributeResolver.getAttributeName(uuid, getString(R.string.unknown)));
-                mDataAsArray.setText(ByteUtils.byteArrayToHexString(dataArr));
-                mDataAsString.setText(new String(dataArr));
+                view.setGattUuid(uuid);
+                view.setData(dataArr);
             }
         }
     };
 
     private void clearUI() {
         mExportString = null;
-        mGattServicesList.setAdapter((SimpleExpandableListAdapter) null);
-        mGattUUID.setText(R.string.no_data);
-        mGattUUIDDesc.setText(R.string.no_data);
-        mDataAsArray.setText(R.string.no_data);
-        mDataAsString.setText(R.string.no_data);
+        view.clearUi();
     }
 
     // Demonstrates how to iterate through the supported GATT Services/Characteristics.
@@ -182,7 +156,7 @@ public class DeviceControlActivity extends AppCompatActivity {
                 gattServices);
 
         final GattDataAdapterFactory.GattDataAdapter adapter = GattDataAdapterFactory.createAdapter(this, gattServices);
-        mGattServicesList.setAdapter(adapter);
+        view.setListAdapter(adapter);
         invalidateOptionsMenu();
     }
 
@@ -193,11 +167,11 @@ public class DeviceControlActivity extends AppCompatActivity {
 
         final Intent intent = getIntent();
         mDevice = intent.getParcelableExtra(EXTRA_DEVICE);
-        ButterKnife.bind(this);
+        view = new View(this);
 
         // Sets up UI references.
         ((TextView) findViewById(R.id.device_address)).setText(mDevice.getAddress());
-        mGattServicesList.setOnChildClickListener(servicesListClickListner);
+        view.setListClickListener(servicesListClickListner);
 
         getSupportActionBar().setTitle(mDevice.getName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -299,33 +273,7 @@ public class DeviceControlActivity extends AppCompatActivity {
 
     private void updateConnectionState(final State state) {
         mCurrentState = state;
-
-        runOnUiThread(() -> {
-            final int colourId;
-            final int resId;
-
-            switch (state) {
-                case CONNECTED:
-                    colourId = android.R.color.holo_green_dark;
-                    resId = R.string.connected;
-                    break;
-                case DISCONNECTED:
-                    colourId = android.R.color.holo_red_dark;
-                    resId = R.string.disconnected;
-                    break;
-                case CONNECTING:
-                    colourId = android.R.color.black;
-                    resId = R.string.connecting;
-                    break;
-                default:
-                    colourId = android.R.color.black;
-                    resId = 0;
-                    break;
-            }
-
-            mConnectionState.setText(resId);
-            mConnectionState.setTextColor(ContextCompat.getColor(DeviceControlActivity.this, colourId));
-        });
+        runOnUiThread(() -> view.setConnectionState(state));
     }
 
     private static IntentFilter makeGattUpdateIntentFilter() {
@@ -350,11 +298,5 @@ public class DeviceControlActivity extends AppCompatActivity {
         final Intent intent = new Intent(context, DeviceControlActivity.class);
         intent.putExtra(DeviceControlActivity.EXTRA_DEVICE, device);
         return intent;
-    }
-
-    private enum State {
-        DISCONNECTED,
-        CONNECTING,
-        CONNECTED
     }
 }

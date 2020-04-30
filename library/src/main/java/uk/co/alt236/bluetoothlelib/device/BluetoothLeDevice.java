@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecordStore;
 import uk.co.alt236.bluetoothlelib.resolvers.BluetoothClassResolver;
@@ -283,6 +284,7 @@ public class BluetoothLeDevice implements Parcelable {
      * @return the name
      */
     @RequiresPermission(Manifest.permission.BLUETOOTH)
+    @Nullable
     public String getName() {
         return mDevice.getName();
     }

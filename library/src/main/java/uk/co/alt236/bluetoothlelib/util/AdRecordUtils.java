@@ -3,6 +3,7 @@ package uk.co.alt236.bluetoothlelib.util;
 import android.annotation.SuppressLint;
 import android.util.SparseArray;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,31 +19,32 @@ public final class AdRecordUtils {
         // TO AVOID INSTANTIATION
     }
 
-    public static String getRecordDataAsString(final AdRecord nameRecord) {
-        if (nameRecord == null) {
+    public static String getRecordDataAsString(final AdRecord record) {
+        if (record == null) {
             return "";
         }
-        return new String(nameRecord.getData());
+
+        return toString(record.getData());
     }
 
-    public static byte[] getServiceData(final AdRecord serviceData) {
-        if (serviceData == null) {
+    public static byte[] getServiceData(final AdRecord record) {
+        if (record == null) {
             return null;
         }
-        if (serviceData.getType() != AdRecord.TYPE_SERVICE_DATA) return null;
+        if (record.getType() != AdRecord.TYPE_SERVICE_DATA) return null;
 
-        final byte[] raw = serviceData.getData();
+        final byte[] raw = record.getData();
         //Chop out the uuid
         return Arrays.copyOfRange(raw, 2, raw.length);
     }
 
-    public static int getServiceDataUuid(final AdRecord serviceData) {
-        if (serviceData == null) {
+    public static int getServiceDataUuid(final AdRecord record) {
+        if (record == null) {
             return -1;
         }
-        if (serviceData.getType() != AdRecord.TYPE_SERVICE_DATA) return -1;
+        if (record.getType() != AdRecord.TYPE_SERVICE_DATA) return -1;
 
-        final byte[] raw = serviceData.getData();
+        final byte[] raw = record.getData();
         //Find UUID data in byte array
         int uuid = (raw[1] & 0xFF) << 8;
         uuid += (raw[0] & 0xFF);
@@ -127,5 +129,14 @@ public final class AdRecordUtils {
         }
 
         return records;
+    }
+
+    private static String toString(byte[] array) {
+        try {
+            //noinspection CharsetObjectCanBeUsed
+            return new String(array, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return "";
+        }
     }
 }
