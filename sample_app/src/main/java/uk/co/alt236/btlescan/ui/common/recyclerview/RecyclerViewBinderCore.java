@@ -85,8 +85,7 @@ public class RecyclerViewBinderCore {
     private static Object instantiate(
             final Class<?> clazz, View parentView) {
         try {
-            final Constructor<?> constructor
-                    = clazz.getDeclaredConstructors()[0];
+            final Constructor<?> constructor = clazz.getDeclaredConstructors()[0];
             return constructor.newInstance(parentView);
         } catch (InstantiationException e) {
             throw new IllegalStateException(e);

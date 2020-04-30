@@ -1,8 +1,8 @@
 package uk.co.alt236.btlescan.ui.main.recyclerview.binder;
 
 import android.content.Context;
-import android.view.View;
 
+import androidx.annotation.NonNull;
 import uk.co.alt236.bluetoothlelib.device.beacon.ibeacon.IBeaconDevice;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.ui.common.Navigation;
@@ -23,7 +23,7 @@ public class IBeaconBinder extends BaseViewBinder<IBeaconItem> {
     }
 
     @Override
-    public void bind(BaseViewHolder<IBeaconItem> holder, IBeaconItem item) {
+    public void bind(@NonNull BaseViewHolder<IBeaconItem> holder, @NonNull IBeaconItem item) {
 
         final IBeaconHolder actualHolder = (IBeaconHolder) holder;
         final IBeaconDevice device = item.getDevice();
@@ -39,12 +39,7 @@ public class IBeaconBinder extends BaseViewBinder<IBeaconItem> {
         actualHolder.getIbeaconDistanceDescriptor().setText(device.getDistanceDescriptor().toString());
 
         CommonBinding.bind(getContext(), actualHolder, device);
-        actualHolder.getView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navigation.openDetailsActivity(device);
-            }
-        });
+        actualHolder.getView().setOnClickListener(view -> navigation.openDetailsActivity(device));
     }
 
     @Override

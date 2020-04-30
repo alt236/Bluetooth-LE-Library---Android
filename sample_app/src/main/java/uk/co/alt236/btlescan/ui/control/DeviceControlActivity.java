@@ -45,6 +45,7 @@ import uk.co.alt236.bluetoothlelib.resolvers.GattAttributeResolver;
 import uk.co.alt236.bluetoothlelib.util.ByteUtils;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.services.BluetoothLeService;
+import uk.co.alt236.btlescan.services.LocalBinder;
 
 /**
  * For a given BLE device, this Activity provides the user interface to connect, display data,
@@ -106,7 +107,7 @@ public class DeviceControlActivity extends AppCompatActivity {
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(final ComponentName componentName, final IBinder service) {
-            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+            mBluetoothLeService = ((LocalBinder) service).getService();
             if (!mBluetoothLeService.initialize()) {
                 Log.e(TAG, "Unable to initialize Bluetooth");
                 finish();
@@ -299,34 +300,31 @@ public class DeviceControlActivity extends AppCompatActivity {
     private void updateConnectionState(final State state) {
         mCurrentState = state;
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                final int colourId;
-                final int resId;
+        runOnUiThread(() -> {
+            final int colourId;
+            final int resId;
 
-                switch (state) {
-                    case CONNECTED:
-                        colourId = android.R.color.holo_green_dark;
-                        resId = R.string.connected;
-                        break;
-                    case DISCONNECTED:
-                        colourId = android.R.color.holo_red_dark;
-                        resId = R.string.disconnected;
-                        break;
-                    case CONNECTING:
-                        colourId = android.R.color.black;
-                        resId = R.string.connecting;
-                        break;
-                    default:
-                        colourId = android.R.color.black;
-                        resId = 0;
-                        break;
-                }
-
-                mConnectionState.setText(resId);
-                mConnectionState.setTextColor(ContextCompat.getColor(DeviceControlActivity.this, colourId));
+            switch (state) {
+                case CONNECTED:
+                    colourId = android.R.color.holo_green_dark;
+                    resId = R.string.connected;
+                    break;
+                case DISCONNECTED:
+                    colourId = android.R.color.holo_red_dark;
+                    resId = R.string.disconnected;
+                    break;
+                case CONNECTING:
+                    colourId = android.R.color.black;
+                    resId = R.string.connecting;
+                    break;
+                default:
+                    colourId = android.R.color.black;
+                    resId = 0;
+                    break;
             }
+
+            mConnectionState.setText(resId);
+            mConnectionState.setTextColor(ContextCompat.getColor(DeviceControlActivity.this, colourId));
         });
     }
 
