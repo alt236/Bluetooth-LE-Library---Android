@@ -8,7 +8,7 @@ import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem
 class AdRecordItem(val title: String,
                    record: AdRecord) : RecyclerViewItem {
 
-    val data: ByteArray = record.data
+    val data: ByteArray = record.data ?: ByteArray(0)
     val dataAsString: String = AdRecordUtils.getRecordDataAsString(record)
     val dataAsChars: String = data.toCharString()
 }

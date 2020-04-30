@@ -6,6 +6,8 @@ import android.os.Parcelable;
 
 import java.util.Arrays;
 
+import androidx.annotation.Nullable;
+
 /**
  * Created by Dave Smith
  * Double Encore, Inc.
@@ -146,6 +148,7 @@ public final class AdRecord implements Parcelable {
         return 0;
     }
 
+    @Nullable
     public byte[] getData() {
         return mData;
     }

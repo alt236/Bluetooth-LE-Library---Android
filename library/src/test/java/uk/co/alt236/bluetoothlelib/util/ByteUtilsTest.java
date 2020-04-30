@@ -10,6 +10,8 @@ public class ByteUtilsTest extends TestCase {
     public void testByteArrayToHexString() throws Exception {
         assertEquals("[]", ByteUtils.byteArrayToHexString(new byte[0]));
 
+        assertEquals("[]", ByteUtils.byteArrayToHexString(null));
+
         final byte[] one = {1, 10, 15, 127};
         assertEquals("[01, 0A, 0F, 7F]", ByteUtils.byteArrayToHexString(one));
     }

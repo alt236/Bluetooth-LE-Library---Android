@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.Nullable;
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord;
 
 public final class AdRecordUtils {
@@ -19,7 +20,7 @@ public final class AdRecordUtils {
         // TO AVOID INSTANTIATION
     }
 
-    public static String getRecordDataAsString(final AdRecord record) {
+    public static String getRecordDataAsString(@Nullable final AdRecord record) {
         if (record == null) {
             return "";
         }
@@ -27,24 +28,32 @@ public final class AdRecordUtils {
         return toString(record.getData());
     }
 
-    public static byte[] getServiceData(final AdRecord record) {
+    @Nullable
+    public static byte[] getServiceData(@Nullable final AdRecord record) {
         if (record == null) {
             return null;
         }
         if (record.getType() != AdRecord.TYPE_SERVICE_DATA) return null;
 
         final byte[] raw = record.getData();
+        if (raw == null) {
+            return null;
+        }
         //Chop out the uuid
         return Arrays.copyOfRange(raw, 2, raw.length);
     }
 
-    public static int getServiceDataUuid(final AdRecord record) {
+    public static int getServiceDataUuid(@Nullable final AdRecord record) {
         if (record == null) {
             return -1;
         }
         if (record.getType() != AdRecord.TYPE_SERVICE_DATA) return -1;
 
         final byte[] raw = record.getData();
+        if (raw == null) {
+            return -1;
+        }
+
         //Find UUID data in byte array
         int uuid = (raw[1] & 0xFF) << 8;
         uuid += (raw[0] & 0xFF);
@@ -131,7 +140,11 @@ public final class AdRecordUtils {
         return records;
     }
 
-    private static String toString(byte[] array) {
+    private static String toString(@Nullable byte[] array) {
+        if (array == null) {
+            return "";
+        }
+
         try {
             //noinspection CharsetObjectCanBeUsed
             return new String(array, "UTF-8");
