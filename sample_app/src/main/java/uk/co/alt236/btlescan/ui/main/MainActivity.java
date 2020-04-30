@@ -7,8 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anthonycr.grant.PermissionsManager;
@@ -19,10 +17,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
 import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils;
@@ -34,26 +28,17 @@ import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewBinderCore;
 import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem;
 import uk.co.alt236.btlescan.ui.main.recyclerview.model.IBeaconItem;
 import uk.co.alt236.btlescan.ui.main.recyclerview.model.LeDeviceItem;
+import uk.co.alt236.btlescan.ui.main.share.Sharer;
+import uk.co.alt236.btlescan.util.BluetoothAdapterWrapper;
 import uk.co.alt236.btlescan.util.BluetoothLeScanner;
-import uk.co.alt236.btlescan.util.BluetoothUtils;
 
 public class MainActivity extends AppCompatActivity {
-    @BindView(R.id.tvBluetoothLe)
-    protected TextView mTvBluetoothLeStatus;
-    @BindView(R.id.tvBluetoothStatus)
-    protected TextView mTvBluetoothStatus;
-    @BindView(R.id.tvItemCount)
-    protected TextView mTvItemCount;
-    @BindView(android.R.id.list)
-    protected RecyclerView mList;
-    @BindView(android.R.id.empty)
-    protected View mEmpty;
-
     private RecyclerViewBinderCore mCore;
-    private BluetoothUtils mBluetoothUtils;
+    private BluetoothAdapterWrapper mBluetoothAdapterWrapper;
     private BluetoothLeScanner mScanner;
     private BluetoothLeDeviceStore mDeviceStore;
     private DeviceRecyclerAdapter mRecyclerAdapter;
+    private View view;
 
     private final BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
@@ -73,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
             runOnUiThread(() -> {
                 mRecyclerAdapter.setData(itemList);
-                updateItemCount(mRecyclerAdapter.getItemCount());
+                view.updateItemCount(mRecyclerAdapter.getItemCount());
             });
         }
     };
@@ -82,13 +67,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        view = new View(this);
+
         mCore = RecyclerViewCoreFactory.create(this, new Navigation(this));
-        mList.setLayoutManager(new LinearLayoutManager(this));
         mDeviceStore = new BluetoothLeDeviceStore();
-        mBluetoothUtils = new BluetoothUtils(this);
-        mScanner = new BluetoothLeScanner(mLeScanCallback, mBluetoothUtils);
-        updateItemCount(0);
+        mBluetoothAdapterWrapper = new BluetoothAdapterWrapper(this.getApplicationContext());
+        mScanner = new BluetoothLeScanner(mBluetoothAdapterWrapper, mLeScanCallback);
+        view.updateItemCount(0);
     }
 
     @Override
@@ -120,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 startScanPrepare();
                 break;
             case R.id.menu_stop:
-                mScanner.scanLeDevice(-1, false);
+                mScanner.stopScan();
                 invalidateOptionsMenu();
                 break;
             case R.id.menu_about:
@@ -135,36 +120,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mScanner.scanLeDevice(-1, false);
+        mScanner.stopScan();
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        if (mBluetoothUtils.isBluetoothOn()) {
-            mTvBluetoothStatus.setText(R.string.on);
-        } else {
-            mTvBluetoothStatus.setText(R.string.off);
-        }
-
-        if (mBluetoothUtils.isBluetoothLeSupported()) {
-            mTvBluetoothLeStatus.setText(R.string.supported);
-        } else {
-            mTvBluetoothLeStatus.setText(R.string.not_supported);
-        }
+        view.setBluetoothEnabled(mBluetoothAdapterWrapper.isBluetoothOn());
+        view.setBluetoothLeSupported(mBluetoothAdapterWrapper.isBluetoothLeSupported());
 
         invalidateOptionsMenu();
     }
 
 
     private void startScanPrepare() {
-        //
-        // The COARSE_LOCATION permission is only needed after API 23 to do a BTLE scan
-        //
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             final String permission;
             final int message;
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 permission = Manifest.permission.ACCESS_FINE_LOCATION;
                 message = R.string.permission_not_granted_fine_location;
@@ -172,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 permission = Manifest.permission.ACCESS_COARSE_LOCATION;
                 message = R.string.permission_not_granted_coarse_location;
             }
+
             PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
                     new String[]{permission}, new PermissionsResultAction() {
 
@@ -194,32 +169,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startScan() {
-        final boolean isBluetoothOn = mBluetoothUtils.isBluetoothOn();
-        final boolean isBluetoothLePresent = mBluetoothUtils.isBluetoothLeSupported();
+        final boolean isBluetoothOn = mBluetoothAdapterWrapper.isBluetoothOn();
+        final boolean isBluetoothLePresent = mBluetoothAdapterWrapper.isBluetoothLeSupported();
+        if (!isBluetoothLePresent) {
+            Toast.makeText(this, "This device does not support BTLE. Cannot scan...", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         mDeviceStore.clear();
-        updateItemCount(0);
+        view.updateItemCount(0);
 
         mRecyclerAdapter = new DeviceRecyclerAdapter(mCore);
-        mList.setAdapter(mRecyclerAdapter);
+        view.setListAdapter(mRecyclerAdapter);
 
-        mBluetoothUtils.askUserToEnableBluetoothIfNeeded();
-        if (isBluetoothOn && isBluetoothLePresent) {
-            mScanner.scanLeDevice(-1, true);
+        mBluetoothAdapterWrapper.askUserToEnableBluetoothIfNeeded(this);
+        if (isBluetoothOn) {
+            mScanner.scanLeDevice(-1);
             invalidateOptionsMenu();
         }
-    }
-
-    private void updateItemCount(final int count) {
-        mTvItemCount.setText(
-                getString(
-                        R.string.formatter_item_count,
-                        String.valueOf(count)));
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+
         PermissionsManager.getInstance().notifyPermissionsChange(permissions, grantResults);
     }
 }

@@ -27,7 +27,6 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -45,8 +44,9 @@ public class BluetoothLeService extends Service {
     public final static String ACTION_DATA_AVAILABLE = BluetoothLeService.class.getName() + ".ACTION_DATA_AVAILABLE";
     public final static String EXTRA_DATA_RAW = BluetoothLeService.class.getName() + ".EXTRA_DATA_RAW";
     public final static String EXTRA_UUID_CHAR = BluetoothLeService.class.getName() + ".EXTRA_UUID_CHAR";
+
     private final static String TAG = BluetoothLeService.class.getSimpleName();
-    private final IBinder mBinder = new LocalBinder();
+    private final IBinder mBinder = new LocalBinder(this);
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
     private String mBluetoothDeviceAddress;
@@ -310,15 +310,4 @@ public class BluetoothLeService extends Service {
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
     }
 
-    public class LocalBinder extends Binder {
-        public BluetoothLeService getService() {
-            return BluetoothLeService.this;
-        }
-    }
-
-    private enum State {
-        DISCONNECTED,
-        CONNECTING,
-        CONNECTED
-    }
 }
