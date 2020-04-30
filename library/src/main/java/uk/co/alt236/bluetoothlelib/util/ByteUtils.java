@@ -2,6 +2,8 @@ package uk.co.alt236.bluetoothlelib.util;
 
 import java.nio.ByteBuffer;
 
+import androidx.annotation.Nullable;
+
 public class ByteUtils {
 
     /**
@@ -21,12 +23,13 @@ public class ByteUtils {
      * @param array the array
      * @return the string
      */
-    public static String byteArrayToHexString(final byte[] array) {
+    public static String byteArrayToHexString(@Nullable final byte[] array) {
+        final byte[] safeArray = array == null ? new byte[0] : array;
         final StringBuilder sb = new StringBuilder();
         boolean firstEntry = true;
         sb.append('[');
 
-        for (final byte b : array) {
+        for (final byte b : safeArray) {
             if (!firstEntry) {
                 sb.append(", ");
             }
