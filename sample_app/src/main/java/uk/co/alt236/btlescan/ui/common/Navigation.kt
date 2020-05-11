@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ShareCompat
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice
 import uk.co.alt236.btlescan.R
 import uk.co.alt236.btlescan.ui.control.DeviceControlActivity
@@ -21,17 +22,20 @@ class Navigation(private val activity: Activity) {
         startActivity(intent)
     }
 
-    fun shareFileViaEmail(fileUri: Uri?, recipient: Array<String?>?, subject: String?, message: String?) {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "plain/text"
-        intent.putExtra(Intent.EXTRA_STREAM, fileUri)
-        intent.putExtra(Intent.EXTRA_EMAIL, recipient)
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject)
-        intent.putExtra(Intent.EXTRA_TEXT, message)
+    fun shareFileViaEmail(uri: Uri, recipient: Array<String>?, subject: String?, message: String?) {
+        val intent = ShareCompat.IntentBuilder.from(activity)
+                .setChooserTitle(R.string.exporter_email_device_list_picker_text)
+                .setStream(uri)
+                .setEmailTo(recipient ?: emptyArray())
+                .setSubject(subject ?: "")
+                .setText(message ?: "")
+                .setType("text/text")
+                .intent
+                .setAction(Intent.ACTION_SEND)
+                .setDataAndType(uri, "plain/text")
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
-        startActivity(Intent.createChooser(
-                intent,
-                activity.getString(R.string.exporter_email_device_list_picker_text)))
+        startActivity(intent)
     }
 
     private fun startActivity(intent: Intent) {
