@@ -78,9 +78,6 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation "com.jakewharton:butterknife:$butterknife_version"
-    kapt "com.jakewharton:butterknife-compiler:$butterknife_version"
-
     implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
     implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview"
     implementation "com.anthonycr.grant:permissions:$grant_permissions_version"

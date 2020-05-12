@@ -13,8 +13,6 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.adrecord.AdRecord;
 import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
@@ -36,7 +34,6 @@ public class DeviceDetailsActivity extends AppCompatActivity {
     private static final String EXTRA_DEVICE = DeviceDetailsActivity.class.getName() + ".EXTRA_DEVICE";
     private static final int LAYOUT_ID = R.layout.activity_details;
 
-    @BindView(R.id.recycler)
     protected RecyclerView mRecycler;
     private BluetoothLeDevice mDevice;
 
@@ -44,7 +41,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT_ID);
-        ButterKnife.bind(this);
+        mRecycler = findViewById(R.id.recycler);
 
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mDevice = getIntent().getParcelableExtra(EXTRA_DEVICE);
