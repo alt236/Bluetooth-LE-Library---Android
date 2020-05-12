@@ -53,6 +53,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            resValue "string", "app_name", "Bluetooth LE Scanner"
             if(isRunningOnCi()) {
                 signingConfig signingConfigs.release
             }
@@ -61,6 +62,7 @@ android {
         debug {
             minifyEnabled false
             applicationIdSuffix ".debug"
+            resValue "string", "app_name", "Debug Bluetooth LE Scanner"
             signingConfig signingConfigs.debug
         }
     }
