@@ -168,7 +168,7 @@ commands:
           when: on_success
           command: |
             if [ "${CIRCLE_BRANCH}" == "<< parameters.only_for_branch >>" ]; then
-              ./gradlew sample_app:publish
+              ./gradlew sample_app:publishApps
             else
               echo "Branch is not '<< parameters.only_for_branch >>'. Skipping deployment."
             fi
@@ -204,7 +204,7 @@ jobs:
       - upload_apks_to_ci:
           module_name: "sample_app"
       - deploy_to_google_play:
-          only_for_branch: "master"
+          only_for_branch: "fix-google-deployment"
 
 workflows:
   version: 2.1
