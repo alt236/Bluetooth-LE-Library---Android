@@ -1,5 +1,6 @@
 package uk.co.alt236.btlescan.util
 
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanFilter
@@ -30,6 +31,7 @@ class BluetoothLeScanner(
         bluetoothAdapterWrapper.bluetoothAdapter?.let { stopScan(it, reason) }
     }
 
+    @SuppressLint("MissingPermission") // We check before this is called
     private fun startScan(adapter: BluetoothAdapter, duration: Int) {
         if (isScanning) {
             return
@@ -54,6 +56,7 @@ class BluetoothLeScanner(
         adapter.bluetoothLeScanner.startScan(filters, settings, leScanCallback)
     }
 
+    @SuppressLint("MissingPermission") // We check before this is called
     private fun stopScan(adapter: BluetoothAdapter, reason: String) {
         Log.d(TAG, "~ Stopping Scan - reason: '$reason'")
         isScanning = false

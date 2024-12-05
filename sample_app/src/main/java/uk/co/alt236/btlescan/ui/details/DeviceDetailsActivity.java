@@ -1,5 +1,6 @@
 package uk.co.alt236.btlescan.ui.details;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
     private BluetoothLeDevice mDevice;
 
     @Override
+    @SuppressLint("MissingPermission") // We check before this is called
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT_ID);

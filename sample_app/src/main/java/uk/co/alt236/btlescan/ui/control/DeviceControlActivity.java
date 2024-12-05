@@ -16,6 +16,7 @@
 
 package uk.co.alt236.btlescan.ui.control;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
@@ -151,6 +152,7 @@ public class DeviceControlActivity extends AppCompatActivity {
     // Demonstrates how to iterate through the supported GATT Services/Characteristics.
     // In this sample, we populate the data structure that is bound to the ExpandableListView
     // on the UI.
+    @SuppressLint("MissingPermission") // We check before this is called
     private void displayGattServices(final List<BluetoothGattService> gattServices) {
         if (gattServices == null) return;
         mExportString = mExporter.generateExportString(
@@ -163,6 +165,7 @@ public class DeviceControlActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
+    @SuppressLint("MissingPermission") // We check before this is called
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -227,6 +230,7 @@ public class DeviceControlActivity extends AppCompatActivity {
     }
 
     @Override
+    @SuppressLint("MissingPermission") // We check before this is called
     public boolean onOptionsItemSelected(final MenuItem item) {
         final int itemId = item.getItemId();
         if (itemId == R.id.menu_connect) {
