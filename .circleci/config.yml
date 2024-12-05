@@ -168,7 +168,7 @@ commands:
           when: on_success
           command: |
             if [ "${CIRCLE_BRANCH}" == "<< parameters.only_for_branch >>" ]; then
-              ./gradlew sample_app:publish
+              ./gradlew sample_app:publishApps
             else
               echo "Branch is not '<< parameters.only_for_branch >>'. Skipping deployment."
             fi
