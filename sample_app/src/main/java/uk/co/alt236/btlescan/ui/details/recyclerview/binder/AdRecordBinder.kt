@@ -1,7 +1,7 @@
 package uk.co.alt236.btlescan.ui.details.recyclerview.binder
 
 import android.content.Context
-import uk.co.alt236.bluetoothlelib.util.ByteUtils
+import dev.alt236.bluetoothlelib.util.ByteUtils
 import uk.co.alt236.btlescan.ui.common.recyclerview.BaseViewBinder
 import uk.co.alt236.btlescan.ui.common.recyclerview.BaseViewHolder
 import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem

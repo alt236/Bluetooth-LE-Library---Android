@@ -5,8 +5,8 @@ import android.widget.ExpandableListView
 import android.widget.SimpleExpandableListAdapter
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
-import uk.co.alt236.bluetoothlelib.resolvers.GattAttributeResolver
-import uk.co.alt236.bluetoothlelib.util.ByteUtils
+import dev.alt236.bluetoothlelib.resolvers.GattAttributeResolver
+import dev.alt236.bluetoothlelib.util.ByteUtils
 import uk.co.alt236.btlescan.R
 import uk.co.alt236.btlescan.kt.ByteArrayExt.toCharString
 import java.nio.charset.Charset

@@ -5,7 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ShareCompat
-import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice
+import dev.alt236.bluetoothlelib.device.BluetoothLeDevice
 import uk.co.alt236.btlescan.R
 import uk.co.alt236.btlescan.ui.control.DeviceControlActivity
 import uk.co.alt236.btlescan.ui.details.DeviceDetailsActivity

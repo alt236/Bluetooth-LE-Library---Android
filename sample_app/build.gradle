@@ -11,8 +11,8 @@ plugins {
 
 apply from: "${project.rootDir}/buildsystem/android-defaults.gradle"
 
-final int versionMajor = 1
-final int versionMinor = 1
+final int versionMajor = 2
+final int versionMinor = 0
 final int versionPatch = getBuildNumber()
 final int androidVersionCode = getBuildNumber()
 

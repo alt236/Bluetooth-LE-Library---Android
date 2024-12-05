@@ -1,7 +1,7 @@
 package uk.co.alt236.btlescan.ui.details.recyclerview.binder
 
 import android.content.Context
-import uk.co.alt236.bluetoothlelib.resolvers.CompanyIdentifierResolver
+import dev.alt236.bluetoothlelib.resolvers.CompanyIdentifierResolver
 import uk.co.alt236.btlescan.R
 import uk.co.alt236.btlescan.ui.common.recyclerview.BaseViewBinder
 import uk.co.alt236.btlescan.ui.common.recyclerview.BaseViewHolder
@@ -9,7 +9,7 @@ import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem
 import uk.co.alt236.btlescan.ui.details.recyclerview.holder.IBeaconHolder
 import uk.co.alt236.btlescan.ui.details.recyclerview.model.IBeaconItem
 import uk.co.alt236.btlescan.util.TimeFormatter
-import java.util.*
+import java.util.Locale
 
 class IBeaconBinder(context: Context) : BaseViewBinder<IBeaconItem>(context) {
 

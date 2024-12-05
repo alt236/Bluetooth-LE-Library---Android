@@ -3,7 +3,7 @@ package uk.co.alt236.btlescan.ui.main.recyclerview.binder;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
+import dev.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.ui.main.recyclerview.holder.CommonDeviceHolder;
 import uk.co.alt236.btlescan.util.Constants;

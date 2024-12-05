@@ -6,7 +6,7 @@ import android.content.Context;
 
 import java.util.List;
 
-import uk.co.alt236.bluetoothlelib.resolvers.GattAttributeResolver;
+import dev.alt236.bluetoothlelib.resolvers.GattAttributeResolver;
 import uk.co.alt236.btlescan.R;
 
 /*package*/ class Exporter {

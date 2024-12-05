@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import uk.co.alt236.bluetoothlelib.resolvers.GattAttributeResolver;
+import dev.alt236.bluetoothlelib.resolvers.GattAttributeResolver;
 import uk.co.alt236.btlescan.R;
 
 /*package*/ class GattDataAdapterFactory {
