@@ -1,17 +1,26 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     id 'com.android.library'
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.vanniktech.maven.publish)
 }
 
 apply from: "${project.rootDir}/buildsystem/android-defaults.gradle"
 
-final int versionMajor = 1
+final int versionMajor = 2
 final int versionMinor = 0
 final int versionPatch = 0
-final int androidVersionCode = 5
 
 final String semanticVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
+
+def project_name = "Bluetooth LE Libarary (Android)"
+def project_description = "Allows for easy access to a Bluetooth LE device's AdRecord and RSSI value"
+def github_owner_and_repo = "alt236/Bluetooth-LE-Library---Android"
+def group_id = 'dev.alt236'
+def artifact_id = 'bluetooth-le-library-android'
+def artifact_version = semanticVersion
 
 repositories {
     google()
@@ -43,6 +52,36 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+mavenPublishing { // This is for the 'vanniktech-maven-publish' plugin
+    var automaticRelease = false
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease)
+    signAllPublications()
+
+    coordinates(group_id, artifact_id, artifact_version)
+    pom {
+        name = project_name
+        description = project_description
+        url = "https://github.com/$github_owner_and_repo"
+        licenses {
+            license {
+                name = 'The Apache License, Version 2.0'
+                url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+        developers {
+            developer {
+                id = 'alt236'
+                name = 'Alexandros Schillings'
+                url = "https://github.com/alt236/"
+            }
+        }
+        scm {
+            url = "https://github.com/$github_owner_and_repo"
+        }
     }
 }
 

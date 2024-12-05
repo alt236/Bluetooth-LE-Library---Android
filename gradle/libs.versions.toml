@@ -15,6 +15,7 @@ multidex = "1.0.3"
 
 permissionx = "1.8.1"
 triplet-play = "3.12.1"
+vanniktech-maven-publish = "0.30.0"
 
 [libraries]
 android-build-tools-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle-android" }
@@ -41,3 +42,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "kotlin-kapt" }
 kotlin-parcelize = { id = "kotlin-parcelize" }
 triplet-play = { id = 'com.github.triplet.play', version.ref = "triplet-play" }
+vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-maven-publish" }
