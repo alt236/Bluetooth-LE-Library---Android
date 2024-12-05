@@ -116,6 +116,8 @@ public class DeviceControlActivity extends AppCompatActivity {
         @Override
         public void onReceive(final Context context, final Intent intent) {
             final String action = intent.getAction();
+            Log.i(TAG, "Received Action:" + action);
+
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 updateConnectionState(State.CONNECTED);
                 invalidateOptionsMenu();

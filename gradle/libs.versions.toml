@@ -1,0 +1,41 @@
+[versions]
+androidx-appcompat = "1.6.1" # changing this will affect minSDK
+androidx-recyclerview = "1.2.1"
+androidx-test-runner = "1.5.2"
+annotation = "1.1.0"
+easycursor-android = "2.0.0"
+gradle-android = "8.7.2"
+hilt-android = "2.47"
+junit4 = "4.13.2"
+jsr305 = "3.0.2"
+kotlin = "2.0.21"
+material = "1.9.0" # changing this will affect minSDK
+mockito = "5.14.2"
+multidex = "1.0.3"
+
+triplet-play = "3.12.1"
+
+[libraries]
+android-build-tools-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle-android" }
+android-support-multidex = { module = "com.android.support:multidex", version.ref = "multidex" }
+android-material = { module = "com.google.android.material:material", version.ref = "material" }
+
+androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidx-recyclerview" }
+androidx-runner = { module = "androidx.test:runner", version.ref = "androidx-test-runner" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+easycursor-android = { module = "dev.alt236:easycursor-android", version.ref = "easycursor-android" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-android" }
+
+mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
+junit4 = { module = "junit:junit", version.ref = "junit4" }
+
+[plugins]
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-kapt = { id = "kotlin-kapt" }
+kotlin-parcelize = { id = "kotlin-parcelize" }
+triplet-play = { id = 'com.github.triplet.play', version.ref = "triplet-play" }

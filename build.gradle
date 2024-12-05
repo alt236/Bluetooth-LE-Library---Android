@@ -6,21 +6,25 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        gradlePluginPortal()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
-        classpath 'com.novoda:bintray-release:0.9.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath libs.android.build.tools.gradle
+        classpath libs.kotlin.gradle.plugin
     }
+}
+
+plugins {
+    alias(libs.plugins.hilt.android) apply false
+    alias(libs.plugins.kotlin.android) apply false
 }
 
 allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
     }
 
     tasks.withType(Test) {

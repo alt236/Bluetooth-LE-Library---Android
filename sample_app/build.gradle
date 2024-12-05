@@ -1,9 +1,10 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-android-extensions'
-    id 'kotlin-kapt'
-    id 'com.github.triplet.play' version '2.5.0'
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.triplet.play)
 }
 
 apply from: "${project.rootDir}/buildsystem/android-defaults.gradle"
@@ -20,13 +21,12 @@ repositories {
     mavenCentral()
     maven { url "https://repo.commonsware.com.s3.amazonaws.com" }
     maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
-    maven { url "https://dl.bintray.com/alt236/maven" }
 }
 
 android {
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     signingConfigs {
@@ -44,6 +44,13 @@ android {
             storePassword 'android'
         }
     }
+    androidResources {
+        noCompress 'zip'
+    }
+    lint {
+        lintConfig file("$rootDir/buildsystem/codequality/lint.xml")
+    }
+    namespace 'uk.co.alt236.btlescan'
 
     defaultConfig {
         versionCode androidVersionCode
@@ -68,23 +75,28 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = 17
     }
 }
 
 dependencies {
     implementation project(':library')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
-    implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
-    implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview"
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.recyclerview
     implementation "com.anthonycr.grant:permissions:$grant_permissions_version"
-    implementation 'uk.co.alt236:easycursor-android:1.0.0'
+    implementation libs.easycursor.android
 
-    testImplementation 'junit:junit:4.13'
-    testImplementation 'org.mockito:mockito-all:1.10.19'
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
+
+    testImplementation libs.junit4
+    testImplementation libs.mockito
 }
 
 play {
