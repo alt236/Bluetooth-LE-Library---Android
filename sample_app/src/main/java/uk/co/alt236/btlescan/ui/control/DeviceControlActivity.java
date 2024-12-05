@@ -39,6 +39,7 @@ import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.services.BluetoothLeService;
 import uk.co.alt236.btlescan.services.LocalBinder;
+import uk.co.alt236.btlescan.ui.common.IntentReceiverCompat;
 
 /**
  * For a given BLE device, this Activity provides the user interface to connect, display data,
@@ -266,7 +267,12 @@ public class DeviceControlActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+        IntentReceiverCompat.registerExportedReceiver(
+                this,
+                mGattUpdateReceiver,
+                makeGattUpdateIntentFilter()
+        );
+
         if (mBluetoothLeService != null) {
             final boolean result = mBluetoothLeService.connect(mDevice.getAddress());
             Log.d(TAG, "Connect request result=" + result);
@@ -286,14 +292,6 @@ public class DeviceControlActivity extends AppCompatActivity {
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTING);
         return intentFilter;
-    }
-
-    private static String tryString(final String string, final String fallback) {
-        if (string == null) {
-            return fallback;
-        } else {
-            return string;
-        }
     }
 
     public static Intent createIntent(final Context context, final BluetoothLeDevice device) {
