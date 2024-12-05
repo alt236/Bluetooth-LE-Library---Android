@@ -1,5 +1,7 @@
 # Bluetooth LE Library for Android
 
+[![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-webviewdebug-green.svg?style=flat )]( https://android-arsenal.com/details/1/693 )
+
 This library allows for easy access to a Bluetooth LE device's Advertisement Records.
 It also offers:
 
@@ -17,16 +19,16 @@ This will only work on devices with Android 4.3 (API Level 18) and above.
 
 ## Including the Library in Your Project
 
+⚠️ BREAKING CHANGES ⚠️
+
+As of version 2.0.0, the library package name has been changed from `uk.co.alt236.bluetoothlelib.*`
+to `dev.alt236.bluetoothlelib.*`.
+The maven coordinates have also changed due to the migration to Maven Central (see below).
+
 This project is available as an artifact for use with Gradle. To use that, add the following blocks to your build.gradle file:
 ```groovy
-	repositories {
-		maven {
-			url "https://dl.bintray.com/alt236/maven"
-		}
-	}
-
 	dependencies {
-		compile 'uk.co.alt236:bluetooth-le-library-android:1.0.0'
+	compile 'dev.alt236:bluetooth-le-library-android:2.0.0'
 	}
 ```
 If you *really* need a Jar file, fork the project and execute `./gradlew clean build generateRelease` at the root of the project.
@@ -110,7 +112,6 @@ An IBeaconDevice extends BluetoothLeDevice, so you still have access to the same
 * `getMajor()`: Gets the device's Major value
 * `getMinor()`: Gets the device's Minor value
 
-
 ### Lookup Functions
 You can also lookup values and convert them to human friendly strings:
 * `BluetoothClassResolver.resolveDeviceClass(int btClass)`: Will try to resolve a Blueotooth Device class
@@ -132,6 +133,10 @@ You can also lookup values and convert them to human friendly strings:
 	* We now use the more generic `BeaconUtils.getBeaconType()` method instead of `IBeaconUtils.isThisAnIBeacon()`
 	* Fix for [issue 5](https://github.com/alt236/Bluetooth-LE-Library---Android/issues/5)
 	* Fix for [issue 9](https://github.com/alt236/Bluetooth-LE-Library---Android/issues/9)
+* v2.0.0
+	* Migrated packages to Maven Central - Fix
+	  for [issue 37](https://github.com/alt236/Bluetooth-LE-Library---Android/issues/37)
+	* Targeting Android API 34 with a minSDK of 21
 
 ## Sample Application Changelog
 * v0.0.1
@@ -148,6 +153,9 @@ You can also lookup values and convert them to human friendly strings:
 	* Added runtime permissions.
 * v1.1.1:
     * Fix for [issue 23](https://github.com/alt236/Bluetooth-LE-Library---Android/issues/23)
+* v2.0.0
+	* Now using the new package names (`dev.alt236.bluetoothlelib.*`)
+	* Targeting Android API 34 with a minSDK of 21
 
 ## Permission Explanation
 You will need the following permissions to access the Bluetooth Hardware
