@@ -204,7 +204,7 @@ jobs:
       - upload_apks_to_ci:
           module_name: "sample_app"
       - deploy_to_google_play:
-          only_for_branch: "fix-google-deployment"
+          only_for_branch: "master"
 
 workflows:
   version: 2.1
