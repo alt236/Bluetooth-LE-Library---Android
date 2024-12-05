@@ -227,32 +227,32 @@ public class DeviceControlActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_connect:
-                mBluetoothLeService.connect(mDevice.getAddress());
-                return true;
-            case R.id.menu_disconnect:
-                mBluetoothLeService.disconnect();
-                return true;
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.menu_share:
-                final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-                final String subject = getString(
-                        R.string.exporter_email_device_services_subject,
-                        mDevice.getName(),
-                        mDevice.getAddress());
+        final int itemId = item.getItemId();
+        if (itemId == R.id.menu_connect) {
+            mBluetoothLeService.connect(mDevice.getAddress());
+            return true;
+        } else if (itemId == R.id.menu_disconnect) {
+            mBluetoothLeService.disconnect();
+            return true;
+        } else if (itemId == android.R.id.home) {
+            onBackPressed();
+            return true;
+        } else if (itemId == R.id.menu_share) {
+            final Intent intent = new Intent(Intent.ACTION_SEND);
+            final String subject = getString(
+                    R.string.exporter_email_device_services_subject,
+                    mDevice.getName(),
+                    mDevice.getAddress());
 
-                intent.setType("text/plain");
-                intent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
-                intent.putExtra(android.content.Intent.EXTRA_TEXT, mExportString);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+            intent.putExtra(Intent.EXTRA_TEXT, mExportString);
 
-                startActivity(Intent.createChooser(
-                        intent,
-                        getString(R.string.exporter_email_device_list_picker_text)));
+            startActivity(Intent.createChooser(
+                    intent,
+                    getString(R.string.exporter_email_device_list_picker_text)));
 
-                return true;
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

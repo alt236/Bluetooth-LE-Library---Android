@@ -8,8 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.anthonycr.grant.PermissionsManager;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -130,20 +128,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_scan:
-                startScanPrepare();
-                break;
-            case R.id.menu_stop:
-                mScanner.stopScan("menu");
-                invalidateOptionsMenu();
-                break;
-            case R.id.menu_about:
-                DialogFactory.createAboutDialog(this).show();
-                break;
-            case R.id.menu_share:
-                new Sharer().shareDataAsEmail(this, mDeviceStore);
-                break;
+        final int itemId = item.getItemId();
+        if (itemId == R.id.menu_scan) {
+            startScanPrepare();
+        } else if (itemId == R.id.menu_stop) {
+            mScanner.stopScan("menu");
+            invalidateOptionsMenu();
+        } else if (itemId == R.id.menu_about) {
+            DialogFactory.createAboutDialog(this).show();
+        } else if (itemId == R.id.menu_share) {
+            new Sharer().shareDataAsEmail(this, mDeviceStore);
         }
         return true;
     }
@@ -199,11 +193,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-
-        PermissionsManager.getInstance().notifyPermissionsChange(permissions, grantResults);
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode,
+//                                           @NonNull String[] permissions,
+//                                           @NonNull int[] grantResults) {
+//
+//        PermissionsManager.getInstance().notifyPermissionsChange(permissions, grantResults);
+//    }
 }

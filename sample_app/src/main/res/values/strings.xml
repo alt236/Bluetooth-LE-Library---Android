@@ -80,4 +80,6 @@
     <string name="permission_not_granted_coarse_location">The ACCESS_COARSE_LOCATION permission is needed to receive bluetooth scan results</string>
     <string name="permission_not_granted_fine_location">The ACCESS_FINE_LOCATION permission is needed to receive bluetooth scan results</string>
     <string name="permission_not_granted_bt_scan">The BLUETOOTH_SCAN permission is needed to receive bluetooth scan results</string>
+    <string name="permission_rationale">In order to access information about nearby bluetooth devices, the following permissions are needed</string>
+    <string name="permission_need_to_go_to_settings">You need to allow necessary permissions in Settings manually</string>
 </resources>

@@ -13,6 +13,7 @@ material = "1.9.0" # changing this will affect minSDK
 mockito = "5.14.2"
 multidex = "1.0.3"
 
+permissionx = "1.8.1"
 triplet-play = "3.12.1"
 
 [libraries]
@@ -32,6 +33,7 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
 junit4 = { module = "junit:junit", version.ref = "junit4" }
+permissionx = { module = "com.guolindev.permissionx:permissionx", version.ref = "permissionx" }
 
 [plugins]
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }

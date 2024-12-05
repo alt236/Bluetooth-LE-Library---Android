@@ -24,6 +24,10 @@ repositories {
 }
 
 android {
+    buildFeatures {
+        buildConfig = true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -89,7 +93,7 @@ dependencies {
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.recyclerview
-    implementation "com.anthonycr.grant:permissions:$grant_permissions_version"
+    implementation libs.permissionx
     implementation libs.easycursor.android
 
     implementation libs.hilt.android
