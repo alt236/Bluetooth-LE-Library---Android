@@ -14,7 +14,7 @@ references:
   environment_config: &environment_config
     working_directory: *workspace
     docker:
-      - image: circleci/android:api-29
+      - image: cimg/android:2024.11
     environment:
       JVM_OPTS: -Xmx2048m
       GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false

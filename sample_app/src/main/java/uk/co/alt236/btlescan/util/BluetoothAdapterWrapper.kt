@@ -1,5 +1,6 @@
 package uk.co.alt236.btlescan.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
@@ -16,6 +17,7 @@ class BluetoothAdapterWrapper(private val context: Context) {
         bluetoothAdapter = btManager.adapter
     }
 
+    @SuppressLint("MissingPermission") // We check before this is called
     fun askUserToEnableBluetoothIfNeeded(activity: Activity) {
         if (isBluetoothLeSupported && !isBluetoothOn) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)

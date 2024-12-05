@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
-    id 'com.novoda.bintray-release'
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 apply from: "${project.rootDir}/buildsystem/android-defaults.gradle"
@@ -18,29 +19,21 @@ repositories {
 }
 
 dependencies {
-    implementation "androidx.annotation:annotation:$androidx_annotation_version"
+    implementation libs.androidx.annotation
 
-    testImplementation 'junit:junit:4.13'
-    testImplementation "org.mockito:mockito-core:3.1.0"
-}
-
-publish {
-    groupId = 'uk.co.alt236'
-    artifactId = 'bluetooth-le-library-android'
-    publishVersion = "${semanticVersion}"
-    userOrg = ''
-    desc = ''
-    bintrayUser = getPropertySafe("alt236JCenterUser", "[NOT_CONFIGURED]")
-    bintrayKey = getPropertySafe("alt236JCenterToken", "[NOT_CONFIGURED]")
-    //website = 'https://github.com/novoda/bintray-release'
+    testImplementation libs.junit4
+    testImplementation libs.mockito
 }
 
 android {
-    defaultConfig {
-        versionCode androidVersionCode
-        versionName semanticVersion
-    }
 
+    androidResources {
+        noCompress 'zip'
+    }
+    lint {
+        lintConfig file("$rootDir/buildsystem/codequality/lint.xml")
+    }
+    namespace 'uk.co.alt236.bluetoothlelib'
     buildTypes {
         release {
             minifyEnabled false
@@ -48,10 +41,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
 
-// Script from https://github.com/novoda/bintray-release
-// execute: ./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false

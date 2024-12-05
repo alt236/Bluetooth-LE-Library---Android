@@ -1,28 +1,29 @@
 package uk.co.alt236.btlescan.ui.main;
 
-import android.Manifest;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.os.Build;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanResult;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.anthonycr.grant.PermissionsManager;
-import com.anthonycr.grant.PermissionsResultAction;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
 import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils;
 import uk.co.alt236.bluetoothlelib.device.beacon.ibeacon.IBeaconDevice;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.containers.BluetoothLeDeviceStore;
+import uk.co.alt236.btlescan.permission.BluetoothPermissionCheck;
+import uk.co.alt236.btlescan.permission.PermissionDeniedDialogFragment;
 import uk.co.alt236.btlescan.ui.common.Navigation;
 import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewBinderCore;
 import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem;
@@ -33,6 +34,7 @@ import uk.co.alt236.btlescan.util.BluetoothAdapterWrapper;
 import uk.co.alt236.btlescan.util.BluetoothLeScanner;
 
 public class MainActivity extends AppCompatActivity {
+    private final BluetoothPermissionCheck permissionCheck = new BluetoothPermissionCheck();
     private RecyclerViewBinderCore mCore;
     private BluetoothAdapterWrapper mBluetoothAdapterWrapper;
     private BluetoothLeScanner mScanner;
@@ -40,22 +42,48 @@ public class MainActivity extends AppCompatActivity {
     private DeviceRecyclerAdapter mRecyclerAdapter;
     private View view;
 
-    private final BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+    private final ScanCallback mLeScanCallback = new ScanCallback() {
+
         @Override
-        public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
+        public void onScanResult(final int callbackType, final ScanResult result) {
+            super.onScanResult(callbackType, result);
+            onNewDevices(Collections.singletonList(result));
+        }
 
-            final BluetoothLeDevice deviceLe = new BluetoothLeDevice(device, rssi, scanRecord, System.currentTimeMillis());
-            mDeviceStore.addDevice(deviceLe);
+        @Override
+        public void onBatchScanResults(final List<ScanResult> results) {
+            super.onBatchScanResults(results);
+            onNewDevices(results);
+        }
+
+        @Override
+        public void onScanFailed(final int errorCode) {
+            super.onScanFailed(errorCode);
+            Log.d("YAY", "Error: " + errorCode);
+            mScanner.stopScan("error: " + errorCode);
+        }
+
+        private void onNewDevices(final List<ScanResult> results) {
+            Log.d("YAY", "New Devices! " + results.size());
+
             final List<RecyclerViewItem> itemList = new ArrayList<>();
+            for (ScanResult result : results) {
+                final BluetoothLeDevice deviceLe = new BluetoothLeDevice(
+                        result.getDevice(),
+                        result.getRssi(),
+                        result.getScanRecord().getBytes(),
+                        result.getTimestampNanos() / 1000);
 
-            for (final BluetoothLeDevice leDevice : mDeviceStore.getDeviceList()) {
-                if (BeaconUtils.getBeaconType(leDevice) == BeaconType.IBEACON) {
-                    itemList.add(new IBeaconItem(new IBeaconDevice(leDevice)));
-                } else {
-                    itemList.add(new LeDeviceItem(leDevice));
+                mDeviceStore.addDevice(deviceLe);
+
+                for (final BluetoothLeDevice leDevice : mDeviceStore.getDeviceList()) {
+                    if (BeaconUtils.getBeaconType(leDevice) == BeaconType.IBEACON) {
+                        itemList.add(new IBeaconItem(new IBeaconDevice(leDevice)));
+                    } else {
+                        itemList.add(new LeDeviceItem(leDevice));
+                    }
                 }
             }
-
             runOnUiThread(() -> {
                 mRecyclerAdapter.setData(itemList);
                 view.updateItemCount(mRecyclerAdapter.getItemCount());
@@ -100,19 +128,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_scan:
-                startScanPrepare();
-                break;
-            case R.id.menu_stop:
-                mScanner.stopScan("menu");
-                invalidateOptionsMenu();
-                break;
-            case R.id.menu_about:
-                DialogFactory.createAboutDialog(this).show();
-                break;
-            case R.id.menu_share:
-                new Sharer().shareDataAsEmail(this, mDeviceStore);
+        final int itemId = item.getItemId();
+        if (itemId == R.id.menu_scan) {
+            startScanPrepare();
+        } else if (itemId == R.id.menu_stop) {
+            mScanner.stopScan("menu");
+            invalidateOptionsMenu();
+        } else if (itemId == R.id.menu_about) {
+            DialogFactory.createAboutDialog(this).show();
+        } else if (itemId == R.id.menu_share) {
+            new Sharer().shareDataAsEmail(this, mDeviceStore);
         }
         return true;
     }
@@ -132,37 +157,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startScanPrepare() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            final String permission;
-            final int message;
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                permission = Manifest.permission.ACCESS_FINE_LOCATION;
-                message = R.string.permission_not_granted_fine_location;
-            } else {
-                permission = Manifest.permission.ACCESS_COARSE_LOCATION;
-                message = R.string.permission_not_granted_coarse_location;
+        permissionCheck.checkBluetoothPermissions(this, new BluetoothPermissionCheck.PermissionCheckResultCallback() {
+            @Override
+            public void onSuccess() {
+                startScan();
             }
 
-            PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
-                    new String[]{permission}, new PermissionsResultAction() {
-
-                        @Override
-                        public void onGranted() {
-                            startScan();
-                        }
-
-                        @Override
-                        public void onDenied(String permission) {
-                            Toast.makeText(MainActivity.this,
-                                    message,
-                                    Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                    });
-        } else {
-            startScan();
-        }
+            @Override
+            public void onFailure(@NonNull CharSequence message) {
+                final DialogFragment dialog = PermissionDeniedDialogFragment.create(message);
+                final FragmentManager fm = MainActivity.this.getSupportFragmentManager();
+                dialog.show(fm, dialog.getClass().getName());
+            }
+        });
     }
 
     private void startScan() {
@@ -186,11 +193,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-
-        PermissionsManager.getInstance().notifyPermissionsChange(permissions, grantResults);
-    }
 }

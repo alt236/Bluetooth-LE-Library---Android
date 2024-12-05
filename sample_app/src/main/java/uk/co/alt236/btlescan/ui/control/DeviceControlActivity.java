@@ -16,6 +16,7 @@
 
 package uk.co.alt236.btlescan.ui.control;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
@@ -39,6 +40,7 @@ import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.services.BluetoothLeService;
 import uk.co.alt236.btlescan.services.LocalBinder;
+import uk.co.alt236.btlescan.ui.common.IntentReceiverCompat;
 
 /**
  * For a given BLE device, this Activity provides the user interface to connect, display data,
@@ -116,6 +118,8 @@ public class DeviceControlActivity extends AppCompatActivity {
         @Override
         public void onReceive(final Context context, final Intent intent) {
             final String action = intent.getAction();
+            Log.i(TAG, "Received Action:" + action);
+
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 updateConnectionState(State.CONNECTED);
                 invalidateOptionsMenu();
@@ -148,6 +152,7 @@ public class DeviceControlActivity extends AppCompatActivity {
     // Demonstrates how to iterate through the supported GATT Services/Characteristics.
     // In this sample, we populate the data structure that is bound to the ExpandableListView
     // on the UI.
+    @SuppressLint("MissingPermission") // We check before this is called
     private void displayGattServices(final List<BluetoothGattService> gattServices) {
         if (gattServices == null) return;
         mExportString = mExporter.generateExportString(
@@ -160,6 +165,7 @@ public class DeviceControlActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
+    @SuppressLint("MissingPermission") // We check before this is called
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -224,33 +230,34 @@ public class DeviceControlActivity extends AppCompatActivity {
     }
 
     @Override
+    @SuppressLint("MissingPermission") // We check before this is called
     public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_connect:
-                mBluetoothLeService.connect(mDevice.getAddress());
-                return true;
-            case R.id.menu_disconnect:
-                mBluetoothLeService.disconnect();
-                return true;
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.menu_share:
-                final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-                final String subject = getString(
-                        R.string.exporter_email_device_services_subject,
-                        mDevice.getName(),
-                        mDevice.getAddress());
+        final int itemId = item.getItemId();
+        if (itemId == R.id.menu_connect) {
+            mBluetoothLeService.connect(mDevice.getAddress());
+            return true;
+        } else if (itemId == R.id.menu_disconnect) {
+            mBluetoothLeService.disconnect();
+            return true;
+        } else if (itemId == android.R.id.home) {
+            onBackPressed();
+            return true;
+        } else if (itemId == R.id.menu_share) {
+            final Intent intent = new Intent(Intent.ACTION_SEND);
+            final String subject = getString(
+                    R.string.exporter_email_device_services_subject,
+                    mDevice.getName(),
+                    mDevice.getAddress());
 
-                intent.setType("text/plain");
-                intent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
-                intent.putExtra(android.content.Intent.EXTRA_TEXT, mExportString);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+            intent.putExtra(Intent.EXTRA_TEXT, mExportString);
 
-                startActivity(Intent.createChooser(
-                        intent,
-                        getString(R.string.exporter_email_device_list_picker_text)));
+            startActivity(Intent.createChooser(
+                    intent,
+                    getString(R.string.exporter_email_device_list_picker_text)));
 
-                return true;
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -264,7 +271,12 @@ public class DeviceControlActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+        IntentReceiverCompat.registerExportedReceiver(
+                this,
+                mGattUpdateReceiver,
+                makeGattUpdateIntentFilter()
+        );
+
         if (mBluetoothLeService != null) {
             final boolean result = mBluetoothLeService.connect(mDevice.getAddress());
             Log.d(TAG, "Connect request result=" + result);
@@ -284,14 +296,6 @@ public class DeviceControlActivity extends AppCompatActivity {
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTING);
         return intentFilter;
-    }
-
-    private static String tryString(final String string, final String fallback) {
-        if (string == null) {
-            return fallback;
-        } else {
-            return string;
-        }
     }
 
     public static Intent createIntent(final Context context, final BluetoothLeDevice device) {

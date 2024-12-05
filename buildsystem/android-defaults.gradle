@@ -1,4 +1,5 @@
 // The versions are defined in "${project.rootDir}/buildconstants/android-sdk-versions.gradle"
+
 apply plugin: 'jacoco'
 
 jacoco {
@@ -7,7 +8,6 @@ jacoco {
 
 android {
     compileSdkVersion compile_sdk_version
-    buildToolsVersion build_tools_version
 
     defaultConfig {
         minSdkVersion min_sdk_version
@@ -17,13 +17,11 @@ android {
         multiDexKeepProguard file("${project.rootDir}/buildsystem/multidex/multidex.pro")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles 'consumer-rules.pro'
     }
 
     buildTypes {
         release {
             minifyEnabled true
-            testCoverageEnabled false
 
             // PROGUARD
             def proguardRuleFiles = collectCommonProguardRules()
@@ -36,19 +34,25 @@ android {
 
         debug {
             minifyEnabled false
-            testCoverageEnabled true
 
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
-    lintOptions {
-        lintConfig file("${project.rootDir}/buildsystem/codequality/lint.xml")
+    kotlinOptions {
+        jvmTarget = 17
+    }
+
+    androidResources {
+        noCompress 'zip'
+    }
+    lint {
+        lintConfig file("$rootDir/buildsystem/codequality/lint.xml")
     }
 
     testOptions {
@@ -61,16 +65,13 @@ android {
         }
     }
 
-    aaptOptions {
-        noCompress 'zip'
-    }
 }
 
 task jacocoTestReport2(type: JacocoReport) {
 
     reports {
-        xml.enabled = true
-        html.enabled = true
+        xml.required.set(true)
+        html.required.set(true)
     }
 
     def fileFilter = ['jdk.internal.*',
@@ -102,15 +103,15 @@ task jacocoTestReport2(type: JacocoReport) {
             excludes: fileFilter
     )
 
-    classDirectories = files([ javaClasses ], [ kotlinClasses ])
-    sourceDirectories = files(mainSrc)
-    executionData = fileTree(dir: "$buildDir",
+    classDirectories.setFrom(files([javaClasses], [kotlinClasses]))
+    sourceDirectories.setFrom(files(mainSrc))
+    executionData.setFrom(fileTree(dir: "$buildDir",
             includes: ['jacoco/*.exec', 'connected/*.ec']
-    )
+    ))
 
     reports {
-        xml.enabled = true
-        html.enabled = true
+        xml.required.set(true)
+        html.required.set(true)
     }
 }
 

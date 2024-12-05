@@ -1,5 +1,6 @@
 package uk.co.alt236.btlescan.ui.main.share
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
@@ -13,7 +14,7 @@ import uk.co.alt236.btlescan.util.TimeFormatter
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
-import java.util.*
+import java.util.Locale
 
 class CsvFileWriter {
 
@@ -35,6 +36,7 @@ class CsvFileWriter {
         return File(shareableFolder, fileName)
     }
 
+    @SuppressLint("MissingPermission") // We check before this is called
     private fun getListAsCsv(deviceList: List<BluetoothLeDevice>): String {
         val sb = StringBuilder()
         sb.append(CsvWriterHelper.addStuff("mac"))

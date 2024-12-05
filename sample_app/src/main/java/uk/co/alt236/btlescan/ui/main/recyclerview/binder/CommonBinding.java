@@ -1,5 +1,6 @@
 package uk.co.alt236.btlescan.ui.main.recyclerview.binder;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
@@ -9,6 +10,7 @@ import uk.co.alt236.btlescan.util.Constants;
 
 /*package*/ class CommonBinding {
 
+    @SuppressLint("MissingPermission") // We check before this is called
     public static void bind(final Context context,
                             final CommonDeviceHolder holder,
                             final BluetoothLeDevice device) {
@@ -16,7 +18,7 @@ import uk.co.alt236.btlescan.util.Constants;
         final String deviceName = device.getName();
         final double rssi = device.getRssi();
 
-        if (deviceName != null && deviceName.length() > 0) {
+        if (deviceName != null && !deviceName.isEmpty()) {
             holder.getDeviceName().setText(deviceName);
         } else {
             holder.getDeviceName().setText(R.string.unknown_device);

@@ -1,5 +1,6 @@
 package uk.co.alt236.btlescan.ui.details;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
     private BluetoothLeDevice mDevice;
 
     @Override
+    @SuppressLint("MissingPermission") // We check before this is called
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT_ID);
@@ -60,13 +62,13 @@ public class DeviceDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_connect:
-                new Navigation(this).startControlActivity(mDevice);
-                return true;
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        final int itemId = item.getItemId();
+        if (itemId == R.id.menu_connect) {
+            new Navigation(this).startControlActivity(mDevice);
+            return true;
+        } else if (itemId == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
