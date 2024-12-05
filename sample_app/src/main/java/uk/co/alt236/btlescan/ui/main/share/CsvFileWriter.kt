@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
-import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice
-import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType
-import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils
-import uk.co.alt236.bluetoothlelib.device.beacon.ibeacon.IBeaconDevice
-import uk.co.alt236.bluetoothlelib.util.ByteUtils
+import dev.alt236.bluetoothlelib.device.BluetoothLeDevice
+import dev.alt236.bluetoothlelib.device.beacon.BeaconType
+import dev.alt236.bluetoothlelib.device.beacon.BeaconUtils
+import dev.alt236.bluetoothlelib.device.beacon.ibeacon.IBeaconDevice
+import dev.alt236.bluetoothlelib.util.ByteUtils
 import uk.co.alt236.btlescan.BuildConfig
 import uk.co.alt236.btlescan.util.TimeFormatter
 import java.io.File
@@ -71,7 +71,10 @@ class CsvFileWriter {
             val distance: String
             val accuracy: String
             if (isIBeacon) {
-                val beacon = IBeaconDevice(device)
+                val beacon =
+                    IBeaconDevice(
+                        device
+                    )
                 uuid = beacon.uuid.toString()
                 minor = beacon.minor.toString()
                 major = beacon.major.toString()

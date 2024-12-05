@@ -13,14 +13,12 @@ final int versionMajor = 2
 final int versionMinor = 0
 final int versionPatch = 0
 
-final String semanticVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
-
 def project_name = "Bluetooth LE Libarary (Android)"
 def project_description = "Allows for easy access to a Bluetooth LE device's AdRecord and RSSI value"
 def github_owner_and_repo = "alt236/Bluetooth-LE-Library---Android"
 def group_id = 'dev.alt236'
 def artifact_id = 'bluetooth-le-library-android'
-def artifact_version = semanticVersion
+def artifact_version = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 repositories {
     google()

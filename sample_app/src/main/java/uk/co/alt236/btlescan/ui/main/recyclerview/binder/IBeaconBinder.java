@@ -3,7 +3,7 @@ package uk.co.alt236.btlescan.ui.main.recyclerview.binder;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import uk.co.alt236.bluetoothlelib.device.beacon.ibeacon.IBeaconDevice;
+import dev.alt236.bluetoothlelib.device.beacon.ibeacon.IBeaconDevice;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.ui.common.Navigation;
 import uk.co.alt236.btlescan.ui.common.recyclerview.BaseViewBinder;

@@ -36,7 +36,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
-import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
+import dev.alt236.bluetoothlelib.device.BluetoothLeDevice;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.services.BluetoothLeService;
 import uk.co.alt236.btlescan.services.LocalBinder;

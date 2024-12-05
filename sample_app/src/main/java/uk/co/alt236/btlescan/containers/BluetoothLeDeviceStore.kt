@@ -1,7 +1,7 @@
 package uk.co.alt236.btlescan.containers
 
+import dev.alt236.bluetoothlelib.device.BluetoothLeDevice
 import dev.alt236.easycursor.objectcursor.EasyObjectCursor
-import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice
 import java.util.Collections
 
 class BluetoothLeDeviceStore {
