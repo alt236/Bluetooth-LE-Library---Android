@@ -1,3 +1,5 @@
+import com.github.triplet.gradle.androidpublisher.ReleaseStatus
+
 plugins {
     id 'com.android.application'
     alias(libs.plugins.kotlin.android)
@@ -114,7 +116,7 @@ play {
         enabled = true
         track = "internal"
         //userFraction = 1.0
-        releaseStatus = "completed"
+        releaseStatus = ReleaseStatus.COMPLETED
         serviceAccountCredentials = file(credentialsPath)
         releaseName = lastCommitMessage
         artifactDir = file("${project.rootDir}/sample_app/build/outputs/apk/release/")
