@@ -60,7 +60,7 @@ class BluetoothLeScanner(
     private fun stopScan(adapter: BluetoothAdapter, reason: String) {
         Log.d(TAG, "~ Stopping Scan - reason: '$reason'")
         isScanning = false
-        adapter.bluetoothLeScanner.stopScan(leScanCallback)
+        adapter.bluetoothLeScanner?.stopScan(leScanCallback)
     }
 
     private companion object {
