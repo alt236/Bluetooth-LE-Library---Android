@@ -2,28 +2,27 @@ package uk.co.alt236.btlescan.ui.details.recyclerview.model
 
 import android.annotation.SuppressLint
 import dev.alt236.bluetoothlelib.device.BluetoothLeDevice
-import dev.alt236.bluetoothlelib.device.BluetoothService
-import uk.co.alt236.btlescan.app.ui.view.recyclerview.RecyclerViewItem
+import uk.co.alt236.btlescan.app.ui.view.details.model.DeviceInfoItem
 
 @SuppressLint("MissingPermission") // We check before this is called
 class DeviceInfoItem(
-    private val mDevice: BluetoothLeDevice,
-) : RecyclerViewItem {
-    val bluetoothDeviceKnownSupportedServices: Set<BluetoothService>
-        get() = mDevice.bluetoothDeviceKnownSupportedServices
+    private val device: BluetoothLeDevice,
+) : DeviceInfoItem {
+    override val bluetoothDeviceKnownSupportedServices: Set<String>
+        get() = device.bluetoothDeviceKnownSupportedServices.map { it.toString() }.toSet()
 
-    val bluetoothDeviceBondState: String
-        get() = mDevice.bluetoothDeviceBondState
+    override val bluetoothDeviceBondState: String
+        get() = device.bluetoothDeviceBondState
 
-    val bluetoothDeviceMajorClassName: String
-        get() = mDevice.bluetoothDeviceMajorClassName
+    override val bluetoothDeviceMajorClassName: String
+        get() = device.bluetoothDeviceMajorClassName
 
-    val bluetoothDeviceClassName: String
-        get() = mDevice.bluetoothDeviceClassName
+    override val bluetoothDeviceClassName: String
+        get() = device.bluetoothDeviceClassName
 
-    val address: String
-        get() = mDevice.address
+    override val address: String
+        get() = device.address
 
-    val name: String
-        get() = mDevice.name ?: ""
+    override val name: String
+        get() = device.name.orEmpty()
 }

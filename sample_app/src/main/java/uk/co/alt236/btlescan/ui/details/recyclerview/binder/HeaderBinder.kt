@@ -1,11 +1,11 @@
 package uk.co.alt236.btlescan.ui.details.recyclerview.binder
 
 import android.content.Context
+import uk.co.alt236.btlescan.app.ui.view.details.model.HeaderItem
 import uk.co.alt236.btlescan.app.ui.view.recyclerview.BaseViewBinder
 import uk.co.alt236.btlescan.app.ui.view.recyclerview.BaseViewHolder
 import uk.co.alt236.btlescan.app.ui.view.recyclerview.RecyclerViewItem
 import uk.co.alt236.btlescan.ui.details.recyclerview.holder.HeaderHolder
-import uk.co.alt236.btlescan.ui.details.recyclerview.model.HeaderItem
 
 class HeaderBinder(
     context: Context,

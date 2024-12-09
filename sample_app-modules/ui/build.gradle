@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.compose.compiler)
 }
 
 apply from: "${project.rootDir}/buildsystem/android-defaults.gradle"
@@ -15,11 +16,28 @@ dependencies {
     implementation libs.androidx.annotation
     implementation libs.androidx.recyclerview
 
+    // Compose Block
+    var composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    testImplementation(composeBom)
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(composeBom)
+    androidTestImplementation(libs.androidx.compose.ui.test)
+
+    // Testing
     testImplementation libs.junit4
     testImplementation libs.mockito
 }
 
 android {
+    namespace 'uk.co.alt236.btlescan.app.ui'
+
+    buildFeatures {
+        compose true
+    }
 
     androidResources {
         noCompress 'zip'
@@ -27,7 +45,7 @@ android {
     lint {
         lintConfig file("$rootDir/buildsystem/codequality/lint.xml")
     }
-    namespace 'uk.co.alt236.btlescan.app.ui'
+
     buildTypes {
         release {
             minifyEnabled false

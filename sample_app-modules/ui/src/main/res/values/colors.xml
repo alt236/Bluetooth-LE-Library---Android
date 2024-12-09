@@ -1,0 +1,10 @@
+<resources>
+    <color name="bluetooth_blue">#0082FC</color>
+    <color name="light_gray">#66e0e0e0</color>
+
+    <color name="colorPrimary">@color/bluetooth_blue</color>
+    <color name="colorPrimaryDark">#0069E3</color>
+    <color name="colorAccent">#F06292</color>
+
+    <color name="colorSeparator">@color/colorAccent</color>
+</resources>

@@ -2,11 +2,11 @@ package uk.co.alt236.btlescan.ui.details.recyclerview.binder
 
 import android.content.Context
 import dev.alt236.bluetoothlelib.util.ByteUtils
+import uk.co.alt236.btlescan.app.ui.view.details.model.AdRecordItem
 import uk.co.alt236.btlescan.app.ui.view.recyclerview.BaseViewBinder
 import uk.co.alt236.btlescan.app.ui.view.recyclerview.BaseViewHolder
 import uk.co.alt236.btlescan.app.ui.view.recyclerview.RecyclerViewItem
 import uk.co.alt236.btlescan.ui.details.recyclerview.holder.AdRecordHolder
-import uk.co.alt236.btlescan.ui.details.recyclerview.model.AdRecordItem
 
 class AdRecordBinder(
     context: Context,

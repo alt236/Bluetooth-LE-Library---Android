@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="value_text_size">14sp</dimen>
+
+    <dimen name="space_after_sections">8dp</dimen>
+    <dimen name="space_after_header">4dp</dimen>
+    <dimen name="content_indent">4dp</dimen>
+</resources>

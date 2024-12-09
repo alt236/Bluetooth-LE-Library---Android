@@ -1,4 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="no_known_services">No known services</string>
     <string name="formatter_single_quoted_string">\'%s\'</string>
+
+
+    <string name="header_device_info">Device Info</string>
+    <string name="header_ibeacon_data">iBeacon Data</string>
+    <string name="header_raw_ad_records">Raw Ad Records</string>
+    <string name="header_rssi_info">RSSI Info</string>
+    <string name="header_scan_record">Scan Record</string>
+    <string name="label_advertisement">Advertisement:</string>
+    <string name="label_length">Length:</string>
+    <string name="label_as_array">As Array:</string>
+    <string name="label_as_utf8">As UTF-8:</string>
+    <string name="label_as_characters">As Chars:</string>
+    <string name="label_bluetooth_le_status">Bluetooth LE:</string>
+    <string name="label_bluetooth_status">Bluetooth:</string>
+    <string name="label_bonding_state">Bonding State:</string>
+    <string name="label_company_id">Company ID:</string>
+    <string name="label_data">Data:</string>
+    <string name="label_desc">Desc:</string>
+    <string name="label_device_address">Device address:</string>
+    <string name="label_device_class">Device Class:</string>
+    <string name="label_device_major_class">Major Class:</string>
+    <string name="label_device_services">Services:</string>
+    <string name="label_device_name">Device Name:</string>
+    <string name="label_distance">Distance:</string>
+    <string name="label_first_rssi">First RSSI:</string>
+    <string name="label_first_timestamp">First Timestamp:</string>
+    <string name="label_last_rssi">Last RSSI:</string>
+    <string name="label_last_timestamp">Last Timestamp:</string>
+    <string name="label_mac">MAC:</string>
+    <string name="label_major">Major:</string>
+    <string name="label_minor">Minor:</string>
+    <string name="label_rssi">RSSI:</string>
+    <string name="label_running_average_rssi">Running Average RSSI:</string>
+    <string name="label_state">State:</string>
+    <string name="label_tx_power">TX Power:</string>
+    <string name="label_uuid">UUID:</string>
+    <string name="label_updated">Updated:</string>
+    <string name="label_decriptor">Descriptor:</string>
 </resources>

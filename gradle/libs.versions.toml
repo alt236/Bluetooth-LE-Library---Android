@@ -2,6 +2,7 @@
 androidx-appcompat = "1.6.1" # changing this will affect minSDK
 androidx-recyclerview = "1.2.1"
 androidx-test-runner = "1.5.2"
+androidx-compose-bom = "2024.10.01"
 annotation = "1.1.0"
 easycursor-android = "2.0.0"
 gradle-android = "8.7.2"
@@ -25,6 +26,14 @@ android-material = { module = "com.google.android.material:material", version.re
 android-support-multidex = { module = "com.android.support:multidex", version.ref = "multidex" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
+androidx-compose-runtime = { module = "androidx.compose.runtime:runtime" }
+androidx-compose-ui-test = { module = "androidx.compose.ui:ui-test" }
+androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidx-recyclerview" }
 androidx-runner = { module = "androidx.test:runner", version.ref = "androidx-test-runner" }
 easycursor-android = { module = "dev.alt236:easycursor-android", version.ref = "easycursor-android" }
@@ -46,3 +55,4 @@ kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 test-logger = { id = "com.adarshr.test-logger", version.ref = "test-logger" }
 triplet-play = { id = 'com.github.triplet.play', version.ref = "triplet-play" }
 vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-maven-publish" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
