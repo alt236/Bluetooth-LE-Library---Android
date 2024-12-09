@@ -1,0 +1,23 @@
+apply plugin: 'kover'
+
+def koverExcludes = []
+
+koverMerged {
+    enable()
+    filters {
+        classes {
+            excludes.addAll(koverExcludes)
+        }
+    }
+}
+
+subprojects {
+    apply plugin: "kover"
+    kover {
+        filters {
+            classes {
+                excludes.addAll(koverExcludes)
+            }
+        }
+    }
+}
