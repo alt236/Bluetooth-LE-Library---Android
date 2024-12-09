@@ -81,11 +81,6 @@ references:
       name: Producing Code Coverage
       command: ./gradlew koverMergedReport printCodeCoverage
 
-  print_code_coverage: &print_code_coverage
-    run:
-      name: Printing code coverage
-      command: ./print_codecov.sh
-
   #
   # BUILDING DEBUG APKS (FOR FIREBASE)
   #
@@ -191,7 +186,8 @@ jobs:
       - *run_ktlint
       - *run_unit_tests
       - *produce_code_coverage # Produce code coverage needs to be straight after running unit tests
-      - *print_code_coverage
+      - upload_test_results_and_artifacts: # Kover stores the merged report under "./build/"
+          module_name: "."
       - *run_android_lint
       - *build_debug_apks
       - *build_release_apks
