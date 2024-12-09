@@ -25,12 +25,12 @@ class BluetoothLeDeviceStore {
     val deviceCursor: EasyObjectCursor<BluetoothLeDevice>
         get() = getDeviceCursor(DEFAULT_COMPARATOR)
 
-    fun getDeviceCursor(comparator: Comparator<BluetoothLeDevice>): EasyObjectCursor<BluetoothLeDevice> {
-        return EasyObjectCursor(
-                BluetoothLeDevice::class.java,
-                getDeviceList(comparator),
-                "address")
-    }
+    fun getDeviceCursor(comparator: Comparator<BluetoothLeDevice>): EasyObjectCursor<BluetoothLeDevice> =
+        EasyObjectCursor(
+            BluetoothLeDevice::class.java,
+            getDeviceList(comparator),
+            "address",
+        )
 
     val deviceList: List<BluetoothLeDevice>
         get() = getDeviceList(DEFAULT_COMPARATOR)
@@ -42,9 +42,10 @@ class BluetoothLeDeviceStore {
     }
 
     private class BluetoothLeDeviceComparator : Comparator<BluetoothLeDevice> {
-        override fun compare(arg0: BluetoothLeDevice, arg1: BluetoothLeDevice): Int {
-            return arg0.address.compareTo(arg1.address)
-        }
+        override fun compare(
+            arg0: BluetoothLeDevice,
+            arg1: BluetoothLeDevice,
+        ): Int = arg0.address.compareTo(arg1.address)
     }
 
     companion object {

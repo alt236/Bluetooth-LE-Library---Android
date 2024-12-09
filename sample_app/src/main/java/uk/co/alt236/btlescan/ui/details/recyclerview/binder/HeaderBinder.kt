@@ -7,15 +7,16 @@ import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem
 import uk.co.alt236.btlescan.ui.details.recyclerview.holder.HeaderHolder
 import uk.co.alt236.btlescan.ui.details.recyclerview.model.HeaderItem
 
-class HeaderBinder(context: Context) : BaseViewBinder<HeaderItem>(context) {
-
-    override fun bind(holder: BaseViewHolder<HeaderItem>, item: HeaderItem) {
+class HeaderBinder(
+    context: Context,
+) : BaseViewBinder<HeaderItem>(context) {
+    override fun bind(
+        holder: BaseViewHolder<HeaderItem>,
+        item: HeaderItem,
+    ) {
         val actualHolder = holder as HeaderHolder
         actualHolder.textView.text = item.text
     }
 
-    override fun canBind(item: RecyclerViewItem): Boolean {
-        return item is HeaderItem
-    }
-
+    override fun canBind(item: RecyclerViewItem): Boolean = item is HeaderItem
 }

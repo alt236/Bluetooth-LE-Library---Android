@@ -1,7 +1,6 @@
 package uk.co.alt236.btlescan.kt
 
 object ByteArrayExt {
-
     fun ByteArray.toCharString(): String {
         val chars = ArrayList<Char>(this.size)
 
@@ -13,7 +12,6 @@ object ByteArrayExt {
                 chars.add(byte.toChar())
             }
         }
-        return String(chars.toCharArray());
+        return String(chars.toCharArray())
     }
-
 }

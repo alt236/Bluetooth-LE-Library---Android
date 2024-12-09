@@ -19,7 +19,13 @@ buildscript {
 plugins {
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.gradle.ktlint)
+    alias(libs.plugins.test.logger)
+    alias(libs.plugins.kover)
 }
+
+apply from: "$rootDir/buildsystem/kover.gradle"
+apply from: "$rootDir/buildsystem/printcoverage.gradle"
 
 allprojects {
     repositories {
@@ -27,18 +33,15 @@ allprojects {
         mavenCentral()
     }
 
-    tasks.withType(Test) {
-        testLogging {
-            exceptionFormat "full"
-            showCauses true
-            showExceptions true
-            showStackTraces true
-            showStandardStreams true
-            events = ["passed", "skipped", "failed"]
+    apply plugin: "org.jlleitschuh.gradle.ktlint"
+    apply plugin: "com.adarshr.test-logger"
 
-            // This line is left here to make test debugging easier
-            // events = ["passed", "skipped", "failed", "standardError", "standardOut"]
-        }
+    testlogger {
+        showStandardStreams true
+    }
+
+    ktlint {
+        version.set("1.4.1")
     }
 
     apply from: "${project.rootDir}/buildconstants/android-sdk-versions.gradle"

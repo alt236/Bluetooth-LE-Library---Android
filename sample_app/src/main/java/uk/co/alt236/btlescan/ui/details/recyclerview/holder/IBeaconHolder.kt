@@ -6,7 +6,9 @@ import uk.co.alt236.btlescan.R
 import uk.co.alt236.btlescan.ui.common.recyclerview.BaseViewHolder
 import uk.co.alt236.btlescan.ui.details.recyclerview.model.IBeaconItem
 
-class IBeaconHolder(itemView: View) : BaseViewHolder<IBeaconItem>(itemView) {
+class IBeaconHolder(
+    itemView: View,
+) : BaseViewHolder<IBeaconItem>(itemView) {
     val companyId: TextView = itemView.findViewById<View>(R.id.companyId) as TextView
     val advert: TextView = itemView.findViewById<View>(R.id.advertisement) as TextView
     val uuid: TextView = itemView.findViewById<View>(R.id.uuid) as TextView

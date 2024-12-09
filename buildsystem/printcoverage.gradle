@@ -1,0 +1,160 @@
+task printCodeCoverage(type: PrintCodeCoverageTask) {
+    path = "$rootDir/build/reports/kover/merged/xml/report.xml"
+}
+
+
+import groovy.transform.ImmutableBase
+import groovy.transform.MapConstructor
+import org.w3c.dom.Document
+import org.w3c.dom.Element
+import org.w3c.dom.Node
+import org.w3c.dom.NodeList
+
+import javax.xml.parsers.DocumentBuilder
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.xpath.XPath
+import javax.xml.xpath.XPathConstants
+import javax.xml.xpath.XPathFactory
+
+class PrintCodeCoverageTask extends DefaultTask {
+    @Input
+    String path
+
+    @TaskAction
+    void printCodeCoverage() {
+        final file = new File(path)
+        if (!file.exists() || file.isDirectory() || !file.canRead()) {
+            System.err.println("Unable to print code coverage, invalid file: $file")
+            return
+        }
+
+        println "* Reading $file"
+        final expression = "/report/counter"
+        final xmlDoc = readXml(file)
+        final nodes = getNodes(xmlDoc, expression)
+
+        if (nodes.getLength() == 0) {
+            throw new IllegalStateException("Expression '$expression' did not return any results!")
+        }
+
+        final counters = getCounters(nodes)
+        print(counters)
+    }
+
+    private static NodeList getNodes(Document document, String expression) {
+        XPath xPath = XPathFactory.newInstance().newXPath();
+        return (NodeList) xPath.compile(expression).evaluate(document, XPathConstants.NODESET);
+    }
+
+    private static Document readXml(final File xmlFile) {
+        final FileInputStream fileIS = new FileInputStream(xmlFile);
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = builderFactory.newDocumentBuilder();
+        return builder.parse(fileIS);
+    }
+
+    private static List<CCCounter> getCounters(NodeList nodes) {
+        final list = new ArrayList<CCCounter>()
+
+        for (int i = 0; i < nodes.length; i++) {
+            final node = nodes.item(i)
+
+            if (node.getNodeType() == Node.ELEMENT_NODE && "counter" == node.getNodeName()) {
+                final element = (Element) node
+                final type = element.getAttribute("type")
+                final instructionsCovered = element.getAttribute("covered")
+                final instructionsMissed = element.getAttribute("missed")
+
+                final counter = new CCCounter(
+                        type: type,
+                        instructionsCovered: Long.parseLong(instructionsCovered),
+                        instructionsMissed: Long.parseLong(instructionsMissed)
+                )
+                list.add(counter)
+            }
+        }
+        return list
+    }
+
+
+    private static print(List<CCCounter> counters) {
+        final sorted = new ArrayList<CCCounter>()
+
+        sorted.add(counters.find { it.type.equalsIgnoreCase("CLASS") })
+        sorted.add(counters.find { it.type.equalsIgnoreCase("METHOD") })
+        sorted.add(counters.find { it.type.equalsIgnoreCase("BRANCH") })
+        sorted.add(counters.find { it.type.equalsIgnoreCase("LINE") })
+        sorted.add(counters.find { it.type.equalsIgnoreCase("INSTRUCTION") })
+
+        sorted.removeAll { it == null }
+        TablePrinter.print(sorted)
+    }
+
+
+}
+
+@MapConstructor
+@ImmutableBase
+class CCCounter {
+    final String type
+    final long instructionsCovered
+    final long instructionsMissed
+
+    long total() {
+        return instructionsCovered + instructionsMissed
+    }
+}
+
+class TablePrinter {
+
+    final static print(List<CCCounter> counters) {
+        final List<String> headers = counters.collect { it.type.capitalize() + " %" }
+        final List<String> values = counters.collect { getStats(it) }
+
+        final String headerFormatPattern = createPattern(headers, values, true)
+        final String dataFormatPattern = createPattern(headers, values, false)
+
+        final String header = String.format(headerFormatPattern, headers.toArray())
+        final String data = String.format(dataFormatPattern, values.toArray())
+        final String divider = String.format("%" + header.length() + "s", "").replace(' ', '-')
+
+        println("\n")
+        println("CODE COVERAGE (TOTAL):")
+        println(divider)
+        println(header)
+        println(data)
+        println(divider)
+    }
+
+    private static String createPattern(List<String> headers, List<String> values, boolean alignLeft) {
+        final StringBuilder patternBuilder = new StringBuilder()
+        final String alignLeftChar
+        if (alignLeft) {
+            alignLeftChar = "-"
+        } else {
+            alignLeftChar = ""
+        }
+
+        for (int i = 0; i < headers.size(); i++) {
+            final max = getLongest(i, headers, values)
+            if (patternBuilder.length() > 0) {
+                patternBuilder.append(" | ")
+            }
+
+            patternBuilder.append("%${alignLeftChar}${max}s")
+        }
+
+        return patternBuilder.toString()
+    }
+
+    private static int getLongest(int position, List<String>... lists) {
+        return Collections.max(lists.collect { it.get(position).length() })
+    }
+
+    private static String getStats(CCCounter counter) {
+        final covered = counter.instructionsCovered
+        final total = counter.total()
+        final pc = (covered / Double.valueOf(total)) * 100
+        return String.format("%.2f%% (%d/%d)", pc, covered, total)
+    }
+}

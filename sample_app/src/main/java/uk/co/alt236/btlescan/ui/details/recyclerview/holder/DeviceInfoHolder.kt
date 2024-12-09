@@ -6,7 +6,9 @@ import uk.co.alt236.btlescan.R
 import uk.co.alt236.btlescan.ui.common.recyclerview.BaseViewHolder
 import uk.co.alt236.btlescan.ui.details.recyclerview.model.DeviceInfoItem
 
-class DeviceInfoHolder(itemView: View) : BaseViewHolder<DeviceInfoItem>(itemView) {
+class DeviceInfoHolder(
+    itemView: View,
+) : BaseViewHolder<DeviceInfoItem>(itemView) {
     val name: TextView = itemView.findViewById<View>(R.id.deviceName) as TextView
     val address: TextView = itemView.findViewById<View>(R.id.deviceAddress) as TextView
     val deviceClass: TextView = itemView.findViewById<View>(R.id.deviceClass) as TextView

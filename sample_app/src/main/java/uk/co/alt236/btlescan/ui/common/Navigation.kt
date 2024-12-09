@@ -10,8 +10,9 @@ import uk.co.alt236.btlescan.R
 import uk.co.alt236.btlescan.ui.control.DeviceControlActivity
 import uk.co.alt236.btlescan.ui.details.DeviceDetailsActivity
 
-class Navigation(private val activity: Activity) {
-
+class Navigation(
+    private val activity: Activity,
+) {
     fun openDetailsActivity(device: BluetoothLeDevice?) {
         val intent = DeviceDetailsActivity.createIntent(activity, device)
         startActivity(intent)
@@ -22,8 +23,15 @@ class Navigation(private val activity: Activity) {
         startActivity(intent)
     }
 
-    fun shareFileViaEmail(uri: Uri, recipient: Array<String>?, subject: String?, message: String?) {
-        val intent = ShareCompat.IntentBuilder.from(activity)
+    fun shareFileViaEmail(
+        uri: Uri,
+        recipient: Array<String>?,
+        subject: String?,
+        message: String?,
+    ) {
+        val intent =
+            ShareCompat.IntentBuilder
+                .from(activity)
                 .setChooserTitle(R.string.exporter_email_device_list_picker_text)
                 .setStream(uri)
                 .setEmailTo(recipient ?: emptyArray())
@@ -41,5 +49,4 @@ class Navigation(private val activity: Activity) {
     private fun startActivity(intent: Intent) {
         ActivityCompat.startActivity(activity, intent, null)
     }
-
 }

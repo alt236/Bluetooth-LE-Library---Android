@@ -6,8 +6,9 @@ import dev.alt236.bluetoothlelib.device.BluetoothService
 import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem
 
 @SuppressLint("MissingPermission") // We check before this is called
-class DeviceInfoItem(private val mDevice: BluetoothLeDevice) : RecyclerViewItem {
-
+class DeviceInfoItem(
+    private val mDevice: BluetoothLeDevice,
+) : RecyclerViewItem {
     val bluetoothDeviceKnownSupportedServices: Set<BluetoothService>
         get() = mDevice.bluetoothDeviceKnownSupportedServices
 
@@ -25,5 +26,4 @@ class DeviceInfoItem(private val mDevice: BluetoothLeDevice) : RecyclerViewItem 
 
     val name: String
         get() = mDevice.name ?: ""
-
 }

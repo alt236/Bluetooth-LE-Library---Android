@@ -8,9 +8,13 @@ import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem
 import uk.co.alt236.btlescan.ui.details.recyclerview.holder.AdRecordHolder
 import uk.co.alt236.btlescan.ui.details.recyclerview.model.AdRecordItem
 
-class AdRecordBinder(context: Context) : BaseViewBinder<AdRecordItem>(context) {
-
-    override fun bind(holder: BaseViewHolder<AdRecordItem>, item: AdRecordItem) {
+class AdRecordBinder(
+    context: Context,
+) : BaseViewBinder<AdRecordItem>(context) {
+    override fun bind(
+        holder: BaseViewHolder<AdRecordItem>,
+        item: AdRecordItem,
+    ) {
         val actualHolder = holder as AdRecordHolder
 
         actualHolder.titleTextView.text = item.title
@@ -25,7 +29,5 @@ class AdRecordBinder(context: Context) : BaseViewBinder<AdRecordItem>(context) {
         actualHolder.charactersTextView.text = getQuotedString(charString)
     }
 
-    override fun canBind(item: RecyclerViewItem): Boolean {
-        return item is AdRecordItem
-    }
+    override fun canBind(item: RecyclerViewItem): Boolean = item is AdRecordItem
 }

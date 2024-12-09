@@ -8,7 +8,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 
-class BluetoothAdapterWrapper(private val context: Context) {
+class BluetoothAdapterWrapper(
+    private val context: Context,
+) {
     var bluetoothAdapter: BluetoothAdapter? = null
 
     init {
@@ -30,7 +32,6 @@ class BluetoothAdapterWrapper(private val context: Context) {
 
     val isBluetoothOn: Boolean
         get() = bluetoothAdapter?.isEnabled ?: false
-
 
     companion object {
         const val REQUEST_ENABLE_BT = 2001
