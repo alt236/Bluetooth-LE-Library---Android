@@ -86,12 +86,13 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = 17
+        jvmTarget = JavaVersion.VERSION_17
     }
 }
 
 dependencies {
     implementation project(':library')
+    implementation project(':sample_app-modules:ui')
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.recyclerview

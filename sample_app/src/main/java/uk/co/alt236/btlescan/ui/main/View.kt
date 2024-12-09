@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import uk.co.alt236.btlescan.R
-import uk.co.alt236.btlescan.ui.common.recyclerview.BaseRecyclerViewAdapter
+import uk.co.alt236.btlescan.app.ui.view.recyclerview.BaseRecyclerViewAdapter
 
 class View(
     activity: Activity,

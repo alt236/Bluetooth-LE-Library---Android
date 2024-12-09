@@ -3,7 +3,7 @@ package uk.co.alt236.btlescan.ui.details.recyclerview.model
 import android.annotation.SuppressLint
 import dev.alt236.bluetoothlelib.device.BluetoothLeDevice
 import dev.alt236.bluetoothlelib.device.BluetoothService
-import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem
+import uk.co.alt236.btlescan.app.ui.view.recyclerview.RecyclerViewItem
 
 @SuppressLint("MissingPermission") // We check before this is called
 class DeviceInfoItem(

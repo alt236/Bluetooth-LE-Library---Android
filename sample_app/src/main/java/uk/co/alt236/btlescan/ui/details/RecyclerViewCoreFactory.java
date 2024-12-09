@@ -3,7 +3,7 @@ package uk.co.alt236.btlescan.ui.details;
 import android.content.Context;
 
 import uk.co.alt236.btlescan.R;
-import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewBinderCore;
+import uk.co.alt236.btlescan.app.ui.view.recyclerview.RecyclerViewBinderCore;
 import uk.co.alt236.btlescan.ui.details.recyclerview.binder.AdRecordBinder;
 import uk.co.alt236.btlescan.ui.details.recyclerview.binder.DeviceInfoBinder;
 import uk.co.alt236.btlescan.ui.details.recyclerview.binder.HeaderBinder;

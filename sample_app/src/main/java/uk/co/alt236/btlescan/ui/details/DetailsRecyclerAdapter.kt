@@ -1,8 +1,8 @@
 package uk.co.alt236.btlescan.ui.details
 
-import uk.co.alt236.btlescan.ui.common.recyclerview.BaseRecyclerViewAdapter
-import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewBinderCore
-import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem
+import uk.co.alt236.btlescan.app.ui.view.recyclerview.BaseRecyclerViewAdapter
+import uk.co.alt236.btlescan.app.ui.view.recyclerview.RecyclerViewBinderCore
+import uk.co.alt236.btlescan.app.ui.view.recyclerview.RecyclerViewItem
 
 internal class DetailsRecyclerAdapter(
     core: RecyclerViewBinderCore,

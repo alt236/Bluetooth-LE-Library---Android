@@ -3,9 +3,9 @@ package uk.co.alt236.btlescan.ui.details.recyclerview.binder
 import android.content.Context
 import dev.alt236.bluetoothlelib.resolvers.CompanyIdentifierResolver
 import uk.co.alt236.btlescan.R
-import uk.co.alt236.btlescan.ui.common.recyclerview.BaseViewBinder
-import uk.co.alt236.btlescan.ui.common.recyclerview.BaseViewHolder
-import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem
+import uk.co.alt236.btlescan.app.ui.view.recyclerview.BaseViewBinder
+import uk.co.alt236.btlescan.app.ui.view.recyclerview.BaseViewHolder
+import uk.co.alt236.btlescan.app.ui.view.recyclerview.RecyclerViewItem
 import uk.co.alt236.btlescan.ui.details.recyclerview.holder.IBeaconHolder
 import uk.co.alt236.btlescan.ui.details.recyclerview.model.IBeaconItem
 import uk.co.alt236.btlescan.util.TimeFormatter

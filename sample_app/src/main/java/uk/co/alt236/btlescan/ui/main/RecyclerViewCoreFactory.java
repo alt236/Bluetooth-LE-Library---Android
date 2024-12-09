@@ -4,7 +4,7 @@ import android.content.Context;
 
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.ui.common.Navigation;
-import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewBinderCore;
+import uk.co.alt236.btlescan.app.ui.view.recyclerview.RecyclerViewBinderCore;
 import uk.co.alt236.btlescan.ui.main.recyclerview.binder.IBeaconBinder;
 import uk.co.alt236.btlescan.ui.main.recyclerview.binder.LeDeviceBinder;
 import uk.co.alt236.btlescan.ui.main.recyclerview.holder.IBeaconHolder;

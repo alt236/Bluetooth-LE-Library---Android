@@ -1,7 +1,7 @@
 package uk.co.alt236.btlescan.ui.details.recyclerview.model
 
 import dev.alt236.bluetoothlelib.device.beacon.ibeacon.IBeaconManufacturerData
-import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem
+import uk.co.alt236.btlescan.app.ui.view.recyclerview.RecyclerViewItem
 
 class IBeaconItem(
     iBeaconData: IBeaconManufacturerData,

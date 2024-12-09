@@ -1,8 +1,8 @@
-package uk.co.alt236.btlescan.ui.common.recyclerview
+package uk.co.alt236.btlescan.app.ui.view.recyclerview
 
 import android.content.Context
 import androidx.annotation.StringRes
-import uk.co.alt236.btlescan.R
+import uk.co.alt236.btlescan.app.ui.R
 
 abstract class BaseViewBinder<T : RecyclerViewItem>(
     protected val context: Context,

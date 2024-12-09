@@ -1,0 +1,48 @@
+plugins {
+    id 'com.android.library'
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+}
+
+apply from: "${project.rootDir}/buildsystem/android-defaults.gradle"
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+dependencies {
+    implementation libs.androidx.annotation
+    implementation libs.androidx.recyclerview
+
+    testImplementation libs.junit4
+    testImplementation libs.mockito
+}
+
+android {
+
+    androidResources {
+        noCompress 'zip'
+    }
+    lint {
+        lintConfig file("$rootDir/buildsystem/codequality/lint.xml")
+    }
+    namespace 'uk.co.alt236.btlescan.app.ui'
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
+    }
+}
+
+
+

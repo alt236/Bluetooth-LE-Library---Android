@@ -1,4 +1,4 @@
-package uk.co.alt236.btlescan.ui.common.recyclerview
+package uk.co.alt236.btlescan.app.ui.view.recyclerview
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
