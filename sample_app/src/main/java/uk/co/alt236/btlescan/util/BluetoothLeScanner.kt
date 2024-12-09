@@ -8,11 +8,10 @@ import android.bluetooth.le.ScanSettings
 import android.os.Handler
 import android.util.Log
 
-
 @Suppress("MemberVisibilityCanBePrivate")
 class BluetoothLeScanner(
     private val bluetoothAdapterWrapper: BluetoothAdapterWrapper,
-    private val leScanCallback: ScanCallback
+    private val leScanCallback: ScanCallback,
 ) {
     private val mHandler: Handler = Handler()
 
@@ -46,12 +45,16 @@ class BluetoothLeScanner(
 
         Log.d(TAG, "~ Starting Scan (duration: $duration)")
         isScanning = true
-        val filters = ArrayList<ScanFilter>().apply {
-            this.add(ScanFilter.Builder().build())
-        }
-        val settings = ScanSettings.Builder().setScanMode(
-            ScanSettings.SCAN_MODE_LOW_LATENCY
-        ).build()
+        val filters =
+            ArrayList<ScanFilter>().apply {
+                this.add(ScanFilter.Builder().build())
+            }
+        val settings =
+            ScanSettings
+                .Builder()
+                .setScanMode(
+                    ScanSettings.SCAN_MODE_LOW_LATENCY,
+                ).build()
 
         adapter.bluetoothLeScanner.startScan(filters, settings, leScanCallback)
     }
@@ -66,5 +69,4 @@ class BluetoothLeScanner(
     private companion object {
         val TAG: String = BluetoothLeScanner::class.java.simpleName
     }
-
 }

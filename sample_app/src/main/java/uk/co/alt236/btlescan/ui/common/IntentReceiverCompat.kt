@@ -19,7 +19,7 @@ object IntentReceiverCompat {
             activity.registerReceiver(
                 receiver,
                 filter,
-                Context.RECEIVER_EXPORTED
+                Context.RECEIVER_EXPORTED,
             )
         } else {
             activity.registerExportUnawareReceiver(receiver, filter)
@@ -33,7 +33,7 @@ object IntentReceiverCompat {
     ) {
         this.registerReceiver(
             receiver,
-            filter
+            filter,
         )
     }
 }

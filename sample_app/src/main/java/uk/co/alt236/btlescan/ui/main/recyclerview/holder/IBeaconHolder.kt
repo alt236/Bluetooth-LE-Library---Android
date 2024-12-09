@@ -6,7 +6,10 @@ import uk.co.alt236.btlescan.R
 import uk.co.alt236.btlescan.ui.common.recyclerview.BaseViewHolder
 import uk.co.alt236.btlescan.ui.main.recyclerview.model.IBeaconItem
 
-class IBeaconHolder(itemView: View) : BaseViewHolder<IBeaconItem>(itemView), CommonDeviceHolder {
+class IBeaconHolder(
+    itemView: View,
+) : BaseViewHolder<IBeaconItem>(itemView),
+    CommonDeviceHolder {
     override val deviceName: TextView = itemView.findViewById<View>(R.id.device_name) as TextView
     override val deviceAddress: TextView = itemView.findViewById<View>(R.id.device_address) as TextView
     override val deviceRssi: TextView = itemView.findViewById<View>(R.id.device_rssi) as TextView

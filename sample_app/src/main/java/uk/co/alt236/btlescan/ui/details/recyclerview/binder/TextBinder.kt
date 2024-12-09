@@ -7,15 +7,16 @@ import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem
 import uk.co.alt236.btlescan.ui.details.recyclerview.holder.TextHolder
 import uk.co.alt236.btlescan.ui.details.recyclerview.model.TextItem
 
-class TextBinder(context: Context) : BaseViewBinder<TextItem>(context) {
-
-    override fun bind(holder: BaseViewHolder<TextItem>, item: TextItem) {
+class TextBinder(
+    context: Context,
+) : BaseViewBinder<TextItem>(context) {
+    override fun bind(
+        holder: BaseViewHolder<TextItem>,
+        item: TextItem,
+    ) {
         val actualHolder = holder as TextHolder
         actualHolder.textView.text = item.text
     }
 
-    override fun canBind(item: RecyclerViewItem): Boolean {
-        return item is TextItem
-    }
-
+    override fun canBind(item: RecyclerViewItem): Boolean = item is TextItem
 }

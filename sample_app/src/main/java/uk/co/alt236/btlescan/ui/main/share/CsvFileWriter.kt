@@ -17,8 +17,11 @@ import java.io.IOException
 import java.util.Locale
 
 class CsvFileWriter {
-
-    fun writeCsvFile(context: Context, fileName: String, devices: List<BluetoothLeDevice>): Uri? {
+    fun writeCsvFile(
+        context: Context,
+        fileName: String,
+        devices: List<BluetoothLeDevice>,
+    ): Uri? {
         val filePath = getOutputFile(context, fileName)
         val contents = getListAsCsv(devices)
 
@@ -29,7 +32,10 @@ class CsvFileWriter {
         }
     }
 
-    private fun getOutputFile(context: Context, fileName: String): File {
+    private fun getOutputFile(
+        context: Context,
+        fileName: String,
+    ): File {
         val root = context.filesDir
         val shareableFolder = File(root, "shared_files/")
         shareableFolder.mkdirs()
@@ -73,7 +79,7 @@ class CsvFileWriter {
             if (isIBeacon) {
                 val beacon =
                     IBeaconDevice(
-                        device
+                        device,
                     )
                 uuid = beacon.uuid.toString()
                 minor = beacon.minor.toString()
@@ -101,7 +107,10 @@ class CsvFileWriter {
         return sb.toString()
     }
 
-    private fun saveToFile(file: File, contents: String): Boolean {
+    private fun saveToFile(
+        file: File,
+        contents: String,
+    ): Boolean {
         var writer: FileWriter? = null
         return try {
             writer = FileWriter(file)

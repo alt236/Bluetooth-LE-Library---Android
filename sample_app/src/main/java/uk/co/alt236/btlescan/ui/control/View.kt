@@ -11,7 +11,9 @@ import uk.co.alt236.btlescan.R
 import uk.co.alt236.btlescan.kt.ByteArrayExt.toCharString
 import java.nio.charset.Charset
 
-internal class View(activity: Activity) {
+internal class View(
+    activity: Activity,
+) {
     private val resources = activity.resources
     private val mGattServicesList: ExpandableListView = activity.findViewById(R.id.gatt_services_list)
     private var mConnectionState: TextView = activity.findViewById(R.id.connection_state)
@@ -74,7 +76,6 @@ internal class View(activity: Activity) {
         mGattServicesList.setOnChildClickListener(listener)
     }
 
-    private fun quoteString(string: String): String {
-        return resources.getString(R.string.formatter_single_quoted_string, string);
-    }
+    private fun quoteString(string: String): String =
+        resources.getString(R.string.formatter_single_quoted_string, string)
 }

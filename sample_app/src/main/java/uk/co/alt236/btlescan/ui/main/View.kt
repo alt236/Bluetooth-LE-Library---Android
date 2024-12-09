@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import uk.co.alt236.btlescan.R
 import uk.co.alt236.btlescan.ui.common.recyclerview.BaseRecyclerViewAdapter
 
-class View(activity: Activity) {
+class View(
+    activity: Activity,
+) {
     private val resources = activity.resources
     private val mTvBluetoothLeStatus: TextView = activity.findViewById(R.id.tvBluetoothLe)
     private var mTvBluetoothStatus: TextView = activity.findViewById(R.id.tvBluetoothStatus)
@@ -27,7 +29,6 @@ class View(activity: Activity) {
             mTvBluetoothStatus.setText(R.string.off)
         }
     }
-
 
     fun setBluetoothLeSupported(supported: Boolean) {
         if (supported) {

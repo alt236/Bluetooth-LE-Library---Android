@@ -3,7 +3,9 @@ package uk.co.alt236.btlescan.ui.details.recyclerview.model
 import dev.alt236.bluetoothlelib.device.BluetoothLeDevice
 import uk.co.alt236.btlescan.ui.common.recyclerview.RecyclerViewItem
 
-class RssiItem(private val mDevice: BluetoothLeDevice) : RecyclerViewItem {
+class RssiItem(
+    private val mDevice: BluetoothLeDevice,
+) : RecyclerViewItem {
     val rssi: Int
         get() = mDevice.rssi
 
@@ -18,5 +20,4 @@ class RssiItem(private val mDevice: BluetoothLeDevice) : RecyclerViewItem {
 
     val timestamp: Long
         get() = mDevice.timestamp
-
 }
