@@ -63,18 +63,23 @@ references:
   #
   run_android_lint: &run_android_lint
     run:
-      name: Running lint
+      name: Running Android lint
       command: ./gradlew lintDebug
+
+  run_ktlint: &run_ktlint
+    run:
+      name: Running ktlint
+      command: ./gradlew ktlintcheck
 
   run_unit_tests: &run_unit_tests
     run:
       name: Running unit tests
-      command: ./gradlew testDebug library:testDebug
+      command: ./gradlew clean testDebug library:testDebug
 
   produce_code_coverage: &produce_code_coverage
     run:
       name: Producing Code Coverage
-      command: ./gradlew jacocoTestReport
+      command: ./gradlew koverMergedReport printCodeCoverage
 
   print_code_coverage: &print_code_coverage
     run:
@@ -183,6 +188,7 @@ jobs:
       - checkout
       - *setup_environment
       - setup_dependency_cache
+      - *run_ktlint
       - *run_unit_tests
       - *produce_code_coverage # Produce code coverage needs to be straight after running unit tests
       - *print_code_coverage
