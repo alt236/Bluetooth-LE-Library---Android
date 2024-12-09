@@ -44,15 +44,13 @@ class IBeaconBinder(
             value: Int,
         ): String = createLine(first, hexEncode(value))
 
-        private fun getWithHexEncode(value: Int): String =
-            createLine(value.toString(), hexEncode(value))
+        private fun getWithHexEncode(value: Int): String = createLine(value.toString(), hexEncode(value))
 
         private fun createLine(
             first: String,
             second: String,
         ): String = String.format(Locale.US, STRING_FORMAT, first, second)
 
-        private fun hexEncode(integer: Int): String =
-            "0x" + Integer.toHexString(integer).toUpperCase(Locale.US)
+        private fun hexEncode(integer: Int): String = "0x" + Integer.toHexString(integer).toUpperCase(Locale.US)
     }
 }

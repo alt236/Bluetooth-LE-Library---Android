@@ -23,6 +23,5 @@ abstract class BaseViewBinder<T : RecyclerViewItem>(
         vararg formatArgs: Any?,
     ): String = context.getString(resId, *formatArgs)
 
-    protected fun getQuotedString(vararg formatArgs: Any?): String =
-        getString(R.string.formatter_single_quoted_string, *formatArgs)
+    protected fun getQuotedString(vararg formatArgs: Any?): String = getString(R.string.formatter_single_quoted_string, *formatArgs)
 }

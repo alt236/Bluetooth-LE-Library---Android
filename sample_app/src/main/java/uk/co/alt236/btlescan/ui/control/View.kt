@@ -76,6 +76,5 @@ internal class View(
         mGattServicesList.setOnChildClickListener(listener)
     }
 
-    private fun quoteString(string: String): String =
-        resources.getString(R.string.formatter_single_quoted_string, string)
+    private fun quoteString(string: String): String = resources.getString(R.string.formatter_single_quoted_string, string)
 }
