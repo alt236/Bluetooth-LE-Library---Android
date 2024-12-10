@@ -1,4 +1,4 @@
-package uk.co.alt236.btlescan.arch.viewmodel
+package uk.co.alt236.btlescan.app.arch.viewmodel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

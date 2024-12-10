@@ -1,4 +1,4 @@
-package uk.co.alt236.btlescan.util
+package uk.co.alt236.btlescan.bluetooth
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter

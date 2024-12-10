@@ -12,6 +12,7 @@ hilt-android = "2.47"
 jsr305 = "3.0.2"
 junit4 = "4.13.2"
 kotlin = "2.0.21"
+kotlinx-coroutines-android = "1.9.0"
 kover = "0.6.1"
 material = "1.9.0" # changing this will affect minSDK
 mockito = "5.14.2"
@@ -46,6 +47,7 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 permissionx = { module = "com.guolindev.permissionx:permissionx", version.ref = "permissionx" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }

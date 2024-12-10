@@ -95,6 +95,7 @@ android {
 dependencies {
     implementation project(':library')
     implementation project(':sample_app-modules:ui')
+    implementation project(':sample_app-modules:arch')
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.activityktx

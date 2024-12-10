@@ -1,8 +1,7 @@
-package uk.co.alt236.btlescan.arch.coroutines
+package uk.co.alt236.btlescan.app.arch.compose
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Inject
 
 interface DispatcherProvider {
     fun main(): CoroutineDispatcher = Dispatchers.Main
@@ -13,7 +12,3 @@ interface DispatcherProvider {
 
     fun unconfined(): CoroutineDispatcher = Dispatchers.Unconfined
 }
-
-class DefaultDispatcherProvider
-    @Inject
-    constructor() : DispatcherProvider

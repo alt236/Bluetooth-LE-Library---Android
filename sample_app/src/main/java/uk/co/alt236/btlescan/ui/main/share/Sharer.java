@@ -7,7 +7,7 @@ import android.widget.Toast;
 import java.util.Locale;
 
 import uk.co.alt236.btlescan.R;
-import uk.co.alt236.btlescan.containers.BluetoothLeDeviceStore;
+import uk.co.alt236.btlescan.bluetooth.BluetoothLeDeviceStore;
 import uk.co.alt236.btlescan.ui.common.Navigation;
 import uk.co.alt236.btlescan.util.TimeFormatter;
 

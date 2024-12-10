@@ -1,4 +1,4 @@
-package uk.co.alt236.btlescan.containers;
+package uk.co.alt236.btlescan.bluetooth;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package uk.co.alt236.btlescan.kt
+package uk.co.alt236.btlescan.ext
 
 object ByteArrayExt {
     fun ByteArray.toCharString(): String {

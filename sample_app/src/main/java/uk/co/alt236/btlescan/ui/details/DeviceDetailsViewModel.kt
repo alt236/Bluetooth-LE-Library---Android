@@ -5,9 +5,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.alt236.bluetoothlelib.device.BluetoothLeDevice
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import uk.co.alt236.btlescan.app.arch.compose.DispatcherProvider
+import uk.co.alt236.btlescan.app.arch.viewmodel.BaseViewModel
 import uk.co.alt236.btlescan.app.ui.view.details.model.DetailsScreenItems
-import uk.co.alt236.btlescan.arch.coroutines.DispatcherProvider
-import uk.co.alt236.btlescan.arch.viewmodel.BaseViewModel
 import uk.co.alt236.btlescan.ui.details.mapper.DetailsUiMapper
 import javax.inject.Inject
 

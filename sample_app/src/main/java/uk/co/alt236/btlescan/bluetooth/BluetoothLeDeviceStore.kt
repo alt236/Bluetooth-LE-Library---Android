@@ -1,4 +1,4 @@
-package uk.co.alt236.btlescan.containers
+package uk.co.alt236.btlescan.bluetooth
 
 import dev.alt236.bluetoothlelib.device.BluetoothLeDevice
 import dev.alt236.easycursor.objectcursor.EasyObjectCursor

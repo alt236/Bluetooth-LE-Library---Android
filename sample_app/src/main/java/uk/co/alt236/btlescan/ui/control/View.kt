@@ -8,7 +8,7 @@ import androidx.core.content.res.ResourcesCompat
 import dev.alt236.bluetoothlelib.resolvers.GattAttributeResolver
 import dev.alt236.bluetoothlelib.util.ByteUtils
 import uk.co.alt236.btlescan.R
-import uk.co.alt236.btlescan.kt.ByteArrayExt.toCharString
+import uk.co.alt236.btlescan.ext.ByteArrayExt.toCharString
 import java.nio.charset.Charset
 
 internal class View(

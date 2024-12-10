@@ -21,7 +21,7 @@ import dev.alt236.bluetoothlelib.device.beacon.BeaconType;
 import dev.alt236.bluetoothlelib.device.beacon.BeaconUtils;
 import dev.alt236.bluetoothlelib.device.beacon.ibeacon.IBeaconDevice;
 import uk.co.alt236.btlescan.R;
-import uk.co.alt236.btlescan.containers.BluetoothLeDeviceStore;
+import uk.co.alt236.btlescan.bluetooth.BluetoothLeDeviceStore;
 import uk.co.alt236.btlescan.permission.BluetoothPermissionCheck;
 import uk.co.alt236.btlescan.permission.PermissionDeniedDialogFragment;
 import uk.co.alt236.btlescan.ui.common.Navigation;
@@ -30,8 +30,8 @@ import uk.co.alt236.btlescan.app.ui.view.recyclerview.RecyclerViewItem;
 import uk.co.alt236.btlescan.ui.main.recyclerview.model.IBeaconItem;
 import uk.co.alt236.btlescan.ui.main.recyclerview.model.LeDeviceItem;
 import uk.co.alt236.btlescan.ui.main.share.Sharer;
-import uk.co.alt236.btlescan.util.BluetoothAdapterWrapper;
-import uk.co.alt236.btlescan.util.BluetoothLeScanner;
+import uk.co.alt236.btlescan.bluetooth.BluetoothAdapterWrapper;
+import uk.co.alt236.btlescan.bluetooth.BluetoothLeScanner;
 
 public class MainActivity extends AppCompatActivity {
     private final BluetoothPermissionCheck permissionCheck = new BluetoothPermissionCheck();
