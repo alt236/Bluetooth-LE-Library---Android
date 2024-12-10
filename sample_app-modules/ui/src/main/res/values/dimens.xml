@@ -4,5 +4,7 @@
 
     <dimen name="space_after_sections">8dp</dimen>
     <dimen name="space_after_header">4dp</dimen>
-    <dimen name="content_indent">4dp</dimen>
+    <dimen name="content_block_indent">4dp</dimen>
+
+    <dimen name="screen_margin">8dp</dimen>
 </resources>

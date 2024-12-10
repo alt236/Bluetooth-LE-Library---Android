@@ -7,11 +7,13 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import uk.co.alt236.btlescan.app.ui.R
@@ -31,28 +33,39 @@ internal fun DataGrid(
     LazyVerticalGrid(
         columns = GridCells.Fixed(totalSpan),
         modifier =
-            Modifier
-                .heightIn(max = 1000.dp) // This is to allow the nesting of this inside a lazy column
-                .padding(
-                    start = dimensionResource(R.dimen.content_indent),
-                    end = dimensionResource(R.dimen.content_indent),
-                    bottom = dimensionResource(R.dimen.space_after_sections),
-                ),
+        Modifier
+            .heightIn(max = 1000.dp) // This is to allow the nesting of this inside a lazy column
+            .padding(
+                start = dimensionResource(R.dimen.content_block_indent),
+                end = dimensionResource(R.dimen.content_block_indent),
+                bottom = dimensionResource(R.dimen.space_after_sections),
+            ),
     ) {
         itemsIndexed(
             items = actualItems,
             span = { index, _ ->
-                if (index.mod(2) == 0) {
-                    firstGridItemSpan
-                } else {
+                if (index.isEven()) {
                     secondGridItemSpan
+                } else {
+                    firstGridItemSpan
                 }
             },
-        ) { _, item ->
-            Text(text = item, modifier = Modifier.fillMaxWidth())
+        ) { index, item ->
+            val font = if (index.isEven()) {
+                FontFamily.Monospace
+             } else {
+                FontFamily.Default
+            }
+            Text(
+                text = item,
+                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = font,
+                modifier = Modifier.fillMaxWidth())
         }
     }
 }
+
+private fun Int.isEven() = this.mod(2) != 0
 
 internal data class GridRow(
     val title: String,

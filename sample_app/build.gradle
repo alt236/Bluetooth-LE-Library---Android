@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.triplet.play)
+    alias(libs.plugins.compose.compiler)
 }
 
 apply from: "${project.rootDir}/buildsystem/android-defaults.gradle"
@@ -95,9 +96,22 @@ dependencies {
     implementation project(':sample_app-modules:ui')
 
     implementation libs.androidx.appcompat
+    implementation libs.androidx.activityktx
+    implementation libs.androidx.activity.compose
     implementation libs.androidx.recyclerview
     implementation libs.permissionx
     implementation libs.easycursor.android
+
+    // Compose Block
+    var composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    testImplementation(composeBom)
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(composeBom)
+    androidTestImplementation(libs.androidx.compose.ui.test)
 
     implementation libs.hilt.android
     kapt libs.hilt.compiler

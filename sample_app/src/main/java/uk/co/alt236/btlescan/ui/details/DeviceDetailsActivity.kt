@@ -1,124 +1,81 @@
-package uk.co.alt236.btlescan.ui.details;
+package uk.co.alt236.btlescan.ui.details
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.MaterialTheme
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import dev.alt236.bluetoothlelib.device.BluetoothLeDevice
+import uk.co.alt236.btlescan.R
+import uk.co.alt236.btlescan.app.ui.theme.AppTheme
+import uk.co.alt236.btlescan.app.ui.view.details.compose.DeviceDetailsContent
+import uk.co.alt236.btlescan.ui.common.Navigation
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+class DeviceDetailsActivity : AppCompatActivity() {
+    private var mapper: DetailsUiMapper? = null
+    private var device: BluetoothLeDevice? = null
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import dev.alt236.bluetoothlelib.device.BluetoothLeDevice;
-import dev.alt236.bluetoothlelib.device.adrecord.AdRecord;
-import dev.alt236.bluetoothlelib.device.beacon.BeaconType;
-import dev.alt236.bluetoothlelib.device.beacon.BeaconUtils;
-import dev.alt236.bluetoothlelib.device.beacon.ibeacon.IBeaconManufacturerData;
-import dev.alt236.bluetoothlelib.util.ByteUtils;
-import uk.co.alt236.btlescan.R;
-import uk.co.alt236.btlescan.ui.common.Navigation;
-import uk.co.alt236.btlescan.app.ui.view.recyclerview.RecyclerViewBinderCore;
-import uk.co.alt236.btlescan.app.ui.view.recyclerview.RecyclerViewItem;
-import uk.co.alt236.btlescan.ui.details.recyclerview.model.AdRecordItem;
-import uk.co.alt236.btlescan.ui.details.recyclerview.model.DeviceInfoItem;
-import uk.co.alt236.btlescan.ui.details.recyclerview.model.HeaderItem;
-import uk.co.alt236.btlescan.ui.details.recyclerview.model.IBeaconItem;
-import uk.co.alt236.btlescan.ui.details.recyclerview.model.RssiItem;
-import uk.co.alt236.btlescan.ui.details.recyclerview.model.TextItem;
-
-public class DeviceDetailsActivity extends AppCompatActivity {
-    private static final String EXTRA_DEVICE = DeviceDetailsActivity.class.getName() + ".EXTRA_DEVICE";
-    private static final int LAYOUT_ID = R.layout.activity_details;
-
-    protected RecyclerView mRecycler;
-    private BluetoothLeDevice mDevice;
-
-    @Override
     @SuppressLint("MissingPermission") // We check before this is called
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(LAYOUT_ID);
-        mRecycler = findViewById(R.id.recycler);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        mRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mDevice = getIntent().getParcelableExtra(EXTRA_DEVICE);
+        val device: BluetoothLeDevice? = intent.getParcelableExtra(EXTRA_DEVICE)
+        this.device = device
 
-        getSupportActionBar().setTitle(mDevice.getName());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mapper = DetailsUiMapper(this.application)
 
-        pupulateDetails(mDevice);
-    }
+        supportActionBar?.title = device?.name.orEmpty()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.details, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        final int itemId = item.getItemId();
-        if (itemId == R.id.menu_connect) {
-            new Navigation(this).startControlActivity(mDevice);
-            return true;
-        } else if (itemId == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void pupulateDetails(final BluetoothLeDevice device) {
-        final DetailsRecyclerAdapter detailsRecyclerAdapter;
-
-        final List<RecyclerViewItem> list = new ArrayList<>();
-
-        if (device == null) {
-            list.add(new HeaderItem(getString(R.string.header_device_info)));
-            list.add(new TextItem(getString(R.string.invalid_device_data)));
-        } else {
-            list.add(new HeaderItem(getString(R.string.header_device_info)));
-            list.add(new DeviceInfoItem(device));
-
-            list.add(new HeaderItem(getString(R.string.header_rssi_info)));
-            list.add(new RssiItem(device));
-
-            list.add(new HeaderItem(getString(R.string.header_scan_record)));
-            list.add(new TextItem(ByteUtils.byteArrayToHexString(device.getScanRecord())));
-
-            final Collection<AdRecord> adRecords = device.getAdRecordStore().getRecordsAsCollection();
-            if (adRecords.size() > 0) {
-                list.add(new HeaderItem(getString(R.string.header_raw_ad_records)));
-
-                for (final AdRecord record : adRecords) {
-
-                    final String title = "#" + record.getType() + " " + record.getHumanReadableType();
-                    list.add(new AdRecordItem(title, record));
+        val items = mapper!!.map(device)
+        if (USE_COMPOSE) {
+            setContent { // In here, we can call composables!
+                AppTheme {
+                    DeviceDetailsContent(items)
                 }
             }
-
-            final boolean isIBeacon = BeaconUtils.getBeaconType(device) == BeaconType.IBEACON;
-            if (isIBeacon) {
-                final IBeaconManufacturerData iBeaconData = new IBeaconManufacturerData(device);
-                list.add(new HeaderItem(getString(R.string.header_ibeacon_data)));
-                list.add(new IBeaconItem(iBeaconData));
-            }
-
+        } else {
+            setContentView(LAYOUT_ID)
+            val core = RecyclerViewCoreFactory.create(this)
+            val recycler = findViewById<RecyclerView>(R.id.recycler)
+            recycler.setLayoutManager(LinearLayoutManager(this))
+            recycler.setAdapter(DetailsRecyclerAdapter(core, items))
         }
-
-        final RecyclerViewBinderCore core = RecyclerViewCoreFactory.create(this);
-        mRecycler.setAdapter(new DetailsRecyclerAdapter(core, list));
     }
 
-    public static Intent createIntent(Context context, BluetoothLeDevice device) {
-        final Intent intent = new Intent(context, DeviceDetailsActivity.class);
-        intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE, device);
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.details, menu)
+        return true
+    }
 
-        return intent;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val itemId = item.itemId
+        if (itemId == R.id.menu_connect) {
+            Navigation(this).startControlActivity(device)
+            return true
+        } else if (itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    companion object {
+        private val EXTRA_DEVICE = DeviceDetailsActivity::class.java.name + ".EXTRA_DEVICE"
+        private val LAYOUT_ID = R.layout.activity_details
+        private const val USE_COMPOSE = true
+
+        fun createIntent(context: Context?, device: BluetoothLeDevice?): Intent {
+            val intent = Intent(context, DeviceDetailsActivity::class.java)
+            intent.putExtra(EXTRA_DEVICE, device)
+
+            return intent
+        }
     }
 }

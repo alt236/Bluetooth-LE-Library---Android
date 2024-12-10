@@ -1,9 +1,10 @@
 [versions]
 androidx-appcompat = "1.6.1" # changing this will affect minSDK
+androidx-activity = "1.9.3" # changing this will affect minSDK
 androidx-recyclerview = "1.2.1"
 androidx-test-runner = "1.5.2"
 androidx-compose-bom = "2024.10.01"
-annotation = "1.1.0"
+androidx-annotation = "1.9.1"
 easycursor-android = "2.0.0"
 gradle-android = "8.7.2"
 gradle-ktlint = "12.1.2"
@@ -24,7 +25,9 @@ vanniktech-maven-publish = "0.30.0"
 android-build-tools-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle-android" }
 android-material = { module = "com.google.android.material:material", version.ref = "material" }
 android-support-multidex = { module = "com.android.support:multidex", version.ref = "multidex" }
-androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
+androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
+androidx-activityktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
