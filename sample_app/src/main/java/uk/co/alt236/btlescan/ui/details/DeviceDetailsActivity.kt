@@ -18,20 +18,24 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import dev.alt236.bluetoothlelib.device.BluetoothLeDevice
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import uk.co.alt236.btlescan.R
 import uk.co.alt236.btlescan.app.ui.theme.AppTheme
 import uk.co.alt236.btlescan.app.ui.view.details.compose.DeviceDetailsContent
 import uk.co.alt236.btlescan.ui.common.Navigation
 import uk.co.alt236.btlescan.ui.details.recyclerview.DetailsRecyclerAdapter
 import uk.co.alt236.btlescan.ui.details.recyclerview.RecyclerViewCoreFactory
+import uk.co.alt236.btlescan.ui.details.usecases.IsComposeEnabledForDetailsUseCase
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DeviceDetailsActivity : AppCompatActivity() {
     private val viewModel: DeviceDetailsViewModel by viewModels()
     private var device: BluetoothLeDevice? = null
 
-    @SuppressLint("MissingPermission") // We check before this is called
+    @Inject
+    internal lateinit var isComposeEnabled: IsComposeEnabledForDetailsUseCase
+
+    @SuppressLint("MissingPermission") // If we are here, permission has already been granted
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.device = intent.getParcelableExtra(EXTRA_DEVICE)
@@ -42,18 +46,21 @@ class DeviceDetailsActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
-                    Timber.d("New STATE: %s", uiState)
-                    if (USE_COMPOSE) {
-                        updateComposeState(uiState)
-                    } else {
-                        updateViewState(uiState)
-                    }
+                    updateViewState(uiState)
                 }
             }
         }
 
         if (savedInstanceState == null) {
             viewModel.perform(Action.ShowDeviceDetails(device))
+        }
+    }
+
+    private fun updateViewState(uiState: UiState) {
+        if (isComposeEnabled()) {
+            updateComposeState(uiState)
+        } else {
+            updateLegacyViewState(uiState)
         }
     }
 
@@ -68,7 +75,7 @@ class DeviceDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateViewState(uiState: UiState) {
+    private fun updateLegacyViewState(uiState: UiState) {
         if (uiState is UiState.ShowData) {
             setContentView(LAYOUT_ID)
             val core = RecyclerViewCoreFactory.create(this)
@@ -85,27 +92,24 @@ class DeviceDetailsActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val itemId = item.itemId
-        when (itemId) {
+        return when (itemId) {
             R.id.menu_connect -> {
                 Navigation(this).startControlActivity(device)
-                return true
+                true
             }
 
             android.R.id.home -> {
                 onBackPressed()
-                return true
+                true
             }
 
-            else -> {
-                return super.onOptionsItemSelected(item)
-            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
     companion object {
         private val EXTRA_DEVICE = DeviceDetailsActivity::class.java.name + ".EXTRA_DEVICE"
         private val LAYOUT_ID = R.layout.activity_details
-        private const val USE_COMPOSE = true
 
         fun createIntent(
             context: Context,

@@ -62,6 +62,7 @@ android {
     defaultConfig {
         versionCode androidVersionCode
         versionName semanticVersion
+        buildConfigField("boolean", "DEVICE_DETAILS_COMPOSE", "false")
     }
 
     buildTypes {
