@@ -33,13 +33,13 @@ internal fun DataGrid(
     LazyVerticalGrid(
         columns = GridCells.Fixed(totalSpan),
         modifier =
-        Modifier
-            .heightIn(max = 1000.dp) // This is to allow the nesting of this inside a lazy column
-            .padding(
-                start = dimensionResource(R.dimen.content_block_indent),
-                end = dimensionResource(R.dimen.content_block_indent),
-                bottom = dimensionResource(R.dimen.space_after_sections),
-            ),
+            Modifier
+                .heightIn(max = 1000.dp) // This is to allow the nesting of this inside a lazy column
+                .padding(
+                    start = dimensionResource(R.dimen.content_block_indent),
+                    end = dimensionResource(R.dimen.content_block_indent),
+                    bottom = dimensionResource(R.dimen.space_after_sections),
+                ),
     ) {
         itemsIndexed(
             items = actualItems,
@@ -51,16 +51,18 @@ internal fun DataGrid(
                 }
             },
         ) { index, item ->
-            val font = if (index.isEven()) {
-                FontFamily.Monospace
-             } else {
-                FontFamily.Default
-            }
+            val font =
+                if (index.isEven()) {
+                    FontFamily.Monospace
+                } else {
+                    FontFamily.Default
+                }
             Text(
                 text = item,
                 style = MaterialTheme.typography.bodyMedium,
                 fontFamily = font,
-                modifier = Modifier.fillMaxWidth())
+                modifier = Modifier.fillMaxWidth(),
+            )
         }
     }
 }

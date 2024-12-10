@@ -6,9 +6,12 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.runtime.Composable
 
 @Composable
-fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun AppTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit,
+) {
     MaterialTheme(
         typography = typography,
-        content = content
+        content = content,
     )
 }

@@ -36,7 +36,7 @@ fun preview() {
 @Composable
 fun DeviceDetailsContent(rows: List<DetailsScreenItems>) {
     LazyColumn(
-        Modifier.padding(dimensionResource(R.dimen.screen_margin))
+        Modifier.padding(dimensionResource(R.dimen.screen_margin)),
     ) {
         items(rows) { row ->
             when (row) {
@@ -72,11 +72,11 @@ fun DetailsText(data: TextItem) {
         style = MaterialTheme.typography.bodyMedium,
         fontFamily = FontFamily.Monospace,
         modifier =
-        Modifier.padding(
-            start = horizontalPadding,
-            end = horizontalPadding,
-            bottom = bottomPadding,
-        ),
+            Modifier.padding(
+                start = horizontalPadding,
+                end = horizontalPadding,
+                bottom = bottomPadding,
+            ),
     )
 }
 
@@ -133,6 +133,3 @@ fun DetailsRssiBlock(data: AdRecordItem) {
     )
     DataGrid(rows, 2, 6)
 }
-
-
-

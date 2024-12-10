@@ -18,6 +18,7 @@ mockito = "5.14.2"
 multidex = "1.0.3"
 permissionx = "1.8.1"
 test-logger = "3.2.0"
+timber = "5.0.1"
 triplet-play = "3.12.1"
 vanniktech-maven-publish = "0.30.0"
 
@@ -47,6 +48,7 @@ junit4 = { module = "junit:junit", version.ref = "junit4" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 permissionx = { module = "com.guolindev.permissionx:permissionx", version.ref = "permissionx" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 [plugins]
 gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "gradle-ktlint" }

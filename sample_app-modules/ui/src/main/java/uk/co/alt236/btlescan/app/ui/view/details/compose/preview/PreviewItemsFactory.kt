@@ -13,7 +13,6 @@ import uk.co.alt236.btlescan.app.ui.view.details.model.RssiItem
 import uk.co.alt236.btlescan.app.ui.view.details.model.TextItem
 
 internal object PreviewItemsFactory {
-
     @Composable
     fun get(): List<DetailsScreenItems> {
         val rawScanRecordArray =

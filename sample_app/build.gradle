@@ -101,6 +101,7 @@ dependencies {
     implementation libs.androidx.recyclerview
     implementation libs.permissionx
     implementation libs.easycursor.android
+    implementation libs.timber
 
     // Compose Block
     var composeBom = platform(libs.androidx.compose.bom)
@@ -118,6 +119,10 @@ dependencies {
 
     testImplementation libs.junit4
     testImplementation libs.mockito
+}
+
+kapt {
+    correctErrorTypes true
 }
 
 play {
