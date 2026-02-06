@@ -69,14 +69,14 @@ public final class AdRecordUtils {
 
         int index = 0;
         while (index < scanRecord.length) {
-            final int length = scanRecord[index++];
+            final int length = scanRecord[index++] & 0xFF;
             //Done once we run out of records
-            if (length == 0) break;
+            if (length < 1) break;
 
             final int type = ByteUtils.getIntFromByte(scanRecord[index]);
 
             //Done if our record isn't a valid type
-            if (type == 0) break;
+            if (type < 1) break;
 
             final byte[] data = Arrays.copyOfRange(scanRecord, index + 1, index + length);
 
@@ -95,14 +95,14 @@ public final class AdRecordUtils {
 
         int index = 0;
         while (index < scanRecord.length) {
-            final int length = scanRecord[index++];
+            final int length = scanRecord[index++] & 0xFF;
             //Done once we run out of records
-            if (length == 0) break;
+            if (length < 1) break;
 
             final int type = ByteUtils.getIntFromByte(scanRecord[index]);
 
             //Done if our record isn't a valid type
-            if (type == 0) break;
+            if (type < 1) break;
 
             final byte[] data = Arrays.copyOfRange(scanRecord, index + 1, index + length);
 
@@ -120,14 +120,14 @@ public final class AdRecordUtils {
 
         int index = 0;
         while (index < scanRecord.length) {
-            final int length = scanRecord[index++];
+            final int length = scanRecord[index++] & 0xFF;
             //Done once we run out of records
-            if (length == 0) break;
+            if (length < 1) break;
 
             final int type = ByteUtils.getIntFromByte(scanRecord[index]);
 
             //Done if our record isn't a valid type
-            if (type == 0) break;
+            if (type < 1) break;
 
             final byte[] data = Arrays.copyOfRange(scanRecord, index + 1, index + length);
 
